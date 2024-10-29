@@ -1,0 +1,97 @@
+#load
+load src/res/PPM/Sample.ppm input
+
+#save
+save src/res/PPM/Sample-save.ppm input
+
+#red
+red-component input red
+
+#save
+save src/res/PPM/Sample-red.ppm red
+
+#green
+green-component input green
+
+#save
+save src/res/PPM/Sample-green.ppm green
+
+#blue
+green-component input blue
+
+#save
+save src/res/PPM/Sample-blue.ppm blue
+
+#value
+value-component input value
+
+#save
+save src/res/PPM/Sample-value.ppm value
+
+#luma
+luma-component input luma
+
+#save
+save src/res/PPM/Sample-luma.ppm value
+
+#intensity
+intensity-component input intensity
+
+#save
+save src/res/PPM/Sample-intensity.ppm intensity
+
+#horizontal flip
+horizontal-flip input horizontal
+
+#save
+save src/res/PPM/Sample-horizontal.ppm horizontal
+
+#vertical flip
+vertical-flip input vertical
+
+#save
+save src/res/PPM/Sample-vertical.ppm vertical
+
+#brighten
+brighten 100 input brighten
+
+#save
+save src/res/PPM/Sample-brighten.ppm brighten
+
+#darken
+brighten -100 input darken
+
+#save
+save src/res/PPM/Sample-darken.ppm darken
+
+#blur
+blur input blur
+
+#save
+save src/res/PPM/Sample-blur.ppm blur
+
+#sharpen
+sharpen input sharpen
+
+#save
+save src/res/PPM/Sample-sharpen.ppm sharpen
+
+#sepia
+sepia input sepia
+
+#save
+save src/res/PPM/Sample-sepia.ppm sepia
+
+#rgb split
+rgb-split input red1 green1 blue1
+
+#save
+save src/res/PPM/Sample-red1.ppm red1
+save src/res/PPM/Sample-green1.ppm green1
+save src/res/PPM/Sample-blue1.ppm blue1
+
+#rgb combine
+rgb-combine combine red1 green1 blue1
+
+#save
+save src/res/PPM/Sample-combine.ppm combine

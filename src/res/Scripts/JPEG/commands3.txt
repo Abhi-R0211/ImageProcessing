@@ -1,0 +1,16 @@
+#load
+load src/res/JPEG/Sample.jpeg input
+
+#rgb split
+rgb-split input red1 green1 blue1
+
+#save
+save src/res/JPEG/Sample-red1.jpeg red1
+save src/res/JPEG/Sample-green1.jpeg green1
+save src/res/JPEG/Sample-blue1.jpeg blue1
+
+#rgb combine
+rgb-combine combine red1 green1 blue1
+
+#save
+save src/res/JPEG/Sample-combine.jpeg combine

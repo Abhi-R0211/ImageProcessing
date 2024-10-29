@@ -1,0 +1,97 @@
+#load
+load src/res/JPEG/Sample.jpeg input
+
+#save
+save src/res/JPEG/Sample-save.jpeg input
+
+#red
+red-component input red
+
+#save
+save src/res/JPEG/Sample-red.jpeg red
+
+#green
+green-component input green
+
+#save
+save src/res/JPEG/Sample-green.jpeg green
+
+#blue
+green-component input blue
+
+#save
+save src/res/JPEG/Sample-blue.jpeg blue
+
+#value
+value-component input value
+
+#save
+save src/res/JPEG/Sample-value.jpeg value
+
+#luma
+luma-component input luma
+
+#save
+save src/res/JPEG/Sample-luma.jpeg value
+
+#intensity
+intensity-component input intensity
+
+#save
+save src/res/JPEG/Sample-intensity.jpeg intensity
+
+#horizontal flip
+horizontal-flip input horizontal
+
+#save
+save src/res/JPEG/Sample-horizontal.jpeg horizontal
+
+#vertical flip
+vertical-flip input vertical
+
+#save
+save src/res/JPEG/Sample-vertical.jpeg vertical
+
+#brighten
+brighten 100 input brighten
+
+#save
+save src/res/JPEG/Sample-brighten.jpeg brighten
+
+#darken
+brighten -100 input darken
+
+#save
+save src/res/JPEG/Sample-darken.jpeg darken
+
+#blur
+blur input blur
+
+#save
+save src/res/JPEG/Sample-blur.jpeg blur
+
+#sharpen
+sharpen input sharpen
+
+#save
+save src/res/JPEG/Sample-sharpen.jpeg sharpen
+
+#sepia
+sepia input sepia
+
+#save
+save src/res/JPEG/Sample-sepia.jpeg sepia
+
+#rgb split
+rgb-split input red1 green1 blue1
+
+#save
+save src/res/JPEG/Sample-red1.jpeg red1
+save src/res/JPEG/Sample-green1.jpeg green1
+save src/res/JPEG/Sample-blue1.jpeg blue1
+
+#rgb combine
+rgb-combine combine red1 green1 blue1
+
+#save
+save src/res/JPEG/Sample-combine.jpeg combine

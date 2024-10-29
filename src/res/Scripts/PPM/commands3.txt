@@ -1,0 +1,16 @@
+#load
+load src/res/PPM/Sample.ppm input
+
+#rgb split
+rgb-split input red1 green1 blue1
+
+#save
+save src/res/PPM/Sample-red1.ppm red1
+save src/res/PPM/Sample-green1.ppm green1
+save src/res/PPM/Sample-blue1.ppm blue1
+
+#rgb combine
+rgb-combine combine red1 green1 blue1
+
+#save
+save src/res/PPM/Sample-combine.ppm combine
