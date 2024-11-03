@@ -33,7 +33,7 @@ public class Image implements ImageInterface {
     for (int i = 0; i < height; i++) {
       List<Pixel> row = new ArrayList<>();
       for (int j = 0; j < width; j++) {
-        row.add(new Pixel(0, 0, 0));
+        row.add(new Pixel(255, 255, 255));
       }
       pixels.add(row);
     }

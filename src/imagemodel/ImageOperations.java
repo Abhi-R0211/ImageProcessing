@@ -1,5 +1,7 @@
 package imagemodel;
 
+import java.util.function.Function;
+
 /**
  * The ImageOperations class contains the implementation of all the operations that can be
  * performed on the image such as horizontal/vertical flipping, brighten/darken, component
@@ -13,7 +15,7 @@ public class ImageOperations implements Operations {
    * @param original image to be copied.
    * @return copied image.
    */
-  private Image deepCopyImage(Image original) {
+  protected Image deepCopyImage(Image original) {
     int width = original.getWidth();
     int height = original.getHeight();
     Image copy = new Image(width, height);
@@ -106,7 +108,7 @@ public class ImageOperations implements Operations {
    * @param value takes input of the pixel value.
    * @return the clamped value.
    */
-  private int clamp(int value) {
+  protected int clamp(int value) {
     return Math.min(Math.max(value, 0), 255);
   }
 
@@ -181,17 +183,7 @@ public class ImageOperations implements Operations {
    */
   @Override
   public Image visualizeRedComponent(Image image) {
-    int width = image.getWidth();
-    int height = image.getHeight();
-    Image redImage = deepCopyImage(image);
-
-    for (int y = 0; y < height; y++) {
-      for (int x = 0; x < width; x++) {
-        Pixel pixel = image.getPixel(x, y);
-        redImage.setPixel(x, y, new Pixel(pixel.getRed(), pixel.getRed(), pixel.getRed()));
-      }
-    }
-    return redImage;
+    return componentHelper(image, Pixel::getRed);
   }
 
   /**
@@ -202,17 +194,7 @@ public class ImageOperations implements Operations {
    */
   @Override
   public Image visualizeGreenComponent(Image image) {
-    int width = image.getWidth();
-    int height = image.getHeight();
-    Image greenImage = deepCopyImage(image);
-
-    for (int y = 0; y < height; y++) {
-      for (int x = 0; x < width; x++) {
-        Pixel pixel = image.getPixel(x, y);
-        greenImage.setPixel(x, y, new Pixel(pixel.getGreen(), pixel.getGreen(), pixel.getGreen()));
-      }
-    }
-    return greenImage;
+    return componentHelper(image, Pixel::getGreen);
   }
 
   /**
@@ -223,17 +205,7 @@ public class ImageOperations implements Operations {
    */
   @Override
   public Image visualizeBlueComponent(Image image) {
-    int width = image.getWidth();
-    int height = image.getHeight();
-    Image blueImage = deepCopyImage(image);
-
-    for (int y = 0; y < height; y++) {
-      for (int x = 0; x < width; x++) {
-        Pixel pixel = image.getPixel(x, y);
-        blueImage.setPixel(x, y, new Pixel(pixel.getBlue(), pixel.getBlue(), pixel.getBlue()));
-      }
-    }
-    return blueImage;
+    return componentHelper(image, Pixel::getBlue);
   }
 
   /**
@@ -244,18 +216,8 @@ public class ImageOperations implements Operations {
    */
   @Override
   public Image visualizeValue(Image image) {
-    int width = image.getWidth();
-    int height = image.getHeight();
-    Image valueImage = deepCopyImage(image);
-
-    for (int y = 0; y < height; y++) {
-      for (int x = 0; x < width; x++) {
-        Pixel pixel = image.getPixel(x, y);
-        int value = Math.max(pixel.getRed(), Math.max(pixel.getGreen(), pixel.getBlue()));
-        valueImage.setPixel(x, y, new Pixel(value, value, value));
-      }
-    }
-    return valueImage;
+    return componentHelper(image, pixel -> Math.max(pixel.getRed(),
+            Math.max(pixel.getGreen(), pixel.getBlue())));
   }
 
   /**
@@ -266,18 +228,8 @@ public class ImageOperations implements Operations {
    */
   @Override
   public Image visualizeIntensity(Image image) {
-    int width = image.getWidth();
-    int height = image.getHeight();
-    Image intensityImage = deepCopyImage(image);
-
-    for (int y = 0; y < height; y++) {
-      for (int x = 0; x < width; x++) {
-        Pixel pixel = image.getPixel(x, y);
-        int intensity = (pixel.getRed() + pixel.getGreen() + pixel.getBlue()) / 3;
-        intensityImage.setPixel(x, y, new Pixel(intensity, intensity, intensity));
-      }
-    }
-    return intensityImage;
+    return componentHelper(image, pixel ->
+            (pixel.getRed() + pixel.getGreen() + pixel.getBlue()) / 3);
   }
 
   /**
@@ -288,19 +240,23 @@ public class ImageOperations implements Operations {
    */
   @Override
   public Image visualizeLuma(Image image) {
+    return componentHelper(image, pixel -> (int) (0.2126 * pixel.getRed()
+            + 0.7152 * pixel.getGreen() + 0.0722 * pixel.getBlue()));
+  }
+
+  private Image componentHelper(Image image, Function<Pixel, Integer> componentExtractor) {
     int width = image.getWidth();
     int height = image.getHeight();
-    Image lumaImage = deepCopyImage(image);
+    Image resultImage = deepCopyImage(image);
 
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
         Pixel pixel = image.getPixel(x, y);
-        int luma = (int) (0.2126 * pixel.getRed() + 0.7152 * pixel.getGreen()
-                + 0.0722 * pixel.getBlue());
-        lumaImage.setPixel(x, y, new Pixel(luma, luma, luma));
+        int value = componentExtractor.apply(pixel);
+        resultImage.setPixel(x, y, new Pixel(value, value, value));
       }
     }
-    return lumaImage;
+    return resultImage;
   }
 
   /**

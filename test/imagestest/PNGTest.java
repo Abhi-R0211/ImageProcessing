@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 
 import imagecontroller.ImageHandler;
+import imagemodel.ExtendedImageOperations;
 import imagemodel.Image;
 import imagemodel.ImageOperations;
 import imagemodel.Pixel;
@@ -568,5 +569,15 @@ public class PNGTest extends AbstractTest {
     Image one = ih.loadImage("src/res/PNG/Sample.png");
     Image two = ih.loadImage("src/res/PNG/Sample.png");
     assertTrue(one.hashCode() == two.hashCode());
+  }
+
+  @Test
+  public void testDemo() throws IOException {
+    ImageHandler ih = new ImageHandler();
+    Image one = ih.loadImage("src/res/PNG/manhattan-small.png");
+    ExtendedImageOperations io = new ExtendedImageOperations();
+    String operation = "red-component test demo split 50";
+    Image two = io.splitViewOperation(operation.split("   "), one);
+    ih.saveImage(two, "src/res/PNG/split.png", "png");
   }
 }

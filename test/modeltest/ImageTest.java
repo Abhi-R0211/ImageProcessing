@@ -16,7 +16,7 @@ public class ImageTest {
   public void testConstructor() {
     Image obj = new Image(2, 2);
     Pixel output = obj.getPixel(0, 0);
-    assertEquals(0, output.getRed());
+    assertEquals(255, output.getRed());
   }
 
   @Test(expected = IllegalArgumentException.class)

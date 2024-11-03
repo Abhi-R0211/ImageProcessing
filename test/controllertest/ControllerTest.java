@@ -13,8 +13,8 @@ import java.util.Map;
 import imagecontroller.ImageHandler;
 import imagecontroller.P3PPMHandler;
 import imagecontroller.TextImageController;
+import imagemodel.ExtendedImageOperations;
 import imagemodel.Image;
-import imagemodel.ImageOperations;
 
 /**
  * This class tests the working of the TextImage Controller class.
@@ -26,16 +26,16 @@ public class ControllerTest {
   TextImageController textImageController;
   StringBuilder path;
   ImageHandler ih;
-  ImageOperations io;
+  ExtendedImageOperations io;
 
   @Before
   public void setUp() {
     images_temp = new HashMap<>();
     img = new Image(2, 2);
-    textImageController = new TextImageController(new ImageOperations());
+    textImageController = new TextImageController(new ExtendedImageOperations());
     path = new StringBuilder("src/res/PNG/Sample.png");
     ih = new ImageHandler();
-    io = new ImageOperations();
+    io = new ExtendedImageOperations();
   }
 
   @Test
