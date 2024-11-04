@@ -6,9 +6,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
-import imagemodel.ExtendedImageOperations;
-import imagemodel.Image;
+import imagemodel.ExtendedOperations;
+import imagemodel.ImageInterface;
 
 /**
  * The Controller class behaves as the facilitator between the view and model structures of the MVC
@@ -17,8 +16,8 @@ import imagemodel.Image;
  */
 public class TextImageController implements Controller {
 
-  private Map<String, Image> images;
-  private ExtendedImageOperations imageOperations;
+  private Map<String, ImageInterface> images;
+  private ExtendedOperations imageOperations;
 
   /**
    * This is a constructor for the class TextImageOperations which initializes the hashmap which
@@ -26,7 +25,7 @@ public class TextImageController implements Controller {
    *
    * @param imageOperations class object.
    */
-  public TextImageController(ExtendedImageOperations imageOperations) {
+  public TextImageController(ExtendedOperations imageOperations) {
     this.images = new HashMap<>();
     this.imageOperations = imageOperations;
   }
@@ -149,9 +148,9 @@ public class TextImageController implements Controller {
   private void handleHistogramCommand(String[] tokens) {
     String sourceImage = tokens[1];
     String destImage = tokens[2];
-    Image image = images.get(sourceImage);
+    ImageInterface image = images.get(sourceImage);
     if (image != null) {
-      Image histogram = imageOperations.createHistogram(image);
+      ImageInterface histogram = imageOperations.createHistogram(image);
       images.put(destImage, histogram);
       System.out.println("Histogram created and saved as image at: " + destImage);
     } else {
@@ -160,7 +159,7 @@ public class TextImageController implements Controller {
   }
 
   private void handleRedComponentCommand(String[] tokens) {
-    Image redImage;
+    ImageInterface redImage;
     if (tokens.length == 3) {
       redImage = imageOperations.visualizeRedComponent(images.get(tokens[1]));
     } else if (tokens.length == 5) {
@@ -173,7 +172,7 @@ public class TextImageController implements Controller {
   }
 
   private void handleGreenComponentCommand(String[] tokens) {
-    Image greenImage;
+    ImageInterface greenImage;
     if (tokens.length == 3) {
       greenImage = imageOperations.visualizeGreenComponent(images.get(tokens[1]));
     } else if (tokens.length == 5) {
@@ -186,7 +185,7 @@ public class TextImageController implements Controller {
   }
 
   private void handleBlueComponentCommand(String[] tokens) {
-    Image blueImage;
+    ImageInterface blueImage;
     if (tokens.length == 3) {
       blueImage = imageOperations.visualizeBlueComponent(images.get(tokens[1]));
     } else if (tokens.length == 5) {
@@ -199,7 +198,7 @@ public class TextImageController implements Controller {
   }
 
   private void handleValueComponentCommand(String[] tokens) {
-    Image valueImage;
+    ImageInterface valueImage;
     if (tokens.length == 3) {
       valueImage = imageOperations.visualizeValue(images.get(tokens[1]));
     } else if (tokens.length == 5) {
@@ -212,7 +211,7 @@ public class TextImageController implements Controller {
   }
 
   private void handleLumaComponentCommand(String[] tokens) {
-    Image lumaImage;
+    ImageInterface lumaImage;
     if (tokens.length == 3) {
       lumaImage = imageOperations.visualizeLuma(images.get(tokens[1]));
     } else if (tokens.length == 5) {
@@ -225,7 +224,7 @@ public class TextImageController implements Controller {
   }
 
   private void handleIntensityComponentCommand(String[] tokens) {
-    Image intensityImage;
+    ImageInterface intensityImage;
     if (tokens.length == 3) {
       intensityImage = imageOperations.visualizeIntensity(images.get(tokens[1]));
     } else if (tokens.length == 5) {
@@ -238,7 +237,7 @@ public class TextImageController implements Controller {
   }
 
   private void handleLevelsAdjustCommand(String[] tokens) {
-    Image adjustedImage;
+    ImageInterface adjustedImage;
     if (tokens.length == 6) {
       int b = Integer.parseInt(tokens[1]);
       int m = Integer.parseInt(tokens[2]);
@@ -254,7 +253,7 @@ public class TextImageController implements Controller {
   }
 
   private void handleColorCorrectCommand(String[] tokens) {
-    Image corrected;
+    ImageInterface corrected;
     if (tokens.length == 3) {
       corrected = imageOperations.colorCorrect(images.get(tokens[1]));
     } else if (tokens.length == 5) {
@@ -267,14 +266,14 @@ public class TextImageController implements Controller {
   }
 
   private void handleRgbCombine(String[] tokens) {
-    Image combinedImage = imageOperations.combineRGB(
+    ImageInterface combinedImage = imageOperations.combineRGB(
             images.get(tokens[2]), images.get(tokens[3]), images.get(tokens[4]));
     images.put(tokens[1], combinedImage);
     System.out.println("RGB Channels combined and stored at :" + tokens[1]);
   }
 
   private void handleRgbSplit(String[] tokens) {
-    Image[] splitImages = {
+    ImageInterface[] splitImages = {
             imageOperations.visualizeRedComponent(images.get(tokens[1])),
             imageOperations.visualizeGreenComponent(images.get(tokens[1])),
             imageOperations.visualizeBlueComponent(images.get(tokens[1]))
@@ -288,14 +287,14 @@ public class TextImageController implements Controller {
 
   private void handleBrightenCommand(String[] tokens) {
     int increment = Integer.parseInt(tokens[1]);
-    Image brightenedImage = images.get(tokens[2]);
-    Image outputBrightness = imageOperations.applyBrightness(brightenedImage, increment);
+    ImageInterface brightenedImage = images.get(tokens[2]);
+    ImageInterface outputBrightness = imageOperations.applyBrightness(brightenedImage, increment);
     images.put(tokens[3], outputBrightness);
     System.out.println("Image brightened and stored at " + tokens[3]);
   }
 
   private void handleBlurCommand(String[] tokens) {
-    Image blurImage;
+    ImageInterface blurImage;
     if (tokens.length == 3) {
       blurImage = imageOperations.applyBlur(images.get(tokens[1]));
     } else if (tokens.length == 5) {
@@ -308,7 +307,7 @@ public class TextImageController implements Controller {
   }
 
   private void handleSharpenCommand(String[] tokens) {
-    Image sharpenImage;
+    ImageInterface sharpenImage;
     if (tokens.length == 3) {
       sharpenImage = imageOperations.applySharpen(images.get(tokens[1]));
     } else if (tokens.length == 5) {
@@ -321,7 +320,7 @@ public class TextImageController implements Controller {
   }
 
   private void handleSepiaCommand(String[] tokens) {
-    Image sepiaImage;
+    ImageInterface sepiaImage;
     if (tokens.length == 3) {
       sepiaImage = imageOperations.applySepia(images.get(tokens[1]));
     } else if (tokens.length == 5) {
@@ -340,10 +339,10 @@ public class TextImageController implements Controller {
     int percentage = Integer.parseInt(tokens[1]);
     String sourceImage = tokens[2];
     String destImage = tokens[3];
-    Image image = images.get(sourceImage);
+    ImageInterface image = images.get(sourceImage);
     if (image != null) {
       double threshold = percentage / 100.0;
-      Image compressedImage = imageOperations.compressImage(image, threshold);
+      ImageInterface compressedImage = imageOperations.compressImage(image, threshold);
       images.put(destImage, compressedImage);
       System.out.println("Image compressed and saved as: " + destImage);
     } else {
@@ -352,12 +351,12 @@ public class TextImageController implements Controller {
   }
 
   private void handleLoadCommand(String[] tokens) throws IOException {
-    ImageHandler loader = new ImageHandler();
+    ImageFormatHandler loader = new ImageHandler();
     try {
-      Image image;
+      ImageInterface image;
       String extension = getFileExtension(tokens[1]);
       if (extension.equals("ppm")) {
-        P3PPMHandler ppm = new P3PPMHandler();
+        ImageFormatHandler ppm = new P3PPMHandler();
         image = ppm.loadImage(tokens[1]);
       } else {
         image = loader.loadImage(tokens[1]);
@@ -371,11 +370,11 @@ public class TextImageController implements Controller {
 
   private void handleSaveCommand(String[] tokens) {
     String extension = getFileExtension(tokens[1]);
-    ImageHandler saver = new ImageHandler();
-    Image image = images.get(tokens[2]);
+    ImageFormatHandler saver = new ImageHandler();
+    ImageInterface image = images.get(tokens[2]);
     try {
       if (extension.equals("ppm")) {
-        P3PPMHandler ppm = new P3PPMHandler();
+        ImageFormatHandler ppm = new P3PPMHandler();
         ppm.saveImage(image, tokens[1], "ppm");
       } else {
         saver.saveImage(image, tokens[1], extension);
@@ -388,19 +387,19 @@ public class TextImageController implements Controller {
   }
 
   private void handleHorizontalFlip(String[] tokens) {
-    Image flippedHorizontal = imageOperations.applyHorizontalFlip(images.get(tokens[1]));
+    ImageInterface flippedHorizontal = imageOperations.applyHorizontalFlip(images.get(tokens[1]));
     images.put(tokens[2], flippedHorizontal);
     System.out.println("Image flipped Horizontally and stored at " + tokens[2]);
   }
 
   private void handleVerticalFlip(String[] tokens) {
-    Image flippedVertical = imageOperations.applyVerticalFlip(images.get(tokens[1]));
+    ImageInterface flippedVertical = imageOperations.applyVerticalFlip(images.get(tokens[1]));
     images.put(tokens[2], flippedVertical);
     System.out.println("Image flipped Vertically and stored at " + tokens[2]);
   }
 
   @Override
-  public Image getImageFromMap(String str) {
+  public ImageInterface getImageFromMap(String str) {
     return images.get(str);
   }
 }

@@ -1,5 +1,6 @@
 import java.util.Scanner;
 
+import imagecontroller.Controller;
 import imagecontroller.TextImageController;
 import imagemodel.ExtendedImageOperations;
 
@@ -16,7 +17,7 @@ public class Main {
    */
   public static void main(String[] args) {
     ExtendedImageOperations operations = new ExtendedImageOperations();
-    TextImageController controller = new TextImageController(operations);
+    Controller controller = new TextImageController(operations);
 
     Scanner scanner = new Scanner(System.in);
     System.out.println("Welcome to the Image Processing Application!\n");

@@ -13,16 +13,7 @@ public interface ImageInterface {
    * @param y column index of the image.
    * @return pixel value
    */
-  Pixel getPixel(int x, int y);
-
-  /**
-   * The setPixel method sets the pixel values at a specific position in the image.
-   *
-   * @param x     row index where the pixel is to be set.
-   * @param y     column index where the pixel is to be set.
-   * @param pixel values that are to be set in that position.
-   */
-  void setPixel(int x, int y, Pixel pixel);
+  PixelInterface getPixel(int x, int y);
 
   /**
    * The getWidth method is used to get the width of the Image.

@@ -2,13 +2,13 @@ package imagemodel;
 
 public interface ExtendedOperations extends Operations {
 
-  Image compressImage(Image image, double threshold);
+  ImageInterface compressImage(ImageInterface image, double threshold);
 
-  Image createHistogram(Image image);
+  ImageInterface createHistogram(ImageInterface image);
 
-  Image colorCorrect(Image image);
+  ImageInterface colorCorrect(ImageInterface image);
 
-  Image levelsAdjust(Image image, int b, int m, int w);
+  ImageInterface levelsAdjust(ImageInterface image, int b, int m, int w);
 
-  Image splitViewOperation(String[] tokens, Image image);
+  ImageInterface splitViewOperation(String[] tokens, ImageInterface image);
 }

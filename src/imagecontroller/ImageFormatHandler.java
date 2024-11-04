@@ -1,8 +1,7 @@
 package imagecontroller;
 
 import java.io.IOException;
-
-import imagemodel.Image;
+import imagemodel.ImageInterface;
 
 /**
  * ImageFormatHandler is an interface that acts as a universal template for loading and saving
@@ -17,7 +16,7 @@ public interface ImageFormatHandler {
    * @return the loaded image.
    * @throws IOException if invalid width or height is received.
    */
-  Image loadImage(String path) throws IOException;
+  ImageInterface loadImage(String path) throws IOException;
 
   /**
    * The saveImage method saves a particular image to the specified path.
@@ -27,5 +26,5 @@ public interface ImageFormatHandler {
    * @param extension of the image to be saved.
    * @throws IOException if invalid width or height is received.
    */
-  void saveImage(Image image, String path, String extension) throws IOException;
+  void saveImage(ImageInterface image, String path, String extension) throws IOException;
 }
