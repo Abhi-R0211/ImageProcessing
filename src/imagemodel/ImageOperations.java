@@ -17,10 +17,12 @@ public class ImageOperations implements Operations {
    */
   @Override
   public ImageInterface applyHorizontalFlip(ImageInterface image) {
+    if (image == null) {
+      throw new NullPointerException("image is null");
+    }
     int width = image.getWidth();
     int height = image.getHeight();
     ImageCopyInterface copy = new ImageCopy(width, height);
-
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width / 2; x++) {
         PixelInterface left = image.getPixel(x, y);
@@ -40,10 +42,12 @@ public class ImageOperations implements Operations {
    */
   @Override
   public ImageInterface applyVerticalFlip(ImageInterface image) {
+    if (image == null) {
+      throw new NullPointerException("image is null");
+    }
     int width = image.getWidth();
     int height = image.getHeight();
     ImageCopyInterface copy = new ImageCopy(width, height);
-
     for (int y = 0; y < height / 2; y++) {
       for (int x = 0; x < width; x++) {
         PixelInterface top = image.getPixel(x, y);
@@ -65,10 +69,12 @@ public class ImageOperations implements Operations {
    */
   @Override
   public ImageInterface applyBrightness(ImageInterface image, int increment) {
+    if (image == null) {
+      throw new NullPointerException("image is null");
+    }
     int width = image.getWidth();
     int height = image.getHeight();
     ImageCopyInterface copy = new ImageCopy(width, height);
-
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
         PixelInterface pixel = image.getPixel(x, y);
@@ -100,10 +106,12 @@ public class ImageOperations implements Operations {
    */
   @Override
   public ImageInterface applySepia(ImageInterface image) {
+    if (image == null) {
+      throw new NullPointerException("image is null");
+    }
     int width = image.getWidth();
     int height = image.getHeight();
     ImageCopyInterface copy = new ImageCopy(width, height);
-
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
         PixelInterface pixel = image.getPixel(x, y);
@@ -127,6 +135,9 @@ public class ImageOperations implements Operations {
    */
   @Override
   public ImageInterface applyBlur(ImageInterface image) {
+    if (image == null) {
+      throw new NullPointerException("image is null");
+    }
     double[][] blurKernel = {
             {1.0 / 16, 1.0 / 8, 1.0 / 16},
             {1.0 / 8, 1.0 / 4, 1.0 / 8},
@@ -143,6 +154,9 @@ public class ImageOperations implements Operations {
    */
   @Override
   public ImageInterface applySharpen(ImageInterface image) {
+    if (image == null) {
+      throw new NullPointerException("image is null");
+    }
     double[][] sharpenKernel = {
             {-1.0 / 8, -1.0 / 8, -1.0 / 8, -1.0 / 8, -1.0 / 8},
             {-1.0 / 8, 1.0 / 4, 1.0 / 4, 1.0 / 4, -1.0 / 8},
@@ -161,6 +175,9 @@ public class ImageOperations implements Operations {
    */
   @Override
   public ImageInterface visualizeRedComponent(ImageInterface image) {
+    if (image == null) {
+      throw new NullPointerException("image is null");
+    }
     return componentHelper(image, PixelInterface::getRed);
   }
 
@@ -172,6 +189,9 @@ public class ImageOperations implements Operations {
    */
   @Override
   public ImageInterface visualizeGreenComponent(ImageInterface image) {
+    if (image == null) {
+      throw new NullPointerException("image is null");
+    }
     return componentHelper(image, PixelInterface::getGreen);
   }
 
@@ -183,6 +203,9 @@ public class ImageOperations implements Operations {
    */
   @Override
   public ImageInterface visualizeBlueComponent(ImageInterface image) {
+    if (image == null) {
+      throw new NullPointerException("image is null");
+    }
     return componentHelper(image, PixelInterface::getBlue);
   }
 
@@ -194,6 +217,9 @@ public class ImageOperations implements Operations {
    */
   @Override
   public ImageInterface visualizeValue(ImageInterface image) {
+    if (image == null) {
+      throw new NullPointerException("image is null");
+    }
     return componentHelper(image, pixel -> Math.max(pixel.getRed(),
             Math.max(pixel.getGreen(), pixel.getBlue())));
   }
@@ -206,6 +232,9 @@ public class ImageOperations implements Operations {
    */
   @Override
   public ImageInterface visualizeIntensity(ImageInterface image) {
+    if (image == null) {
+      throw new NullPointerException("image is null");
+    }
     return componentHelper(image, pixel ->
             (pixel.getRed() + pixel.getGreen() + pixel.getBlue()) / 3);
   }
@@ -218,16 +247,21 @@ public class ImageOperations implements Operations {
    */
   @Override
   public ImageInterface visualizeLuma(ImageInterface image) {
+    if (image == null) {
+      throw new NullPointerException("image is null");
+    }
     return componentHelper(image, pixel -> (int) (0.2126 * pixel.getRed()
             + 0.7152 * pixel.getGreen() + 0.0722 * pixel.getBlue()));
   }
 
-  private ImageInterface componentHelper(ImageInterface image, Function<PixelInterface, Integer> componentExtractor) {
+  private ImageInterface componentHelper(ImageInterface image, Function<PixelInterface,
+          Integer> componentExtractor) {
+    if (image == null) {
+      throw new NullPointerException("image is null");
+    }
     int width = image.getWidth();
     int height = image.getHeight();
     ImageCopyInterface copy = new ImageCopy(width, height);
-
-
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
         PixelInterface pixel = image.getPixel(x, y);
@@ -245,6 +279,9 @@ public class ImageOperations implements Operations {
    * @param kernel The kernel on that particular function.
    */
   private ImageInterface applyKernel(ImageInterface image, double[][] kernel) {
+    if (image == null) {
+      throw new NullPointerException("image is null");
+    }
     int kernelHeight = kernel.length;
     int kernelWidth = kernel[0].length;
     int kernelRadiusX = kernelWidth / 2;
@@ -268,7 +305,8 @@ public class ImageOperations implements Operations {
             blueSum += pixel.getBlue() * kernelValue;
           }
         }
-        PixelInterface pixel1 = new Pixel(clamp((int) redSum), clamp((int) greenSum), clamp((int) blueSum));
+        PixelInterface pixel1 = new Pixel(clamp((int) redSum), clamp((int) greenSum),
+                clamp((int) blueSum));
         copy.setPixel(x, y, pixel1);
       }
     }
@@ -286,11 +324,14 @@ public class ImageOperations implements Operations {
    * @return an image after combining all the three RGB Channels.
    */
   @Override
-  public ImageInterface combineRGB(ImageInterface redImage, ImageInterface greenImage, ImageInterface blueImage) {
+  public ImageInterface combineRGB(ImageInterface redImage, ImageInterface greenImage,
+                                   ImageInterface blueImage) {
+    if (redImage == null || greenImage == null || blueImage == null) {
+      throw new NullPointerException("image is null");
+    }
     int width = redImage.getWidth();
     int height = redImage.getHeight();
     ImageCopyInterface copy = new ImageCopy(width, height);
-
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
         int red = redImage.getPixel(x, y).getRed();

@@ -3,7 +3,7 @@ package imagemodel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ImageCopy implements ImageCopyInterface{
+public class ImageCopy implements ImageCopyInterface {
 
   private List<List<Pixel>> pixels;
   private int width;
@@ -33,7 +33,7 @@ public class ImageCopy implements ImageCopyInterface{
    * @param pixel values that are to be set in that position.
    */
   public void setPixel(int x, int y, PixelInterface pixel) {
-    pixels.get(y).set(x, (Pixel)pixel);
+    pixels.get(y).set(x, (Pixel) pixel);
   }
 
   /**

@@ -1,17 +1,49 @@
 package imagemodel;
 
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
 
 public class ExtendedImageOperations extends ImageOperations implements ExtendedOperations {
 
+  private final Map<String, Function<ImageInterface, ImageInterface>> operations;
+
+  public ExtendedImageOperations() {
+    operations = initializeOperations();
+  }
+
+  private Map<String, Function<ImageInterface, ImageInterface>> initializeOperations() {
+    Map<String, Function<ImageInterface, ImageInterface>> map = new HashMap<>();
+    map.put("blur", this::applyBlur);
+    map.put("sharpen", this::applySharpen);
+    map.put("sepia", this::applySepia);
+    map.put("red-component", this::visualizeRedComponent);
+    map.put("blue-component", this::visualizeBlueComponent);
+    map.put("green-component", this::visualizeGreenComponent);
+    map.put("value-component", this::visualizeValue);
+    map.put("luma-component", this::visualizeLuma);
+    map.put("intensity-component", this::visualizeIntensity);
+    map.put("color-correct", this::colorCorrect);
+    return map;
+  }
+
   @Override
   public ImageInterface compressImage(ImageInterface image, double threshold) {
+    if (threshold < 0 || threshold > 100) {
+      throw new IllegalArgumentException("Threshold must be between 0 and 100.");
+    }
+    if (image == null) {
+      throw new NullPointerException("Image cannot be null.");
+    }
     //Code
     return null;
   }
 
   @Override
   public ImageInterface createHistogram(ImageInterface image) {
+    if (image == null) {
+      throw new NullPointerException("Image cannot be null.");
+    }
     int width = 256;
     int height = 256;
     int[][] histogramData = calculateHistogramData(image);
@@ -117,6 +149,9 @@ public class ExtendedImageOperations extends ImageOperations implements Extended
 
   @Override
   public ImageInterface colorCorrect(ImageInterface image) {
+    if (image == null) {
+      throw new NullPointerException("Image cannot be null.");
+    }
     int[] redHist = calculateHistogramData(image)[0];
     int[] greenHist = calculateHistogramData(image)[1];
     int[] blueHist = calculateHistogramData(image)[2];
@@ -139,7 +174,8 @@ public class ExtendedImageOperations extends ImageOperations implements Extended
     return peakIndex;
   }
 
-  private ImageInterface adjustPeaks(ImageInterface image, int redPeak, int greenPeak, int bluePeak, int avgPeak) {
+  private ImageInterface adjustPeaks(ImageInterface image, int redPeak, int greenPeak,
+                                     int bluePeak, int avgPeak) {
     int width = image.getWidth();
     int height = image.getHeight();
     ImageCopyInterface copy = new ImageCopy(width, height);
@@ -155,8 +191,24 @@ public class ExtendedImageOperations extends ImageOperations implements Extended
     return copy.deepCopyImage();
   }
 
+  private ImageInterface parseLevelsAdjust(String[] tokens, ImageInterface partToProcess) {
+    if (tokens.length < 4) {
+      throw new IllegalArgumentException("Levels adjust requires black, mid, and white values.");
+    }
+    int black = Integer.parseInt(tokens[1]);
+    int mid = Integer.parseInt(tokens[2]);
+    int white = Integer.parseInt(tokens[3]);
+    return levelsAdjust(partToProcess, black, mid, white);
+  }
+
   @Override
   public ImageInterface levelsAdjust(ImageInterface image, int black, int mid, int white) {
+    if (black < 0 || black >= mid || mid >= white || white > 255) {
+      throw new IllegalArgumentException("Black, mid, and white values must be in ascending order within [0, 255].");
+    }
+    if (image == null) {
+      throw new NullPointerException("Image cannot be null.");
+    }
     int width = image.getWidth();
     int height = image.getHeight();
     ImageCopyInterface copy = new ImageCopy(width, height);
@@ -187,70 +239,55 @@ public class ExtendedImageOperations extends ImageOperations implements Extended
 
   @Override
   public ImageInterface splitViewOperation(String[] tokens, ImageInterface image) {
+    if (image == null) {
+      throw new NullPointerException("Image cannot be null.");
+    }
     int width = image.getWidth();
     int height = image.getHeight();
-    int splitPosition = width * Integer.parseInt(tokens[tokens.length - 1]) / 100;
-    ImageCopyInterface copy = new ImageCopy(width, height);
+    int splitPosition = getSplitPosition(tokens, width);
     ImageInterface partToProcess = cropImage(image, splitPosition, height);
-    ImageInterface processedPart;
-    switch (tokens[0]) {
-      case "blur":
-        processedPart = applyBlur(partToProcess);
-        break;
-      case "sharpen":
-        processedPart = applySharpen(partToProcess);
-        break;
-      case "sepia":
-        processedPart = applySepia(partToProcess);
-        break;
-      case "red-component":
-        processedPart = visualizeRedComponent(partToProcess);
-        break;
-      case "blue-component":
-        processedPart = visualizeBlueComponent(partToProcess);
-        break;
-      case "green-component":
-        processedPart = visualizeGreenComponent(partToProcess);
-        break;
-      case "value-component":
-        processedPart = visualizeValue(partToProcess);
-        break;
-      case "luma-component":
-        processedPart = visualizeLuma(partToProcess);
-        break;
-      case "intensity-component":
-        processedPart = visualizeIntensity(partToProcess);
-        break;
-      case "color_correct":
-        processedPart = colorCorrect(partToProcess);
-        break;
-      case "levels_adjust":
-        processedPart = levelsAdjust(partToProcess, Integer.parseInt(tokens[1]),
-                Integer.parseInt(tokens[2]), Integer.parseInt(tokens[3]));
-        break;
-      default:
-        throw new IllegalArgumentException("Unsupported operation: " + Arrays.toString(tokens));
+    String operationType = tokens[0];
+    if (!operations.containsKey(operationType)) {
+      throw new IllegalArgumentException("Unsupported operation: " + operationType);
     }
+    ImageInterface processedPart;
+    if (operationType.equals("levels-adjust")) {
+      processedPart = parseLevelsAdjust(tokens, partToProcess);
+    } else {
+      processedPart = operations.get(operationType).apply(partToProcess);
+    }
+    return mergeImages(processedPart, image, splitPosition, width, height);
+  }
 
+  private int getSplitPosition(String[] tokens, int width) {
+    int percentage = Integer.parseInt(tokens[tokens.length - 1]);
+    if (percentage > 100 || percentage < 0) {
+      throw new IllegalArgumentException("Percentage must be between 0 and 100.");
+    }
+    return width * percentage / 100;
+  }
+
+  private ImageInterface mergeImages(ImageInterface processedPart, ImageInterface originalImage,
+                                     int splitPosition, int width, int height) {
+    ImageCopyInterface finalImage = new ImageCopy(width, height);
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < splitPosition; x++) {
-        copy.setPixel(x, y, processedPart.getPixel(x, y));
+        finalImage.setPixel(x, y, processedPart.getPixel(x, y));
       }
       for (int x = splitPosition; x < width; x++) {
-        copy.setPixel(x, y, image.getPixel(x, y));
+        finalImage.setPixel(x, y, originalImage.getPixel(x, y));
       }
     }
-    return copy.deepCopyImage();
+    return finalImage.deepCopyImage();
   }
 
   private ImageInterface cropImage(ImageInterface source, int cropWidth, int cropHeight) {
-    ImageCopyInterface copy = new ImageCopy(cropWidth, cropHeight);
+    ImageCopyInterface croppedImage = new ImageCopy(cropWidth, cropHeight);
     for (int y = 0; y < cropHeight; y++) {
       for (int x = 0; x < cropWidth; x++) {
-        PixelInterface pixel = source.getPixel(x, y);
-        copy.setPixel(x, y, pixel);
+        croppedImage.setPixel(x, y, source.getPixel(x, y));
       }
     }
-    return copy.deepCopyImage();
+    return croppedImage.deepCopyImage();
   }
 }
