@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -151,11 +152,15 @@ public class TextImageController implements Controller {
     String destImage = tokens[2];
     ImageInterface image = images.get(sourceImage);
     if (image != null) {
-      ImageInterface histogram = imageOperations.createHistogram(image);
-      images.put(destImage, histogram);
-      System.out.println("Histogram created and saved as image at: " + destImage);
+      if (tokens.length == 3) {
+        ImageInterface histogram = imageOperations.createHistogram(image);
+        images.put(destImage, histogram);
+        System.out.println("Histogram created and saved as image at: " + destImage);
+      } else {
+        throw new IllegalArgumentException(" Invalid Histogram Command");
+      }
     } else {
-      System.out.println("Source image not found.");
+      throw new NullPointerException("Image not found: " + sourceImage);
     }
   }
 
@@ -163,7 +168,7 @@ public class TextImageController implements Controller {
     ImageInterface redImage;
     if (tokens.length == 3) {
       redImage = imageOperations.visualizeRedComponent(images.get(tokens[1]));
-    } else if (tokens.length == 5) {
+    } else if (tokens.length == 5 && tokens[tokens.length - 2].equals("split")) {
       redImage = imageOperations.splitViewOperation(tokens, images.get(tokens[1]));
     } else {
       throw new IllegalArgumentException("Invalid red-component command");
@@ -176,7 +181,7 @@ public class TextImageController implements Controller {
     ImageInterface greenImage;
     if (tokens.length == 3) {
       greenImage = imageOperations.visualizeGreenComponent(images.get(tokens[1]));
-    } else if (tokens.length == 5) {
+    } else if (tokens.length == 5 && tokens[tokens.length - 2].equals("split")) {
       greenImage = imageOperations.splitViewOperation(tokens, images.get(tokens[1]));
     } else {
       throw new IllegalArgumentException("Invalid green-component command");
@@ -189,7 +194,7 @@ public class TextImageController implements Controller {
     ImageInterface blueImage;
     if (tokens.length == 3) {
       blueImage = imageOperations.visualizeBlueComponent(images.get(tokens[1]));
-    } else if (tokens.length == 5) {
+    } else if (tokens.length == 5 && tokens[tokens.length - 2].equals("split")) {
       blueImage = imageOperations.splitViewOperation(tokens, images.get(tokens[1]));
     } else {
       throw new IllegalArgumentException("Invalid blue-component command");
@@ -202,7 +207,7 @@ public class TextImageController implements Controller {
     ImageInterface valueImage;
     if (tokens.length == 3) {
       valueImage = imageOperations.visualizeValue(images.get(tokens[1]));
-    } else if (tokens.length == 5) {
+    } else if (tokens.length == 5 && tokens[tokens.length - 2].equals("split")) {
       valueImage = imageOperations.splitViewOperation(tokens, images.get(tokens[1]));
     } else {
       throw new IllegalArgumentException("Invalid value-component command");
@@ -215,7 +220,7 @@ public class TextImageController implements Controller {
     ImageInterface lumaImage;
     if (tokens.length == 3) {
       lumaImage = imageOperations.visualizeLuma(images.get(tokens[1]));
-    } else if (tokens.length == 5) {
+    } else if (tokens.length == 5 && tokens[tokens.length - 2].equals("split")) {
       lumaImage = imageOperations.splitViewOperation(tokens, images.get(tokens[1]));
     } else {
       throw new IllegalArgumentException("Invalid luma-component command");
@@ -228,7 +233,7 @@ public class TextImageController implements Controller {
     ImageInterface intensityImage;
     if (tokens.length == 3) {
       intensityImage = imageOperations.visualizeIntensity(images.get(tokens[1]));
-    } else if (tokens.length == 5) {
+    } else if (tokens.length == 5 && tokens[tokens.length - 2].equals("split")) {
       intensityImage = imageOperations.splitViewOperation(tokens, images.get(tokens[1]));
     } else {
       throw new IllegalArgumentException("Invalid intensity-component command");
@@ -244,7 +249,7 @@ public class TextImageController implements Controller {
       int m = Integer.parseInt(tokens[2]);
       int w = Integer.parseInt(tokens[3]);
       adjustedImage = imageOperations.levelsAdjust(images.get(tokens[4]), b, m, w);
-    } else if (tokens.length == 8) {
+    } else if (tokens.length == 8 && tokens[tokens.length - 2].equals("split")) {
       adjustedImage = imageOperations.splitViewOperation(tokens, images.get(tokens[1]));
     } else {
       throw new IllegalArgumentException("Invalid level command");
@@ -257,7 +262,7 @@ public class TextImageController implements Controller {
     ImageInterface corrected;
     if (tokens.length == 3) {
       corrected = imageOperations.colorCorrect(images.get(tokens[1]));
-    } else if (tokens.length == 5) {
+    } else if (tokens.length == 5 && tokens[tokens.length - 2].equals("split")) {
       corrected = imageOperations.splitViewOperation(tokens, images.get(tokens[1]));
     } else {
       throw new IllegalArgumentException("Invalid color correct command");
@@ -298,7 +303,7 @@ public class TextImageController implements Controller {
     ImageInterface blurImage;
     if (tokens.length == 3) {
       blurImage = imageOperations.applyBlur(images.get(tokens[1]));
-    } else if (tokens.length == 5) {
+    } else if (tokens.length == 5 && tokens[tokens.length - 2].equals("split")) {
       blurImage = imageOperations.splitViewOperation(tokens, images.get(tokens[1]));
     } else {
       throw new IllegalArgumentException("Invalid blur command");
@@ -311,7 +316,7 @@ public class TextImageController implements Controller {
     ImageInterface sharpenImage;
     if (tokens.length == 3) {
       sharpenImage = imageOperations.applySharpen(images.get(tokens[1]));
-    } else if (tokens.length == 5) {
+    } else if (tokens.length == 5 && tokens[tokens.length - 2].equals("split")) {
       sharpenImage = imageOperations.splitViewOperation(tokens, images.get(tokens[1]));
     } else {
       throw new IllegalArgumentException("Invalid sharpen command");
@@ -324,7 +329,7 @@ public class TextImageController implements Controller {
     ImageInterface sepiaImage;
     if (tokens.length == 3) {
       sepiaImage = imageOperations.applySepia(images.get(tokens[1]));
-    } else if (tokens.length == 5) {
+    } else if (tokens.length == 5 && tokens[tokens.length - 2].equals("split")) {
       sepiaImage = imageOperations.splitViewOperation(tokens, images.get(tokens[1]));
     } else {
       throw new IllegalArgumentException("Invalid sepia command");
@@ -347,7 +352,7 @@ public class TextImageController implements Controller {
       images.put(destImage, compressedImage);
       System.out.println("Image compressed and saved as: " + destImage);
     } else {
-      System.out.println("Source image not found.");
+      throw new NullPointerException("Source image not found.");
     }
   }
 
@@ -369,7 +374,7 @@ public class TextImageController implements Controller {
     System.out.println("Image Loaded at: " + tokens[2]);
   }
 
-  private void handleSaveCommand(String[] tokens) {
+  private void handleSaveCommand(String[] tokens) throws IOException {
     String extension = getFileExtension(tokens[1]);
     ImageFormatHandler saver = new ImageHandler();
     ImageInterface image = images.get(tokens[2]);
@@ -381,8 +386,7 @@ public class TextImageController implements Controller {
         saver.saveImage(image, tokens[1], extension);
       }
     } catch (IOException e) {
-      System.out.println("Error saving image: " + e.getMessage());
-      return;
+      throw new IOException("Error saving image: " + e.getMessage());
     }
     System.out.println("Image saved at: " + tokens[1]);
   }

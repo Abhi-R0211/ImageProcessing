@@ -580,9 +580,8 @@ public class PNGTest extends AbstractTest {
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface one = ih.loadImage("src/res/PNG/manhattan-small.png");
     ExtendedImageOperations io = new ExtendedImageOperations();
-    String operation = "sharpen test demo split 25";
-    ImageInterface two = io.splitViewOperation(operation.split(" "), one);
-    ih.saveImage(two, "src/res/PNG/split.png", "png");
+    ImageInterface two = io.compressImage(one, 90);
+    ih.saveImage(two, "src/res/PNG/compress.png", "png");
   }
 
   @Test
