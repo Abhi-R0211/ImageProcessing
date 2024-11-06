@@ -1,6 +1,6 @@
 package imagecontroller;
 
-import imagemodel.Image;
+import imagemodel.ImageInterface;
 
 /**
  * This is an interface for the TextImageController class which is the mediator between the view
@@ -23,5 +23,5 @@ public interface Controller {
    * @param str input which is the reference key of an image.
    * @return image based on the key.
    */
-  Image getImageFromMap(String str);
+  ImageInterface getImageFromMap(String str);
 }

@@ -1,7 +1,8 @@
 import java.util.Scanner;
 
+import imagecontroller.Controller;
 import imagecontroller.TextImageController;
-import imagemodel.ImageOperations;
+import imagemodel.ExtendedImageOperations;
 
 /**
  * This driver code in the ImageView Package will communicate with the user. The Main Class will
@@ -15,8 +16,8 @@ public class Main {
    * @param args takes input of the function that the user wants to perform as a string.
    */
   public static void main(String[] args) {
-    ImageOperations operations = new ImageOperations();
-    TextImageController controller = new TextImageController(operations);
+    ExtendedImageOperations operations = new ExtendedImageOperations();
+    Controller controller = new TextImageController(operations);
 
     Scanner scanner = new Scanner(System.in);
     System.out.println("Welcome to the Image Processing Application!\n");

@@ -33,10 +33,19 @@ public class Image implements ImageInterface {
     for (int i = 0; i < height; i++) {
       List<Pixel> row = new ArrayList<>();
       for (int j = 0; j < width; j++) {
-        row.add(new Pixel(0, 0, 0));
+        row.add(new Pixel(255, 255, 255));
       }
       pixels.add(row);
     }
+  }
+
+  public Image(int width, int height, List<List<Pixel>> pixels) throws IllegalArgumentException {
+    if (width <= 0 || height <= 0) {
+      throw new IllegalArgumentException("Invalid image dimensions");
+    }
+    this.width = width;
+    this.height = height;
+    this.pixels = pixels;
   }
 
   /**
@@ -46,19 +55,8 @@ public class Image implements ImageInterface {
    * @param y column index of the image.
    * @return pixel value
    */
-  public Pixel getPixel(int x, int y) {
+  public PixelInterface getPixel(int x, int y) {
     return pixels.get(y).get(x);
-  }
-
-  /**
-   * The setPixel method sets the pixel values at a specific position in the image.
-   *
-   * @param x     row index where the pixel is to be set.
-   * @param y     column index where the pixel is to be set.
-   * @param pixel values that are to be set in that position.
-   */
-  public void setPixel(int x, int y, Pixel pixel) {
-    pixels.get(y).set(x, pixel);
   }
 
   /**
@@ -90,17 +88,17 @@ public class Image implements ImageInterface {
     if (this == o) {
       return true;
     }
-    if (!(o instanceof Image)) {
+    if (!(o instanceof ImageInterface)) {
       return false;
     }
-    Image actual = (Image) o;
+    ImageInterface actual = (Image) o;
     if (this.getWidth() != actual.getWidth() || this.getHeight() != actual.getHeight()) {
       return false;
     }
     for (int y = 0; y < this.getHeight(); y++) {
       for (int x = 0; x < this.getWidth(); x++) {
-        Pixel expectedPixel = this.getPixel(x, y);
-        Pixel actualPixel = actual.getPixel(x, y);
+        PixelInterface expectedPixel = this.getPixel(x, y);
+        PixelInterface actualPixel = actual.getPixel(x, y);
         if (expectedPixel.getRed() != actualPixel.getRed()
                 || expectedPixel.getGreen() != actualPixel.getGreen()
                 || expectedPixel.getBlue() != actualPixel.getBlue()) {
@@ -120,7 +118,7 @@ public class Image implements ImageInterface {
   public int hashCode() {
     int result = Objects.hash(width, height);
     for (List<Pixel> row : pixels) {
-      for (Pixel pixel : row) {
+      for (PixelInterface pixel : row) {
         result += Objects.hash(pixel.getRed(), pixel.getGreen(), pixel.getBlue());
       }
     }

@@ -1,5 +1,7 @@
 package imagemodel;
 
+import java.util.function.Function;
+
 /**
  * The ImageOperations class contains the implementation of all the operations that can be
  * performed on the image such as horizontal/vertical flipping, brighten/darken, component
@@ -8,46 +10,28 @@ package imagemodel;
 public class ImageOperations implements Operations {
 
   /**
-   * This is an internal function that copies an image content on to another.
-   *
-   * @param original image to be copied.
-   * @return copied image.
-   */
-  private Image deepCopyImage(Image original) {
-    int width = original.getWidth();
-    int height = original.getHeight();
-    Image copy = new Image(width, height);
-
-    for (int y = 0; y < height; y++) {
-      for (int x = 0; x < width; x++) {
-        Pixel pixel = original.getPixel(x, y);
-        copy.setPixel(x, y, new Pixel(pixel.getRed(), pixel.getGreen(), pixel.getBlue()));
-      }
-    }
-    return copy;
-  }
-
-  /**
    * The applyHorizontalFlip method will flip the image horizontally.
    *
    * @param image that needs to be flipped.
    * @return object of type Image, after flipping it horizontally.
    */
   @Override
-  public Image applyHorizontalFlip(Image image) {
+  public ImageInterface applyHorizontalFlip(ImageInterface image) {
+    if (image == null) {
+      throw new NullPointerException("image is null");
+    }
     int width = image.getWidth();
     int height = image.getHeight();
-    Image horizontal = deepCopyImage(image);
-
+    ImageCopyInterface copy = new ImageCopy(width, height);
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width / 2; x++) {
-        Pixel left = image.getPixel(x, y);
-        Pixel right = image.getPixel(width - 1 - x, y);
-        horizontal.setPixel(x, y, right);
-        horizontal.setPixel(width - 1 - x, y, left);
+        PixelInterface left = image.getPixel(x, y);
+        PixelInterface right = image.getPixel(width - 1 - x, y);
+        copy.setPixel(x, y, right);
+        copy.setPixel(width - 1 - x, y, left);
       }
     }
-    return horizontal;
+    return copy.deepCopyImage();
   }
 
   /**
@@ -57,20 +41,22 @@ public class ImageOperations implements Operations {
    * @return object of type Image, after flipping it vertically.
    */
   @Override
-  public Image applyVerticalFlip(Image image) {
+  public ImageInterface applyVerticalFlip(ImageInterface image) {
+    if (image == null) {
+      throw new NullPointerException("image is null");
+    }
     int width = image.getWidth();
     int height = image.getHeight();
-    Image vertical = deepCopyImage(image);
-
+    ImageCopyInterface copy = new ImageCopy(width, height);
     for (int y = 0; y < height / 2; y++) {
       for (int x = 0; x < width; x++) {
-        Pixel top = image.getPixel(x, y);
-        Pixel bottom = image.getPixel(x, height - 1 - y);
-        vertical.setPixel(x, y, bottom);
-        vertical.setPixel(x, height - 1 - y, top);
+        PixelInterface top = image.getPixel(x, y);
+        PixelInterface bottom = image.getPixel(x, height - 1 - y);
+        copy.setPixel(x, y, bottom);
+        copy.setPixel(x, height - 1 - y, top);
       }
     }
-    return vertical;
+    return copy.deepCopyImage();
   }
 
   /**
@@ -82,21 +68,23 @@ public class ImageOperations implements Operations {
    * @return object of type Image after brightening/darkening.
    */
   @Override
-  public Image applyBrightness(Image image, int increment) {
+  public ImageInterface applyBrightness(ImageInterface image, int increment) {
+    if (image == null) {
+      throw new NullPointerException("image is null");
+    }
     int width = image.getWidth();
     int height = image.getHeight();
-    Image brightened = deepCopyImage(image);
-
+    ImageCopyInterface copy = new ImageCopy(width, height);
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
-        Pixel pixel = image.getPixel(x, y);
+        PixelInterface pixel = image.getPixel(x, y);
         int red = clamp(pixel.getRed() + increment);
         int green = clamp(pixel.getGreen() + increment);
         int blue = clamp(pixel.getBlue() + increment);
-        brightened.setPixel(x, y, new Pixel(red, green, blue));
+        copy.setPixel(x, y, new Pixel(red, green, blue));
       }
     }
-    return brightened;
+    return copy.deepCopyImage();
   }
 
   /**
@@ -106,7 +94,7 @@ public class ImageOperations implements Operations {
    * @param value takes input of the pixel value.
    * @return the clamped value.
    */
-  private int clamp(int value) {
+  protected int clamp(int value) {
     return Math.min(Math.max(value, 0), 255);
   }
 
@@ -117,24 +105,26 @@ public class ImageOperations implements Operations {
    * @return an object of type Image after applying a sepia tone.
    */
   @Override
-  public Image applySepia(Image image) {
+  public ImageInterface applySepia(ImageInterface image) {
+    if (image == null) {
+      throw new NullPointerException("image is null");
+    }
     int width = image.getWidth();
     int height = image.getHeight();
-    Image sepia = deepCopyImage(image);
-
+    ImageCopyInterface copy = new ImageCopy(width, height);
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
-        Pixel pixel = image.getPixel(x, y);
+        PixelInterface pixel = image.getPixel(x, y);
         int red = clamp((int) (0.393 * pixel.getRed() + 0.769 * pixel.getGreen()
                 + 0.189 * pixel.getBlue()));
         int green = clamp((int) (0.349 * pixel.getRed() + 0.686 * pixel.getGreen()
                 + 0.168 * pixel.getBlue()));
         int blue = clamp((int) (0.272 * pixel.getRed() + 0.534 * pixel.getGreen()
                 + 0.131 * pixel.getBlue()));
-        sepia.setPixel(x, y, new Pixel(red, green, blue));
+        copy.setPixel(x, y, new Pixel(red, green, blue));
       }
     }
-    return sepia;
+    return copy.deepCopyImage();
   }
 
   /**
@@ -144,14 +134,16 @@ public class ImageOperations implements Operations {
    * @return an object of type Image after blurring.
    */
   @Override
-  public Image applyBlur(Image image) {
+  public ImageInterface applyBlur(ImageInterface image) {
+    if (image == null) {
+      throw new NullPointerException("image is null");
+    }
     double[][] blurKernel = {
             {1.0 / 16, 1.0 / 8, 1.0 / 16},
             {1.0 / 8, 1.0 / 4, 1.0 / 8},
             {1.0 / 16, 1.0 / 8, 1.0 / 16}
     };
-    Image blur = deepCopyImage(image);
-    return applyKernel(blur, blurKernel);
+    return applyKernel(image, blurKernel);
   }
 
   /**
@@ -161,7 +153,10 @@ public class ImageOperations implements Operations {
    * @return an object of type Image after applying the operation.
    */
   @Override
-  public Image applySharpen(Image image) {
+  public ImageInterface applySharpen(ImageInterface image) {
+    if (image == null) {
+      throw new NullPointerException("image is null");
+    }
     double[][] sharpenKernel = {
             {-1.0 / 8, -1.0 / 8, -1.0 / 8, -1.0 / 8, -1.0 / 8},
             {-1.0 / 8, 1.0 / 4, 1.0 / 4, 1.0 / 4, -1.0 / 8},
@@ -169,8 +164,7 @@ public class ImageOperations implements Operations {
             {-1.0 / 8, 1.0 / 4, 1.0 / 4, 1.0 / 4, -1.0 / 8},
             {-1.0 / 8, -1.0 / 8, -1.0 / 8, -1.0 / 8, -1.0 / 8}
     };
-    Image sharpen = deepCopyImage(image);
-    return applyKernel(sharpen, sharpenKernel);
+    return applyKernel(image, sharpenKernel);
   }
 
   /**
@@ -180,18 +174,11 @@ public class ImageOperations implements Operations {
    * @return an object of type Image after extracting the red component.
    */
   @Override
-  public Image visualizeRedComponent(Image image) {
-    int width = image.getWidth();
-    int height = image.getHeight();
-    Image redImage = deepCopyImage(image);
-
-    for (int y = 0; y < height; y++) {
-      for (int x = 0; x < width; x++) {
-        Pixel pixel = image.getPixel(x, y);
-        redImage.setPixel(x, y, new Pixel(pixel.getRed(), pixel.getRed(), pixel.getRed()));
-      }
+  public ImageInterface visualizeRedComponent(ImageInterface image) {
+    if (image == null) {
+      throw new NullPointerException("image is null");
     }
-    return redImage;
+    return componentHelper(image, PixelInterface::getRed);
   }
 
   /**
@@ -201,18 +188,11 @@ public class ImageOperations implements Operations {
    * @return an object of type Image after extracting the green component.
    */
   @Override
-  public Image visualizeGreenComponent(Image image) {
-    int width = image.getWidth();
-    int height = image.getHeight();
-    Image greenImage = deepCopyImage(image);
-
-    for (int y = 0; y < height; y++) {
-      for (int x = 0; x < width; x++) {
-        Pixel pixel = image.getPixel(x, y);
-        greenImage.setPixel(x, y, new Pixel(pixel.getGreen(), pixel.getGreen(), pixel.getGreen()));
-      }
+  public ImageInterface visualizeGreenComponent(ImageInterface image) {
+    if (image == null) {
+      throw new NullPointerException("image is null");
     }
-    return greenImage;
+    return componentHelper(image, PixelInterface::getGreen);
   }
 
   /**
@@ -222,18 +202,11 @@ public class ImageOperations implements Operations {
    * @return an object of type Image after extracting the blue component.
    */
   @Override
-  public Image visualizeBlueComponent(Image image) {
-    int width = image.getWidth();
-    int height = image.getHeight();
-    Image blueImage = deepCopyImage(image);
-
-    for (int y = 0; y < height; y++) {
-      for (int x = 0; x < width; x++) {
-        Pixel pixel = image.getPixel(x, y);
-        blueImage.setPixel(x, y, new Pixel(pixel.getBlue(), pixel.getBlue(), pixel.getBlue()));
-      }
+  public ImageInterface visualizeBlueComponent(ImageInterface image) {
+    if (image == null) {
+      throw new NullPointerException("image is null");
     }
-    return blueImage;
+    return componentHelper(image, PixelInterface::getBlue);
   }
 
   /**
@@ -243,19 +216,12 @@ public class ImageOperations implements Operations {
    * @return this will return an object of type Image after applying the operation.
    */
   @Override
-  public Image visualizeValue(Image image) {
-    int width = image.getWidth();
-    int height = image.getHeight();
-    Image valueImage = deepCopyImage(image);
-
-    for (int y = 0; y < height; y++) {
-      for (int x = 0; x < width; x++) {
-        Pixel pixel = image.getPixel(x, y);
-        int value = Math.max(pixel.getRed(), Math.max(pixel.getGreen(), pixel.getBlue()));
-        valueImage.setPixel(x, y, new Pixel(value, value, value));
-      }
+  public ImageInterface visualizeValue(ImageInterface image) {
+    if (image == null) {
+      throw new NullPointerException("image is null");
     }
-    return valueImage;
+    return componentHelper(image, pixel -> Math.max(pixel.getRed(),
+            Math.max(pixel.getGreen(), pixel.getBlue())));
   }
 
   /**
@@ -265,19 +231,12 @@ public class ImageOperations implements Operations {
    * @return an object of type Image after applying the operation.
    */
   @Override
-  public Image visualizeIntensity(Image image) {
-    int width = image.getWidth();
-    int height = image.getHeight();
-    Image intensityImage = deepCopyImage(image);
-
-    for (int y = 0; y < height; y++) {
-      for (int x = 0; x < width; x++) {
-        Pixel pixel = image.getPixel(x, y);
-        int intensity = (pixel.getRed() + pixel.getGreen() + pixel.getBlue()) / 3;
-        intensityImage.setPixel(x, y, new Pixel(intensity, intensity, intensity));
-      }
+  public ImageInterface visualizeIntensity(ImageInterface image) {
+    if (image == null) {
+      throw new NullPointerException("image is null");
     }
-    return intensityImage;
+    return componentHelper(image, pixel ->
+            (pixel.getRed() + pixel.getGreen() + pixel.getBlue()) / 3);
   }
 
   /**
@@ -287,20 +246,30 @@ public class ImageOperations implements Operations {
    * @return an object of type Image after applying the operation.
    */
   @Override
-  public Image visualizeLuma(Image image) {
+  public ImageInterface visualizeLuma(ImageInterface image) {
+    if (image == null) {
+      throw new NullPointerException("image is null");
+    }
+    return componentHelper(image, pixel -> (int) (0.2126 * pixel.getRed()
+            + 0.7152 * pixel.getGreen() + 0.0722 * pixel.getBlue()));
+  }
+
+  private ImageInterface componentHelper(ImageInterface image, Function<PixelInterface,
+          Integer> componentExtractor) {
+    if (image == null) {
+      throw new NullPointerException("image is null");
+    }
     int width = image.getWidth();
     int height = image.getHeight();
-    Image lumaImage = deepCopyImage(image);
-
+    ImageCopyInterface copy = new ImageCopy(width, height);
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
-        Pixel pixel = image.getPixel(x, y);
-        int luma = (int) (0.2126 * pixel.getRed() + 0.7152 * pixel.getGreen()
-                + 0.0722 * pixel.getBlue());
-        lumaImage.setPixel(x, y, new Pixel(luma, luma, luma));
+        PixelInterface pixel = image.getPixel(x, y);
+        int value = componentExtractor.apply(pixel);
+        copy.setPixel(x, y, new Pixel(value, value, value));
       }
     }
-    return lumaImage;
+    return copy.deepCopyImage();
   }
 
   /**
@@ -309,36 +278,41 @@ public class ImageOperations implements Operations {
    * @param image  on which the kernel needs to be applied.
    * @param kernel The kernel on that particular function.
    */
-  private Image applyKernel(Image image, double[][] kernel) {
+  private ImageInterface applyKernel(ImageInterface image, double[][] kernel) {
+    if (image == null) {
+      throw new NullPointerException("image is null");
+    }
     int kernelHeight = kernel.length;
     int kernelWidth = kernel[0].length;
     int kernelRadiusX = kernelWidth / 2;
     int kernelRadiusY = kernelHeight / 2;
     int width = image.getWidth();
     int height = image.getHeight();
-    Image result = deepCopyImage(image);
-
-    for (int y = kernelRadiusY; y < height - kernelRadiusY; y++) {
-      for (int x = kernelRadiusX; x < width - kernelRadiusX; x++) {
+    ImageCopyInterface copy = new ImageCopy(width, height);
+    for (int y = 0; y < height; y++) {
+      for (int x = 0; x < width; x++) {
         double redSum = 0;
         double greenSum = 0;
         double blueSum = 0;
-
         for (int ky = -kernelRadiusY; ky <= kernelRadiusY; ky++) {
           for (int kx = -kernelRadiusX; kx <= kernelRadiusX; kx++) {
-            Pixel pixel = image.getPixel(x + kx, y + ky);
+            int pixelX = Math.min(Math.max(x + kx, 0), width - 1);
+            int pixelY = Math.min(Math.max(y + ky, 0), height - 1);
+            PixelInterface pixel = image.getPixel(pixelX, pixelY);
             double kernelValue = kernel[ky + kernelRadiusY][kx + kernelRadiusX];
             redSum += pixel.getRed() * kernelValue;
             greenSum += pixel.getGreen() * kernelValue;
             blueSum += pixel.getBlue() * kernelValue;
           }
         }
-        Pixel pixel1 = new Pixel(clamp((int) redSum), clamp((int) greenSum), clamp((int) blueSum));
-        result.setPixel(x, y, pixel1);
+        PixelInterface pixel1 = new Pixel(clamp((int) redSum), clamp((int) greenSum),
+                clamp((int) blueSum));
+        copy.setPixel(x, y, pixel1);
       }
     }
-    return result;
+    return copy.deepCopyImage();
   }
+
 
   /**
    * The combineRGB method will combine the Red, Green, and Blue channels, and convert it into
@@ -350,19 +324,22 @@ public class ImageOperations implements Operations {
    * @return an image after combining all the three RGB Channels.
    */
   @Override
-  public Image combineRGB(Image redImage, Image greenImage, Image blueImage) {
+  public ImageInterface combineRGB(ImageInterface redImage, ImageInterface greenImage,
+                                   ImageInterface blueImage) {
+    if (redImage == null || greenImage == null || blueImage == null) {
+      throw new NullPointerException("image is null");
+    }
     int width = redImage.getWidth();
     int height = redImage.getHeight();
-    Image combinedImage = new Image(width, height);
-
+    ImageCopyInterface copy = new ImageCopy(width, height);
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
         int red = redImage.getPixel(x, y).getRed();
         int green = greenImage.getPixel(x, y).getGreen();
         int blue = blueImage.getPixel(x, y).getBlue();
-        combinedImage.setPixel(x, y, new Pixel(red, green, blue));
+        copy.setPixel(x, y, new Pixel(red, green, blue));
       }
     }
-    return combinedImage;
+    return copy.deepCopyImage();
   }
 }

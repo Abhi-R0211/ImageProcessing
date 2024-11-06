@@ -4,8 +4,9 @@ import org.junit.Test;
 
 import java.io.File;
 
+import imagecontroller.Controller;
 import imagecontroller.TextImageController;
-import imagemodel.ImageOperations;
+import imagemodel.ExtendedImageOperations;
 
 import static org.junit.Assert.assertFalse;
 
@@ -15,7 +16,7 @@ import static org.junit.Assert.assertFalse;
 public abstract class AbstractTest {
 
   protected void execute(String command) {
-    TextImageController obj = new TextImageController(new ImageOperations());
+    Controller obj = new TextImageController(new ExtendedImageOperations());
     obj.runCommand(command);
   }
 
