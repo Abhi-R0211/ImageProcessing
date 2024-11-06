@@ -1,5 +1,7 @@
 package imagecontroller;
 
+import java.io.IOException;
+
 import imagemodel.ImageInterface;
 
 /**
@@ -15,7 +17,7 @@ public interface Controller {
    *
    * @param command to be run.
    */
-  void runCommand(String command);
+  void runCommand(String command) throws IOException;
 
   /**
    * Returns the image from the map based on the key value received as input.
@@ -24,4 +26,6 @@ public interface Controller {
    * @return image based on the key.
    */
   ImageInterface getImageFromMap(String str);
+
+  void start() throws IOException;
 }

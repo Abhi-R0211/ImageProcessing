@@ -4,9 +4,9 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 import imagemodel.ExtendedOperations;
 import imagemodel.ImageInterface;
@@ -20,6 +20,8 @@ public class TextImageController implements Controller {
 
   private Map<String, ImageInterface> images;
   private ExtendedOperations imageOperations;
+  private final Scanner scanner;
+  private final Appendable output;
 
   /**
    * This is a constructor for the class TextImageOperations which initializes the hashmap which
@@ -27,9 +29,64 @@ public class TextImageController implements Controller {
    *
    * @param imageOperations class object.
    */
-  public TextImageController(ExtendedOperations imageOperations) {
+  public TextImageController(ExtendedOperations imageOperations, Readable input, Appendable output) {
     this.images = new HashMap<>();
     this.imageOperations = imageOperations;
+    this.scanner = new Scanner(input);
+    this.output = output;
+  }
+
+  private String commands() {
+    StringBuilder command = new StringBuilder();
+    command.append("Available commands:\n");
+    command.append("  load <image-path> <image-name>                                    "
+            + "                          - Load an image\n");
+    command.append("  save <image-path> <image-name>                                    "
+            + "                          - Save an image\n");
+    command.append("  red-component <image-name> <dest-image-name>                      "
+            + "                          - Get the Red Component of the Image\n");
+    command.append("  green-component <image-name> <dest-image-name>                    "
+            + "                          - Get the Green Component of the Image\n");
+    command.append("  blue-component <image-name> <dest-image-name>                     "
+            + "                          - Get the Blue Component of the Image\n");
+    command.append("  value-component <image-name> <dest-image-name>                    "
+            + "                          - Get the Value Component of the Image\n");
+    command.append("  luma-component <image-name> <dest-image-name>                     "
+            + "                          - Get the Luma Component of the Image\n");
+    command.append("  intensity-component <image-name> <dest-image-name>                "
+            + "                          - Get the intensity Component of the Image\n");
+    command.append("  horizontal-flip <image-name> <dest-image-name>                    "
+            + "                          - Flip image horizontally\n");
+    command.append("  vertical-flip <image-name> <dest-image-name>                      "
+            + "                          - Flip image vertically\n");
+    command.append("  brighten <increment> <image-name> <dest-image-name>               "
+            + "                          - Brighten the image\n");
+    command.append("  rgb-split <image-name> <dest-image-name-red> <dest-image-name-green> "
+            + "<dest-image-name-blue> - Split RGB channels\n");
+    command.append("  rgb-combine <dest-image-name> <red-image> <green-image> <blue-image>   "
+            + "                     - Combine RGB channels\n");
+    command.append("  blur <image-name> <dest-image-name>                               "
+            + "                          - Blur the image\n");
+    command.append("  sharpen <image-name> <dest-image-name>                            "
+            + "                          - Sharpen the image>\n");
+    command.append("  sepia <image-name> <dest-image-name>                              "
+            + "                          - Produce a sepia tone of the image>\n");
+    command.append("  run <script-file-path>                                            "
+            + "                          - Run commands from a script file\n");
+    return command.toString();
+  }
+
+  public void start() throws IOException {
+    output.append(commands());
+    output.append("Type 'exit' to quit.\n");
+    while (true) {
+      System.out.print(" > ");
+      String input = scanner.nextLine().trim();
+      if (input.equalsIgnoreCase("exit")) {
+        break;
+      }
+      runCommand(input);
+    }
   }
 
   /**
@@ -37,10 +94,9 @@ public class TextImageController implements Controller {
    *
    * @param command to be executed.
    */
-  public void runCommand(String command) {
+  public void runCommand(String command) throws IOException {
     String[] tokens = command.split(" ");
     String cmd = tokens[0].toLowerCase();
-
     try {
       switch (cmd) {
         case "load":
@@ -107,10 +163,10 @@ public class TextImageController implements Controller {
           runScript(tokens[1]);
           break;
         default:
-          System.out.println("Unknown command: " + cmd);
+          output.append("Unknown command: ").append(cmd).append("\n");
       }
     } catch (Exception e) {
-      System.out.println("Error executing command ");
+      output.append("Error executing command \n");
     }
   }
 
@@ -120,7 +176,7 @@ public class TextImageController implements Controller {
    *
    * @param scriptPath which contains the path of the script file to be executed.
    */
-  private void runScript(String scriptPath) {
+  private void runScript(String scriptPath) throws IOException {
     try (BufferedReader reader = new BufferedReader(new FileReader(scriptPath))) {
       String line;
       while ((line = reader.readLine()) != null) {
@@ -130,9 +186,9 @@ public class TextImageController implements Controller {
         }
       }
     } catch (FileNotFoundException e) {
-      System.out.println("Script file not found: " + e.getMessage());
+      output.append("Script file not found: ").append(e.getMessage()).append("\n");
     } catch (IOException e) {
-      System.out.println("Error reading script file: " + e.getMessage());
+      output.append("Error reading script file: ").append(e.getMessage()).append("\n");
     }
   }
 
@@ -147,7 +203,7 @@ public class TextImageController implements Controller {
   }
 
 
-  private void handleHistogramCommand(String[] tokens) {
+  private void handleHistogramCommand(String[] tokens) throws IOException {
     String sourceImage = tokens[1];
     String destImage = tokens[2];
     ImageInterface image = images.get(sourceImage);
@@ -155,94 +211,100 @@ public class TextImageController implements Controller {
       if (tokens.length == 3) {
         ImageInterface histogram = imageOperations.createHistogram(image);
         images.put(destImage, histogram);
-        System.out.println("Histogram created and saved as image at: " + destImage);
+        output.append("Histogram created and saved as image at: ").append(destImage).append("\n");
       } else {
-        throw new IllegalArgumentException(" Invalid Histogram Command");
+        output.append("Invalid Histogram Command\n");
       }
     } else {
-      throw new NullPointerException("Image not found: " + sourceImage);
+      output.append("Image not found: ").append(sourceImage).append("\n");
     }
   }
 
-  private void handleRedComponentCommand(String[] tokens) {
+  private void handleRedComponentCommand(String[] tokens) throws IOException {
     ImageInterface redImage;
     if (tokens.length == 3) {
       redImage = imageOperations.visualizeRedComponent(images.get(tokens[1]));
     } else if (tokens.length == 5 && tokens[tokens.length - 2].equals("split")) {
       redImage = imageOperations.splitViewOperation(tokens, images.get(tokens[1]));
     } else {
-      throw new IllegalArgumentException("Invalid red-component command");
+      output.append("Invalid red-component command\n");
+      return;
     }
     images.put(tokens[2], redImage);
-    System.out.println("Red Component Loaded at: " + tokens[2]);
+    output.append("Red Component Loaded at: ").append(tokens[2]).append("\n");
   }
 
-  private void handleGreenComponentCommand(String[] tokens) {
+  private void handleGreenComponentCommand(String[] tokens) throws IOException {
     ImageInterface greenImage;
     if (tokens.length == 3) {
       greenImage = imageOperations.visualizeGreenComponent(images.get(tokens[1]));
     } else if (tokens.length == 5 && tokens[tokens.length - 2].equals("split")) {
       greenImage = imageOperations.splitViewOperation(tokens, images.get(tokens[1]));
     } else {
-      throw new IllegalArgumentException("Invalid green-component command");
+      output.append("Invalid green-component command\n");
+      return;
     }
     images.put(tokens[2], greenImage);
-    System.out.println("Green Component Loaded at: " + tokens[2]);
+    output.append("Green Component Loaded at: ").append(tokens[2]).append("\n");
   }
 
-  private void handleBlueComponentCommand(String[] tokens) {
+  private void handleBlueComponentCommand(String[] tokens) throws IOException {
     ImageInterface blueImage;
     if (tokens.length == 3) {
       blueImage = imageOperations.visualizeBlueComponent(images.get(tokens[1]));
     } else if (tokens.length == 5 && tokens[tokens.length - 2].equals("split")) {
       blueImage = imageOperations.splitViewOperation(tokens, images.get(tokens[1]));
     } else {
-      throw new IllegalArgumentException("Invalid blue-component command");
+      output.append("Invalid blue-component command\n");
+      return;
     }
     images.put(tokens[2], blueImage);
-    System.out.println("Blue Component Loaded at: " + tokens[2]);
+    output.append("Blue Component Loaded at: ").append(tokens[2]).append("\n");
   }
 
-  private void handleValueComponentCommand(String[] tokens) {
+  private void handleValueComponentCommand(String[] tokens) throws IOException {
     ImageInterface valueImage;
     if (tokens.length == 3) {
       valueImage = imageOperations.visualizeValue(images.get(tokens[1]));
     } else if (tokens.length == 5 && tokens[tokens.length - 2].equals("split")) {
       valueImage = imageOperations.splitViewOperation(tokens, images.get(tokens[1]));
     } else {
-      throw new IllegalArgumentException("Invalid value-component command");
+      output.append("Invalid value-component command\n");
+      return;
     }
     images.put(tokens[2], valueImage);
-    System.out.println("Value Component Loaded at: " + tokens[2]);
+    output.append("Value Component Loaded at: ").append(tokens[2]).append("\n");
   }
 
-  private void handleLumaComponentCommand(String[] tokens) {
+  private void handleLumaComponentCommand(String[] tokens) throws IOException {
     ImageInterface lumaImage;
     if (tokens.length == 3) {
       lumaImage = imageOperations.visualizeLuma(images.get(tokens[1]));
     } else if (tokens.length == 5 && tokens[tokens.length - 2].equals("split")) {
       lumaImage = imageOperations.splitViewOperation(tokens, images.get(tokens[1]));
     } else {
-      throw new IllegalArgumentException("Invalid luma-component command");
+      output.append("Invalid luma-component command\n");
+      return;
     }
     images.put(tokens[2], lumaImage);
-    System.out.println("Luma Component Loaded at: " + tokens[2]);
+    output.append("Luma Component Loaded at: ").append(tokens[2]).append("\n");
   }
 
-  private void handleIntensityComponentCommand(String[] tokens) {
+  private void handleIntensityComponentCommand(String[] tokens) throws IOException {
     ImageInterface intensityImage;
     if (tokens.length == 3) {
       intensityImage = imageOperations.visualizeIntensity(images.get(tokens[1]));
     } else if (tokens.length == 5 && tokens[tokens.length - 2].equals("split")) {
       intensityImage = imageOperations.splitViewOperation(tokens, images.get(tokens[1]));
     } else {
-      throw new IllegalArgumentException("Invalid intensity-component command");
+      output.append("Invalid intensity-component command\n");
+      return;
     }
     images.put(tokens[2], intensityImage);
-    System.out.println("Intensity Component Loaded at: " + tokens[2]);
+    output.append("Intensity Component Loaded at: ").append(tokens[2]).append("\n");
   }
 
-  private void handleLevelsAdjustCommand(String[] tokens) {
+  private void handleLevelsAdjustCommand(String[] tokens) throws IOException {
     ImageInterface adjustedImage;
     if (tokens.length == 6) {
       int b = Integer.parseInt(tokens[1]);
@@ -252,95 +314,112 @@ public class TextImageController implements Controller {
     } else if (tokens.length == 8 && tokens[tokens.length - 2].equals("split")) {
       adjustedImage = imageOperations.splitViewOperation(tokens, images.get(tokens[1]));
     } else {
-      throw new IllegalArgumentException("Invalid level command");
+      output.append("Invalid level command\n");
+      return;
     }
     images.put(tokens[5], adjustedImage);
-    System.out.println("Levels-adjusted image stored at: " + tokens[5]);
+    output.append("Levels-adjusted image stored at: ").append(tokens[5]).append("\n");
   }
 
-  private void handleColorCorrectCommand(String[] tokens) {
+  private void handleColorCorrectCommand(String[] tokens) throws IOException {
     ImageInterface corrected;
     if (tokens.length == 3) {
       corrected = imageOperations.colorCorrect(images.get(tokens[1]));
     } else if (tokens.length == 5 && tokens[tokens.length - 2].equals("split")) {
       corrected = imageOperations.splitViewOperation(tokens, images.get(tokens[1]));
     } else {
-      throw new IllegalArgumentException("Invalid color correct command");
+      output.append("Invalid color correct command\n");
+      return;
     }
     images.put(tokens[2], corrected);
-    System.out.println("Color-corrected image stored at: " + tokens[2]);
+    output.append("Color-corrected image stored at: ").append(tokens[2]).append("\n");
   }
 
-  private void handleRgbCombine(String[] tokens) {
-    ImageInterface combinedImage = imageOperations.combineRGB(
-            images.get(tokens[2]), images.get(tokens[3]), images.get(tokens[4]));
-    images.put(tokens[1], combinedImage);
-    System.out.println("RGB Channels combined and stored at :" + tokens[1]);
+  private void handleRgbCombine(String[] tokens) throws IOException {
+    if (tokens.length == 5) {
+      ImageInterface combinedImage = imageOperations.combineRGB(
+              images.get(tokens[2]), images.get(tokens[3]), images.get(tokens[4]));
+      images.put(tokens[1], combinedImage);
+      output.append("RGB Channels combined and stored at :").append(tokens[1]).append("\n");
+    }
+    output.append("Invalid RGB combine command").append("\n");
   }
 
-  private void handleRgbSplit(String[] tokens) {
-    ImageInterface[] splitImages = {
-            imageOperations.visualizeRedComponent(images.get(tokens[1])),
-            imageOperations.visualizeGreenComponent(images.get(tokens[1])),
-            imageOperations.visualizeBlueComponent(images.get(tokens[1]))
-    };
-    images.put(tokens[2], splitImages[0]);
-    images.put(tokens[3], splitImages[1]);
-    images.put(tokens[4], splitImages[2]);
-    System.out.println("RGB Components split and stored at "
-            + tokens[2] + " " + tokens[3] + " " + tokens[4]);
+  private void handleRgbSplit(String[] tokens) throws IOException {
+    if (tokens.length == 5) {
+      ImageInterface[] splitImages = {
+              imageOperations.visualizeRedComponent(images.get(tokens[1])),
+              imageOperations.visualizeGreenComponent(images.get(tokens[1])),
+              imageOperations.visualizeBlueComponent(images.get(tokens[1]))
+      };
+      images.put(tokens[2], splitImages[0]);
+      images.put(tokens[3], splitImages[1]);
+      images.put(tokens[4], splitImages[2]);
+      output.append("RGB Components split and stored at ").append(tokens[2]).append(" ").append(tokens[3]).append(" ").append(tokens[4]).append("\n");
+    } else {
+      output.append("Invalid rgb-split command\n");
+    }
+
   }
 
-  private void handleBrightenCommand(String[] tokens) {
-    int increment = Integer.parseInt(tokens[1]);
-    ImageInterface brightenedImage = images.get(tokens[2]);
-    ImageInterface outputBrightness = imageOperations.applyBrightness(brightenedImage, increment);
-    images.put(tokens[3], outputBrightness);
-    System.out.println("Image brightened and stored at " + tokens[3]);
+  private void handleBrightenCommand(String[] tokens) throws IOException {
+    if (tokens.length == 4) {
+      int increment = Integer.parseInt(tokens[1]);
+      ImageInterface brightenedImage = images.get(tokens[2]);
+      ImageInterface outputBrightness = imageOperations.applyBrightness(brightenedImage, increment);
+      images.put(tokens[3], outputBrightness);
+      output.append("Image brightened and stored at ").append(tokens[3]).append("\n");
+    } else {
+      output.append("Invalid brighten command\n");
+    }
   }
 
-  private void handleBlurCommand(String[] tokens) {
+  private void handleBlurCommand(String[] tokens) throws IOException {
     ImageInterface blurImage;
     if (tokens.length == 3) {
       blurImage = imageOperations.applyBlur(images.get(tokens[1]));
     } else if (tokens.length == 5 && tokens[tokens.length - 2].equals("split")) {
       blurImage = imageOperations.splitViewOperation(tokens, images.get(tokens[1]));
     } else {
-      throw new IllegalArgumentException("Invalid blur command");
+      output.append("Invalid blur command\n");
+      return;
     }
     images.put(tokens[2], blurImage);
-    System.out.println("Image blurred and stored at " + tokens[2]);
+    output.append("Image blurred and stored at ").append(tokens[2]).append("\n");
   }
 
-  private void handleSharpenCommand(String[] tokens) {
+  private void handleSharpenCommand(String[] tokens) throws IOException {
     ImageInterface sharpenImage;
     if (tokens.length == 3) {
       sharpenImage = imageOperations.applySharpen(images.get(tokens[1]));
     } else if (tokens.length == 5 && tokens[tokens.length - 2].equals("split")) {
       sharpenImage = imageOperations.splitViewOperation(tokens, images.get(tokens[1]));
     } else {
-      throw new IllegalArgumentException("Invalid sharpen command");
+      output.append("Invalid sharpen command\n");
+      return;
     }
     images.put(tokens[2], sharpenImage);
-    System.out.println("Image sharpened and stored at " + tokens[2]);
+    output.append("Image sharpened and stored at ").append(tokens[2]).append("\n");
   }
 
-  private void handleSepiaCommand(String[] tokens) {
+  private void handleSepiaCommand(String[] tokens) throws IOException {
     ImageInterface sepiaImage;
     if (tokens.length == 3) {
       sepiaImage = imageOperations.applySepia(images.get(tokens[1]));
     } else if (tokens.length == 5 && tokens[tokens.length - 2].equals("split")) {
       sepiaImage = imageOperations.splitViewOperation(tokens, images.get(tokens[1]));
     } else {
-      throw new IllegalArgumentException("Invalid sepia command");
+      output.append("Invalid sepia command\n");
+      return;
     }
     images.put(tokens[2], sepiaImage);
-    System.out.println("Sepia filter added and stored at " + tokens[2]);
+    output.append("Sepia filter added and stored at ").append(tokens[2]).append("\n");
   }
 
-  private void handleCompressCommand(String[] tokens) throws IllegalArgumentException {
+  private void handleCompressCommand(String[] tokens) throws IllegalArgumentException, IOException {
     if (tokens.length != 4) {
-      throw new IllegalArgumentException("Invalid number of arguments");
+      output.append("Invalid number of arguments\n");
+      return;
     }
     int percentage = Integer.parseInt(tokens[1]);
     String sourceImage = tokens[2];
@@ -349,9 +428,9 @@ public class TextImageController implements Controller {
     if (image != null) {
       ImageInterface compressedImage = imageOperations.compressImage(image, percentage);
       images.put(destImage, compressedImage);
-      System.out.println("Image compressed and saved as: " + destImage);
+      output.append("Image compressed and saved as: ").append(destImage).append("\n");
     } else {
-      throw new NullPointerException("Source image not found.");
+      output.append("Source image not found.\n");
     }
   }
 
@@ -368,9 +447,10 @@ public class TextImageController implements Controller {
       }
       images.put(tokens[2], image);
     } catch (IOException e) {
-      throw new IOException("Error loading image: " + e.getMessage());
+      output.append("Error loading image: ").append(e.getMessage()).append("\n");
+
     }
-    System.out.println("Image Loaded at: " + tokens[2]);
+    output.append("Image Loaded at: ").append(tokens[2]).append("\n");
   }
 
   private void handleSaveCommand(String[] tokens) throws IOException {
@@ -385,21 +465,29 @@ public class TextImageController implements Controller {
         saver.saveImage(image, tokens[1], extension);
       }
     } catch (IOException e) {
-      throw new IOException("Error saving image: " + e.getMessage());
+      output.append("Error saving image: ").append(e.getMessage()).append("\n");
     }
-    System.out.println("Image saved at: " + tokens[1]);
+    output.append("Image saved at: ").append(tokens[1]).append("\n");
   }
 
-  private void handleHorizontalFlip(String[] tokens) {
-    ImageInterface flippedHorizontal = imageOperations.applyHorizontalFlip(images.get(tokens[1]));
-    images.put(tokens[2], flippedHorizontal);
-    System.out.println("Image flipped Horizontally and stored at " + tokens[2]);
+  private void handleHorizontalFlip(String[] tokens) throws IOException {
+    if (tokens.length == 3) {
+      ImageInterface flippedHorizontal = imageOperations.applyHorizontalFlip(images.get(tokens[1]));
+      images.put(tokens[2], flippedHorizontal);
+      output.append("Image flipped Horizontally and stored at ").append(tokens[2]).append("\n");
+    } else {
+      output.append("Invalid horizontal flip command\n");
+    }
   }
 
-  private void handleVerticalFlip(String[] tokens) {
-    ImageInterface flippedVertical = imageOperations.applyVerticalFlip(images.get(tokens[1]));
-    images.put(tokens[2], flippedVertical);
-    System.out.println("Image flipped Vertically and stored at " + tokens[2]);
+  private void handleVerticalFlip(String[] tokens) throws IOException {
+    if (tokens.length == 3) {
+      ImageInterface flippedVertical = imageOperations.applyVerticalFlip(images.get(tokens[1]));
+      images.put(tokens[2], flippedVertical);
+      output.append("Image flipped Vertically and stored at ").append(tokens[2]).append("\n");
+    } else {
+      output.append("Invalid flip command\n");
+    }
   }
 
   @Override

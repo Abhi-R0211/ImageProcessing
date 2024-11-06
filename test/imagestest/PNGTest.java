@@ -580,7 +580,7 @@ public class PNGTest extends AbstractTest {
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface one = ih.loadImage("src/res/PNG/manhattan-small.png");
     ExtendedImageOperations io = new ExtendedImageOperations();
-    ImageInterface two = io.compressImage(one, 90);
+    ImageInterface two = io.applyBrightness(one, 90);
     ih.saveImage(two, "src/res/PNG/compress.png", "png");
   }
 
