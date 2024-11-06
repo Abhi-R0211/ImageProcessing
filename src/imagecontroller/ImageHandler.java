@@ -14,8 +14,7 @@ import imagemodel.PixelInterface;
 
 /**
  * ImageHandler is the class that performs the loading and saving operations of various file types
- * such as JPG/JPEG, BMP and PNG. If a PPM image is received, it will be redirected to its
- * respective class.
+ * such as JPG/JPEG, BMP and PNG.
  */
 public class ImageHandler implements ImageFormatHandler {
 
@@ -28,12 +27,10 @@ public class ImageHandler implements ImageFormatHandler {
    */
   @Override
   public ImageInterface loadImage(String path) throws IOException {
-
     BufferedImage bufferedImage = ImageIO.read(new File(path));
     int width = bufferedImage.getWidth();
     int height = bufferedImage.getHeight();
     ImageCopyInterface image = new ImageCopy(width, height);
-
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
         int rgb = bufferedImage.getRGB(x, y);
@@ -58,7 +55,6 @@ public class ImageHandler implements ImageFormatHandler {
     int width = image.getWidth();
     int height = image.getHeight();
     BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
         PixelInterface pixel = image.getPixel(x, y);

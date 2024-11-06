@@ -114,5 +114,6 @@ public interface Operations {
    * @param blueImage  that is used for the blue-pixels of the image.
    * @return an image after combining all the three RGB Channels.
    */
-  ImageInterface combineRGB(ImageInterface redImage, ImageInterface greenImage, ImageInterface blueImage);
+  ImageInterface combineRGB(ImageInterface redImage, ImageInterface greenImage,
+                            ImageInterface blueImage);
 }

@@ -9,14 +9,27 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 
+/**
+ * The ExtendedImageOperations class extends ImageOperations and provides additional
+ * functionalities such as compression, color correction, level adjustment, split
+ * view operations and creating histograms.
+ */
 public class ExtendedImageOperations extends ImageOperations implements ExtendedOperations {
 
   private final Map<String, Function<ImageInterface, ImageInterface>> operations;
 
+  /**
+   * Constructor initializes the operations map with supported operations.
+   */
   public ExtendedImageOperations() {
     operations = initializeOperations();
   }
 
+  /**
+   * Initializes the operations map with predefined image transformation operations.
+   *
+   * @return a map of operation names to corresponding function implementations.
+   */
   private Map<String, Function<ImageInterface, ImageInterface>> initializeOperations() {
     Map<String, Function<ImageInterface, ImageInterface>> map = new HashMap<>();
     map.put("blur", this::applyBlur);
@@ -32,6 +45,14 @@ public class ExtendedImageOperations extends ImageOperations implements Extended
     return map;
   }
 
+  /**
+   * Compresses an image by applying Haar wavelet transformation and thresholding.
+   *
+   * @param image      the original image to be compressed.
+   * @param percentage the percentage of detail to compress, between 0 and 100.
+   * @return the compressed image.
+   * @throws IllegalArgumentException if the percentage is out of range or image is null.
+   */
   public ImageInterface compressImage(ImageInterface image, int percentage) {
     if (percentage < 0 || percentage > 100) {
       throw new IllegalArgumentException("Threshold must be between 0 and 100.");
@@ -85,6 +106,12 @@ public class ExtendedImageOperations extends ImageOperations implements Extended
     return compressedImage.deepCopyImage();
   }
 
+  /**
+   * Calculates the next power of two for a given number.
+   *
+   * @param x the number to calculate the power of two for.
+   * @return the next power of two that is greater than or equal to x.
+   */
   private int powerOfTwo(int x) {
     int newWidth = 1;
     while (newWidth < x) {
@@ -93,6 +120,12 @@ public class ExtendedImageOperations extends ImageOperations implements Extended
     return newWidth;
   }
 
+  /**
+   * Pads an image's data to the next power-of-two dimensions.
+   *
+   * @param data the original 2D data array.
+   * @return the padded 2D array with power-of-two dimensions.
+   */
   private double[][] imagePadding(double[][] data) {
     int originalWidth = data[0].length;
     int originalHeight = data.length;
@@ -104,6 +137,13 @@ public class ExtendedImageOperations extends ImageOperations implements Extended
     return paddingData;
   }
 
+  /**
+   * Applies a 2D Haar wavelet transform to a given matrix.
+   *
+   * @param X the matrix to transform.
+   * @param s the size of the matrix.
+   * @return the transformed matrix.
+   */
   private double[][] haarTransform2D(double[][] X, int s) {
     int c = s;
     while (c > 1) {
@@ -126,6 +166,13 @@ public class ExtendedImageOperations extends ImageOperations implements Extended
     return X;
   }
 
+  /**
+   * Applies a 2D inverse Haar wavelet transform to a given matrix.
+   *
+   * @param X the matrix to inverse transform.
+   * @param s the size of the matrix.
+   * @return the inverse transformed matrix.
+   */
   private double[][] inverseHaarTransform2D(double[][] X, int s) {
     int c = 2;
     while (c <= s) {
@@ -148,6 +195,13 @@ public class ExtendedImageOperations extends ImageOperations implements Extended
     return X;
   }
 
+  /**
+   * Applies a 1D Haar wavelet transform to a given array.
+   *
+   * @param data   the array to transform.
+   * @param length the size of the matrix.
+   * @return the transformed array.
+   */
   private double[] haarTransform1D(double[] data, int length) {
     double[] result = new double[length];
     int h = length / 2;
@@ -160,6 +214,13 @@ public class ExtendedImageOperations extends ImageOperations implements Extended
     return result;
   }
 
+  /**
+   * Applies a 1D inverse Haar wavelet transform to a given array.
+   *
+   * @param data   the array to transform.
+   * @param length the size of the matrix.
+   * @return the transformed array.
+   */
   private double[] inverseHaarTransform1D(double[] data, int length) {
     double[] result = new double[length];
     int half = length / 2;
@@ -172,6 +233,12 @@ public class ExtendedImageOperations extends ImageOperations implements Extended
     return result;
   }
 
+  /**
+   * Compresses data by applying thresholding based on compression ratio.
+   *
+   * @param transformedData  2D matrix of transformed data.
+   * @param compressionRatio the compression percentage.
+   */
   private void applyThreshold(double[][] transformedData, double compressionRatio) {
     int numRows = transformedData.length;
     int numCols = transformedData[0].length;
@@ -199,6 +266,13 @@ public class ExtendedImageOperations extends ImageOperations implements Extended
     }
   }
 
+  /**
+   * Creates a histogram image from the given image.
+   *
+   * @param image the input image to generate the histogram from.
+   * @return a new ImageInterface object representing the histogram.
+   * @throws NullPointerException if the input image is null.
+   */
   @Override
   public ImageInterface createHistogram(ImageInterface image) {
     if (image == null) {
@@ -220,6 +294,13 @@ public class ExtendedImageOperations extends ImageOperations implements Extended
     return histogramImage.deepCopyImage();
   }
 
+  /**
+   * Draws a grid on the histogram image to help visualize frequency levels.
+   *
+   * @param histogramImage the histogram image to draw the grid on.
+   * @param width          the width of the histogram image.
+   * @param height         the height of the histogram image.
+   */
   private void drawGrid(ImageCopyInterface histogramImage, int width, int height) {
     PixelInterface gray = new Pixel(200, 200, 200);
     int verticalInterval = 32;
@@ -237,6 +318,12 @@ public class ExtendedImageOperations extends ImageOperations implements Extended
     }
   }
 
+  /**
+   * Calculates histogram data for each color channel in the image.
+   *
+   * @param image the input image to analyze
+   * @return 2D array containing frequency counts for each intensity level for RGB channels.
+   */
   private int[][] calculateHistogramData(ImageInterface image) {
     int[][] histogram = new int[3][256];
     for (int y = 0; y < image.getHeight(); y++) {
@@ -250,6 +337,12 @@ public class ExtendedImageOperations extends ImageOperations implements Extended
     return histogram;
   }
 
+  /**
+   * Finds the maximum frequency value in the histogram data.
+   *
+   * @param histogramData the histogram data for each color channel.
+   * @return the maximum frequency found across all channels.
+   */
   private int findMaxFrequency(int[][] histogramData) {
     int max = 0;
     for (int[] channel : histogramData) {
@@ -260,8 +353,18 @@ public class ExtendedImageOperations extends ImageOperations implements Extended
     return max;
   }
 
-  private void drawHistogramLine(ImageCopyInterface image, int[] histogram, int maxFrequency, int height,
-                                 int width, PixelInterface color) {
+  /**
+   * Draws a line for a specific color channel's histogram on the histogram image.
+   *
+   * @param image        the histogram image to draw on.
+   * @param histogram    the histogram data for the color channel.
+   * @param maxFrequency the maximum frequency for scaling purposes.
+   * @param height       the height of the histogram image.
+   * @param width        the width of the histogram image.
+   * @param color        the color of the line to draw (e.g., red for red channel).
+   */
+  private void drawHistogramLine(ImageCopyInterface image, int[] histogram,
+                                 int maxFrequency, int height, int width, PixelInterface color) {
     int previousX = -1;
     int previousY = -1;
 
@@ -278,11 +381,31 @@ public class ExtendedImageOperations extends ImageOperations implements Extended
     }
   }
 
+  /**
+   * Clamps a value to ensure it stays within a specified range.
+   *
+   * @param value the value to clamp
+   * @param max   the maximum allowed value
+   * @return the clamped value
+   */
   private int clamp(int value, int max) {
     return Math.max(0, Math.min(max, value));
   }
 
-  private void drawLine(ImageCopyInterface image, int x0, int y0, int x1, int y1, PixelInterface color,
+  /**
+   * Draws a line between two points on the image.
+   *
+   * @param image  the image to draw on.
+   * @param x0     the starting x-coordinate.
+   * @param y0     the starting y-coordinate.
+   * @param x1     the ending x-coordinate.
+   * @param y1     the ending y-coordinate.
+   * @param color  the color of the line.
+   * @param width  the width of the image.
+   * @param height the height of the image.
+   */
+  private void drawLine(ImageCopyInterface image, int x0, int y0, int x1, int y1,
+                        PixelInterface color,
                         int width, int height) {
     int dx = Math.abs(x1 - x0);
     int dy = Math.abs(y1 - y0);
@@ -307,6 +430,13 @@ public class ExtendedImageOperations extends ImageOperations implements Extended
     }
   }
 
+  /**
+   * Adjusts color peaks to achieve a balanced color appearance across the image.
+   *
+   * @param image the input image to adjust.
+   * @return a new ImageInterface object with color correction applied.
+   * @throws NullPointerException if the input image is null.
+   */
   @Override
   public ImageInterface colorCorrect(ImageInterface image) {
     if (image == null) {
@@ -322,6 +452,12 @@ public class ExtendedImageOperations extends ImageOperations implements Extended
     return adjustPeaks(image, redPeak, greenPeak, bluePeak, avgPeak);
   }
 
+  /**
+   * Finds the intensity level with the highest frequency in a color channel's histogram.
+   *
+   * @param histogram the histogram data for a color channel.
+   * @return the intensity level with the highest frequency.
+   */
   private int findPeak(int[] histogram) {
     int peakIndex = 0;
     int peakValue = 0;
@@ -334,6 +470,16 @@ public class ExtendedImageOperations extends ImageOperations implements Extended
     return peakIndex;
   }
 
+  /**
+   * Adjusts each color channel of the image based on the difference between its peak and average.
+   *
+   * @param image     the input image to adjust.
+   * @param redPeak   the peak intensity for the red channel.
+   * @param greenPeak the peak intensity for the green channel.
+   * @param bluePeak  the peak intensity for the blue channel.
+   * @param avgPeak   the average peak intensity across channels.
+   * @return a new ImageInterface object with adjusted color peaks.
+   */
   private ImageInterface adjustPeaks(ImageInterface image, int redPeak, int greenPeak,
                                      int bluePeak, int avgPeak) {
     int width = image.getWidth();
@@ -351,6 +497,14 @@ public class ExtendedImageOperations extends ImageOperations implements Extended
     return copy.deepCopyImage();
   }
 
+  /**
+   * Parses and validates input for a levels adjustment operation and applies the adjustment.
+   *
+   * @param tokens        the command tokens for the levels adjustment operation.
+   * @param partToProcess the image part to apply the adjustment on.
+   * @return the levels-adjusted image part.
+   * @throws IllegalArgumentException if the required values are missing or invalid.
+   */
   private ImageInterface parseLevelsAdjust(String[] tokens, ImageInterface partToProcess) {
     if (tokens.length < 4) {
       throw new IllegalArgumentException("Levels adjust requires black, mid, and white values.");
@@ -361,10 +515,22 @@ public class ExtendedImageOperations extends ImageOperations implements Extended
     return levelsAdjust(partToProcess, black, mid, white);
   }
 
+  /**
+   * Adjusts levels in an image using specified black, mid, and white values for color mapping.
+   *
+   * @param image the input image to adjust.
+   * @param black the black point for levels adjustment.
+   * @param mid   the mid-tone point for levels adjustment.
+   * @param white the white point for levels adjustment.
+   * @return a new ImageInterface object with adjusted levels.
+   * @throws IllegalArgumentException if black, mid, and white values are not in ascending order.
+   * @throws NullPointerException     if the input image is null.
+   */
   @Override
   public ImageInterface levelsAdjust(ImageInterface image, int black, int mid, int white) {
     if (black < 0 || black >= mid || mid >= white || white > 255) {
-      throw new IllegalArgumentException("Black, mid, and white values must be in ascending order within [0, 255].");
+      throw new IllegalArgumentException("Black, mid, and white values must be in ascending " +
+              "order within [0, 255].");
     }
     if (image == null) {
       throw new NullPointerException("Image cannot be null.");
@@ -385,6 +551,15 @@ public class ExtendedImageOperations extends ImageOperations implements Extended
     return copy.deepCopyImage();
   }
 
+  /**
+   * Adjusts a pixel intensity based on black, mid, and white level thresholds.
+   *
+   * @param value the pixel intensity to adjust.
+   * @param black the black point.
+   * @param mid   the mid-tone point.
+   * @param white the white point.
+   * @return the adjusted pixel intensity.
+   */
   private int adjustPixelValue(int value, int black, int mid, int white) {
     if (value < black) {
       return 0;
@@ -397,6 +572,16 @@ public class ExtendedImageOperations extends ImageOperations implements Extended
     }
   }
 
+  /**
+   * Applies a split-view operation, applying an image transformation to a specified percentage
+   * of the image width.
+   *
+   * @param tokens the command tokens for the split-view operation.
+   * @param image  the input image to split and transform.
+   * @return the processed image with the transformation applied to the specified section.
+   * @throws NullPointerException     if the input image is null.
+   * @throws IllegalArgumentException if the operation type is unsupported.
+   */
   @Override
   public ImageInterface splitViewOperation(String[] tokens, ImageInterface image) {
     if (image == null) {
@@ -407,18 +592,25 @@ public class ExtendedImageOperations extends ImageOperations implements Extended
     int splitPosition = getSplitPosition(tokens, width);
     ImageInterface partToProcess = cropImage(image, splitPosition, height);
     String operationType = tokens[0];
-    if (!operations.containsKey(operationType)) {
-      throw new IllegalArgumentException("Unsupported operation: " + operationType);
-    }
     ImageInterface processedPart;
     if (operationType.equals("levels-adjust")) {
       processedPart = parseLevelsAdjust(tokens, partToProcess);
-    } else {
+    } else if (operations.containsKey(operationType)) {
       processedPart = operations.get(operationType).apply(partToProcess);
+    } else {
+      throw new IllegalArgumentException("Unsupported operation: " + operationType);
     }
     return mergeImages(processedPart, image, splitPosition, width, height);
   }
 
+  /**
+   * Calculates the split position in pixels based on a percentage of the image width.
+   *
+   * @param tokens the command tokens containing the split percentage.
+   * @param width  the width of the image.
+   * @return the calculated split position in pixels.
+   * @throws IllegalArgumentException if the percentage is not within [0, 100].
+   */
   private int getSplitPosition(String[] tokens, int width) {
     int percentage = Integer.parseInt(tokens[tokens.length - 1]);
     if (percentage > 100 || percentage < 0) {
@@ -427,6 +619,17 @@ public class ExtendedImageOperations extends ImageOperations implements Extended
     return width * percentage / 100;
   }
 
+  /**
+   * Merges two images by combining the processed section with the original image starting
+   * at the split position.
+   *
+   * @param processedPart the transformed part of the image.
+   * @param originalImage the original image.
+   * @param splitPosition the x-coordinate to start merging at.
+   * @param width         the width of the final merged image.
+   * @param height        the height of the final merged image.
+   * @return the final merged ImageInterface object.
+   */
   private ImageInterface mergeImages(ImageInterface processedPart, ImageInterface originalImage,
                                      int splitPosition, int width, int height) {
     ImageCopyInterface finalImage = new ImageCopy(width, height);
@@ -441,6 +644,14 @@ public class ExtendedImageOperations extends ImageOperations implements Extended
     return finalImage.deepCopyImage();
   }
 
+  /**
+   * Crops the image to the specified width and height dimensions.
+   *
+   * @param source     the source image to crop.
+   * @param cropWidth  the width of the cropped image.
+   * @param cropHeight the height of the cropped image.
+   * @return the cropped ImageInterface object.
+   */
   private ImageInterface cropImage(ImageInterface source, int cropWidth, int cropHeight) {
     ImageCopyInterface croppedImage = new ImageCopy(cropWidth, cropHeight);
     for (int y = 0; y < cropHeight; y++) {

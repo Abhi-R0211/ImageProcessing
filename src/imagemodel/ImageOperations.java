@@ -254,6 +254,13 @@ public class ImageOperations implements Operations {
             + 0.7152 * pixel.getGreen() + 0.0722 * pixel.getBlue()));
   }
 
+  /**
+   * Helper method that will perform component modification operations.
+   *
+   * @param image              to be processed.
+   * @param componentExtractor operation to be performed.
+   * @return image after processing.
+   */
   private ImageInterface componentHelper(ImageInterface image, Function<PixelInterface,
           Integer> componentExtractor) {
     if (image == null) {

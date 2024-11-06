@@ -12,7 +12,7 @@ import imagemodel.ExtendedOperations;
 import imagemodel.ImageInterface;
 
 /**
- * The Controller class behaves as the facilitator between the view and model structures of the MVC
+ * The Controller class behaves as the facilitator between the user and model structures of the MVC
  * design paradigm. Depending on the input received by the user, this class calls and performs the
  * respective functions and gives the required output.
  */
@@ -24,58 +24,112 @@ public class TextImageController implements Controller {
   private final Appendable output;
 
   /**
-   * This is a constructor for the class TextImageOperations which initializes the hashmap which
-   * stores the images generated after each operation, and the ImageOperations object.
+   * This is a constructor for the class TextImageOperations which initializes the hashmap that
+   * stores the images generated after each operation, the ImageOperations object, the Readable
+   * Scanner input and the Appendable output.
    *
    * @param imageOperations class object.
+   * @param input           Readable Scanner object.
+   * @param output          Appendable object.
    */
-  public TextImageController(ExtendedOperations imageOperations, Readable input, Appendable output) {
+  public TextImageController(ExtendedOperations imageOperations, Readable input,
+                             Appendable output) {
     this.images = new HashMap<>();
     this.imageOperations = imageOperations;
     this.scanner = new Scanner(input);
     this.output = output;
   }
 
+  /**
+   * Private method that stores the list of supported commands.
+   *
+   * @return commands as a string.
+   */
   private String commands() {
     StringBuilder command = new StringBuilder();
     command.append("Available commands:\n");
-    command.append("  load <image-path> <image-name>                                    "
-            + "                          - Load an image\n");
-    command.append("  save <image-path> <image-name>                                    "
-            + "                          - Save an image\n");
-    command.append("  red-component <image-name> <dest-image-name>                      "
-            + "                          - Get the Red Component of the Image\n");
-    command.append("  green-component <image-name> <dest-image-name>                    "
-            + "                          - Get the Green Component of the Image\n");
-    command.append("  blue-component <image-name> <dest-image-name>                     "
-            + "                          - Get the Blue Component of the Image\n");
-    command.append("  value-component <image-name> <dest-image-name>                    "
-            + "                          - Get the Value Component of the Image\n");
-    command.append("  luma-component <image-name> <dest-image-name>                     "
-            + "                          - Get the Luma Component of the Image\n");
-    command.append("  intensity-component <image-name> <dest-image-name>                "
-            + "                          - Get the intensity Component of the Image\n");
-    command.append("  horizontal-flip <image-name> <dest-image-name>                    "
-            + "                          - Flip image horizontally\n");
-    command.append("  vertical-flip <image-name> <dest-image-name>                      "
-            + "                          - Flip image vertically\n");
-    command.append("  brighten <increment> <image-name> <dest-image-name>               "
-            + "                          - Brighten the image\n");
-    command.append("  rgb-split <image-name> <dest-image-name-red> <dest-image-name-green> "
-            + "<dest-image-name-blue> - Split RGB channels\n");
-    command.append("  rgb-combine <dest-image-name> <red-image> <green-image> <blue-image>   "
-            + "                     - Combine RGB channels\n");
-    command.append("  blur <image-name> <dest-image-name>                               "
-            + "                          - Blur the image\n");
-    command.append("  sharpen <image-name> <dest-image-name>                            "
-            + "                          - Sharpen the image>\n");
-    command.append("  sepia <image-name> <dest-image-name>                              "
-            + "                          - Produce a sepia tone of the image>\n");
-    command.append("  run <script-file-path>                                            "
-            + "                          - Run commands from a script file\n");
+    command.append("  load <image-path> <image-name>                                           " +
+            "                   - Loads an image\n");
+    command.append("  save <image-path> <image-name>                                           " +
+            "                   - Saves an image\n");
+    command.append("  red-component <image-name> <dest-image-name>                             " +
+            "                   - Gets the Red Component of the Image\n");
+    command.append("  red-component <image-name> <dest-image-name> split p                     " +
+            "                   - Gets the Red Component of the first p% of the Image while " +
+            "retaining the rest\n");
+    command.append("  green-component <image-name> <dest-image-name>                           " +
+            "                   - Gets the Green Component of the Image\n");
+    command.append("  green-component <image-name> <dest-image-name> split p                   " +
+            "                   - Gets the Green Component of the first p% of the Image while " +
+            "retaining the rest\n");
+    command.append("  blue-component <image-name> <dest-image-name>                            " +
+            "                   - Gets the Blue Component of the Image\n");
+    command.append("  blue-component <image-name> <dest-image-name> split p                    " +
+            "                   - Gets the Blue Component of the first p% of the Image while " +
+            "retaining the rest\n");
+    command.append("  value-component <image-name> <dest-image-name>                           " +
+            "                   - Gets the Value Component of the Image\n");
+    command.append("  value-component <image-name> <dest-image-name> split p                   " +
+            "                   - Gets the Value Component of the first p% of the Image while " +
+            "retaining the rest\n");
+    command.append("  luma-component <image-name> <dest-image-name>                            " +
+            "                   - Gets the Luma Component of the Image\n");
+    command.append("  luma-component <image-name> <dest-image-name> split p                    " +
+            "                   - Gets the Luma Component of the first p% of the Image while " +
+            "retaining the rest\n");
+    command.append("  intensity-component <image-name> <dest-image-name>                       " +
+            "                   - Gets the Intensity Component of the Image\n");
+    command.append("  intensity-component <image-name> <dest-image-name> split p               " +
+            "                   - Gets the Intensity Component of the first p% of the Image " +
+            "while retaining the rest\n");
+    command.append("  horizontal-flip <image-name> <dest-image-name>                           " +
+            "                   - Flips image horizontally\n");
+    command.append("  vertical-flip <image-name> <dest-image-name>                             " +
+            "                   - Flips image vertically\n");
+    command.append("  brighten <increment> <image-name> <dest-image-name>                      " +
+            "                   - Brightens the image\n");
+    command.append("  rgb-split <image-name> <dest-image-name-red> <dest-image-name-green> " +
+            "<dest-image-name-blue> - Splits RGB channels\n");
+    command.append("  rgb-combine <dest-image-name> <red-image> <green-image> <blue-image>     " +
+            "                   - Combines RGB channels\n");
+    command.append("  blur <image-name> <dest-image-name>                                      " +
+            "                   - Blurs the image\n");
+    command.append("  blur <image-name> <dest-image-name> split p                              " +
+            "                   - Blurs the first p% of the Image while retaining the rest\n");
+    command.append("  sharpen <image-name> <dest-image-name>                                   " +
+            "                   - Sharpens the image>\n");
+    command.append("  sharpen <image-name> <dest-image-name> split p                           " +
+            "                   - Sharpens the first p% of the Image while retaining the rest\n");
+    command.append("  sepia <image-name> <dest-image-name>                                     " +
+            "                   - Produces a sepia tone of the image>\n");
+    command.append("  sepia <image-name> <dest-image-name> split p                             " +
+            "                   - Produces a sepia tone of the first p% of the Image while " +
+            "retaining the rest\n");
+    command.append("  compress percentage <image-name> <dest-image-name>                       " +
+            "                   - Compresses the image by the given percentage\n");
+    command.append("  histogram <image-name> <dest-image-name>                                 " +
+            "                   - Generates a histogram of the given Image\n");
+    command.append("  color-correct <image-name> <dest-image-name>                             " +
+            "                   - Generates a color corrected version of the given Image\n");
+    command.append("  color-correct <image-name> <dest-image-name> split p                     " +
+            "                   - Generates a color corrected version of the first p% of " +
+            "the given Image\n");
+    command.append("  levels-adjust b m w <image-name> <dest-image-name>                       " +
+            "                   - Generates a level adjusted version of the given Image as " +
+            "per the given black, mid and white points\n");
+    command.append("  levels-adjust b m w <image-name> <dest-image-name> split p               " +
+            "                   - Generates a level adjusted version of the first p% of the " +
+            "given Image as per the given black, mid and white points\n");
+    command.append("  run <script-file-path>                                                   " +
+            "                   - Run commands from a script file\n");
     return command.toString();
   }
 
+  /**
+   * Starts an interactive session with the user.
+   *
+   * @throws IOException upon encountering incorrect input/output.
+   */
   public void start() throws IOException {
     output.append(commands());
     output.append("Type 'exit' to quit.\n");
@@ -83,6 +137,7 @@ public class TextImageController implements Controller {
       System.out.print(" > ");
       String input = scanner.nextLine().trim();
       if (input.equalsIgnoreCase("exit")) {
+        output.append("Exiting this application...\n");
         break;
       }
       runCommand(input);
@@ -202,7 +257,12 @@ public class TextImageController implements Controller {
     return path.substring(path.lastIndexOf('.') + 1).toLowerCase();
   }
 
-
+  /**
+   * Helper method to calculate the histogram.
+   *
+   * @param tokens command input.
+   * @throws IOException upon encountering incorrect input/output.
+   */
   private void handleHistogramCommand(String[] tokens) throws IOException {
     String sourceImage = tokens[1];
     String destImage = tokens[2];
@@ -220,6 +280,12 @@ public class TextImageController implements Controller {
     }
   }
 
+  /**
+   * Helper method to calculate the red-component.
+   *
+   * @param tokens command input.
+   * @throws IOException upon encountering incorrect input/output.
+   */
   private void handleRedComponentCommand(String[] tokens) throws IOException {
     ImageInterface redImage;
     if (tokens.length == 3) {
@@ -234,6 +300,12 @@ public class TextImageController implements Controller {
     output.append("Red Component Loaded at: ").append(tokens[2]).append("\n");
   }
 
+  /**
+   * Helper method to calculate the green-component.
+   *
+   * @param tokens command input.
+   * @throws IOException upon encountering incorrect input/output.
+   */
   private void handleGreenComponentCommand(String[] tokens) throws IOException {
     ImageInterface greenImage;
     if (tokens.length == 3) {
@@ -248,6 +320,12 @@ public class TextImageController implements Controller {
     output.append("Green Component Loaded at: ").append(tokens[2]).append("\n");
   }
 
+  /**
+   * Helper method to calculate the blue-component.
+   *
+   * @param tokens command input.
+   * @throws IOException upon encountering incorrect input/output.
+   */
   private void handleBlueComponentCommand(String[] tokens) throws IOException {
     ImageInterface blueImage;
     if (tokens.length == 3) {
@@ -262,6 +340,12 @@ public class TextImageController implements Controller {
     output.append("Blue Component Loaded at: ").append(tokens[2]).append("\n");
   }
 
+  /**
+   * Helper method to calculate the value-component.
+   *
+   * @param tokens command input.
+   * @throws IOException upon encountering incorrect input/output.
+   */
   private void handleValueComponentCommand(String[] tokens) throws IOException {
     ImageInterface valueImage;
     if (tokens.length == 3) {
@@ -276,6 +360,12 @@ public class TextImageController implements Controller {
     output.append("Value Component Loaded at: ").append(tokens[2]).append("\n");
   }
 
+  /**
+   * Helper method to calculate the luma-component.
+   *
+   * @param tokens command input.
+   * @throws IOException upon encountering incorrect input/output.
+   */
   private void handleLumaComponentCommand(String[] tokens) throws IOException {
     ImageInterface lumaImage;
     if (tokens.length == 3) {
@@ -290,6 +380,12 @@ public class TextImageController implements Controller {
     output.append("Luma Component Loaded at: ").append(tokens[2]).append("\n");
   }
 
+  /**
+   * Helper method to calculate the intensity-component.
+   *
+   * @param tokens command input.
+   * @throws IOException upon encountering incorrect input/output.
+   */
   private void handleIntensityComponentCommand(String[] tokens) throws IOException {
     ImageInterface intensityImage;
     if (tokens.length == 3) {
@@ -304,6 +400,12 @@ public class TextImageController implements Controller {
     output.append("Intensity Component Loaded at: ").append(tokens[2]).append("\n");
   }
 
+  /**
+   * Helper method to perform level adjusting.
+   *
+   * @param tokens command input.
+   * @throws IOException upon encountering incorrect input/output.
+   */
   private void handleLevelsAdjustCommand(String[] tokens) throws IOException {
     ImageInterface adjustedImage;
     if (tokens.length == 6) {
@@ -312,7 +414,7 @@ public class TextImageController implements Controller {
       int w = Integer.parseInt(tokens[3]);
       adjustedImage = imageOperations.levelsAdjust(images.get(tokens[4]), b, m, w);
     } else if (tokens.length == 8 && tokens[tokens.length - 2].equals("split")) {
-      adjustedImage = imageOperations.splitViewOperation(tokens, images.get(tokens[1]));
+      adjustedImage = imageOperations.splitViewOperation(tokens, images.get(tokens[4]));
     } else {
       output.append("Invalid level command\n");
       return;
@@ -321,6 +423,12 @@ public class TextImageController implements Controller {
     output.append("Levels-adjusted image stored at: ").append(tokens[5]).append("\n");
   }
 
+  /**
+   * Helper method to perform color correction.
+   *
+   * @param tokens command input.
+   * @throws IOException upon encountering incorrect input/output.
+   */
   private void handleColorCorrectCommand(String[] tokens) throws IOException {
     ImageInterface corrected;
     if (tokens.length == 3) {
@@ -335,16 +443,29 @@ public class TextImageController implements Controller {
     output.append("Color-corrected image stored at: ").append(tokens[2]).append("\n");
   }
 
+  /**
+   * Helper method to combine red, green and blue channels.
+   *
+   * @param tokens command input.
+   * @throws IOException upon encountering incorrect input/output.
+   */
   private void handleRgbCombine(String[] tokens) throws IOException {
     if (tokens.length == 5) {
       ImageInterface combinedImage = imageOperations.combineRGB(
               images.get(tokens[2]), images.get(tokens[3]), images.get(tokens[4]));
       images.put(tokens[1], combinedImage);
       output.append("RGB Channels combined and stored at :").append(tokens[1]).append("\n");
+      return;
     }
     output.append("Invalid RGB combine command").append("\n");
   }
 
+  /**
+   * Helper method to split an image into its red, green and blue channels.
+   *
+   * @param tokens command input.
+   * @throws IOException upon encountering incorrect input/output.
+   */
   private void handleRgbSplit(String[] tokens) throws IOException {
     if (tokens.length == 5) {
       ImageInterface[] splitImages = {
@@ -355,13 +476,19 @@ public class TextImageController implements Controller {
       images.put(tokens[2], splitImages[0]);
       images.put(tokens[3], splitImages[1]);
       images.put(tokens[4], splitImages[2]);
-      output.append("RGB Components split and stored at ").append(tokens[2]).append(" ").append(tokens[3]).append(" ").append(tokens[4]).append("\n");
+      output.append("RGB Components split and stored at ").append(tokens[2]).append(" ").append
+              (tokens[3]).append(" ").append(tokens[4]).append("\n");
     } else {
       output.append("Invalid rgb-split command\n");
     }
-
   }
 
+  /**
+   * Helper method to brighten or darken an image.
+   *
+   * @param tokens command input.
+   * @throws IOException upon encountering incorrect input/output.
+   */
   private void handleBrightenCommand(String[] tokens) throws IOException {
     if (tokens.length == 4) {
       int increment = Integer.parseInt(tokens[1]);
@@ -374,6 +501,12 @@ public class TextImageController implements Controller {
     }
   }
 
+  /**
+   * Helper method to blur an image.
+   *
+   * @param tokens command input.
+   * @throws IOException upon encountering incorrect input/output.
+   */
   private void handleBlurCommand(String[] tokens) throws IOException {
     ImageInterface blurImage;
     if (tokens.length == 3) {
@@ -388,6 +521,12 @@ public class TextImageController implements Controller {
     output.append("Image blurred and stored at ").append(tokens[2]).append("\n");
   }
 
+  /**
+   * Helper method to sharpen an image.
+   *
+   * @param tokens command input.
+   * @throws IOException upon encountering incorrect input/output.
+   */
   private void handleSharpenCommand(String[] tokens) throws IOException {
     ImageInterface sharpenImage;
     if (tokens.length == 3) {
@@ -402,6 +541,12 @@ public class TextImageController implements Controller {
     output.append("Image sharpened and stored at ").append(tokens[2]).append("\n");
   }
 
+  /**
+   * Helper method to produce a sepia tone of an image.
+   *
+   * @param tokens command input.
+   * @throws IOException upon encountering incorrect input/output.
+   */
   private void handleSepiaCommand(String[] tokens) throws IOException {
     ImageInterface sepiaImage;
     if (tokens.length == 3) {
@@ -416,6 +561,12 @@ public class TextImageController implements Controller {
     output.append("Sepia filter added and stored at ").append(tokens[2]).append("\n");
   }
 
+  /**
+   * Helper method to compress an image.
+   *
+   * @param tokens command input.
+   * @throws IOException upon encountering incorrect input/output.
+   */
   private void handleCompressCommand(String[] tokens) throws IllegalArgumentException, IOException {
     if (tokens.length != 4) {
       output.append("Invalid number of arguments\n");
@@ -434,6 +585,12 @@ public class TextImageController implements Controller {
     }
   }
 
+  /**
+   * Helper method to load an image.
+   *
+   * @param tokens command input.
+   * @throws IOException upon encountering incorrect input/output.
+   */
   private void handleLoadCommand(String[] tokens) throws IOException {
     ImageFormatHandler loader = new ImageHandler();
     try {
@@ -448,11 +605,17 @@ public class TextImageController implements Controller {
       images.put(tokens[2], image);
     } catch (IOException e) {
       output.append("Error loading image: ").append(e.getMessage()).append("\n");
-
+      return;
     }
     output.append("Image Loaded at: ").append(tokens[2]).append("\n");
   }
 
+  /**
+   * Helper method to save an image.
+   *
+   * @param tokens command input.
+   * @throws IOException upon encountering incorrect input/output.
+   */
   private void handleSaveCommand(String[] tokens) throws IOException {
     String extension = getFileExtension(tokens[1]);
     ImageFormatHandler saver = new ImageHandler();
@@ -466,10 +629,17 @@ public class TextImageController implements Controller {
       }
     } catch (IOException e) {
       output.append("Error saving image: ").append(e.getMessage()).append("\n");
+      return;
     }
     output.append("Image saved at: ").append(tokens[1]).append("\n");
   }
 
+  /**
+   * Helper method to horizontally flip an image.
+   *
+   * @param tokens command input.
+   * @throws IOException upon encountering incorrect input/output.
+   */
   private void handleHorizontalFlip(String[] tokens) throws IOException {
     if (tokens.length == 3) {
       ImageInterface flippedHorizontal = imageOperations.applyHorizontalFlip(images.get(tokens[1]));
@@ -480,6 +650,12 @@ public class TextImageController implements Controller {
     }
   }
 
+  /**
+   * Helper method to vertically flip an image.
+   *
+   * @param tokens command input.
+   * @throws IOException upon encountering incorrect input/output.
+   */
   private void handleVerticalFlip(String[] tokens) throws IOException {
     if (tokens.length == 3) {
       ImageInterface flippedVertical = imageOperations.applyVerticalFlip(images.get(tokens[1]));
@@ -488,10 +664,5 @@ public class TextImageController implements Controller {
     } else {
       output.append("Invalid flip command\n");
     }
-  }
-
-  @Override
-  public ImageInterface getImageFromMap(String str) {
-    return images.get(str);
   }
 }

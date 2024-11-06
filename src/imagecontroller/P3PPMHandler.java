@@ -30,11 +30,9 @@ public class P3PPMHandler implements ImageFormatHandler {
     if (!format.equals("P3")) {
       throw new IOException("Invalid PPM format");
     }
-
     int width = scan.nextInt();
     int height = scan.nextInt();
     scan.nextInt();
-
     ImageCopyInterface image = new ImageCopy(width, height);
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
@@ -60,7 +58,6 @@ public class P3PPMHandler implements ImageFormatHandler {
     writer.write("P3\n");
     writer.write(image.getWidth() + " " + image.getHeight() + "\n");
     writer.write("255\n");
-
     for (int y = 0; y < image.getHeight(); y++) {
       for (int x = 0; x < image.getWidth(); x++) {
         PixelInterface pixel = image.getPixel(x, y);

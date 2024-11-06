@@ -3,12 +3,23 @@ package imagemodel;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A copy class that implements the ImageCopyInterface. The purpose of this class is to create a
+ * copy of the image that is passed as input to it, while offering the functionality to manually
+ * set the pixel value to this copy image, making the Image class immutable.
+ */
 public class ImageCopy implements ImageCopyInterface {
 
   private List<List<Pixel>> pixels;
   private int width;
   private int height;
 
+  /**
+   * Class constructor which initializes with a white image upon object creation.
+   *
+   * @param width  of the image.
+   * @param height of the image.
+   */
   public ImageCopy(int width, int height) {
     if (width <= 0 || height <= 0) {
       throw new IllegalArgumentException("Invalid image dimensions");

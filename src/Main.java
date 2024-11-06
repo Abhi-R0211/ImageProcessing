@@ -1,6 +1,5 @@
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Scanner;
 
 import imagecontroller.Controller;
 import imagecontroller.TextImageController;
@@ -8,8 +7,8 @@ import imagemodel.ExtendedImageOperations;
 import imagemodel.ExtendedOperations;
 
 /**
- * This driver code in the ImageView Package will communicate with the user. The Main Class will
- * send the inputs to the TextImageController.
+ * This driver code will communicate with the user. The Main Class will send the inputs to
+ * the TextImageController.
  */
 public class Main {
 
@@ -20,10 +19,18 @@ public class Main {
    */
   public static void main(String[] args) {
     ExtendedOperations operations = new ExtendedImageOperations();
-    Controller controller = new TextImageController(operations, new InputStreamReader(System.in), System.out);
+    Controller controller = new TextImageController(operations,
+            new InputStreamReader(System.in), System.out);
     System.out.println("\nWelcome to the Image Processor Application!\n");
     try {
-      controller.start();
+      if (args.length == 0) {
+        controller.start();
+      } else if (args.length == 2 && (args[0].equalsIgnoreCase("-script")
+              || args[0].equalsIgnoreCase("-file"))) {
+        controller.runCommand("run " + args[1]);
+      } else {
+        throw new IOException("Unrecognized arguments");
+      }
     } catch (IOException e) {
       System.out.println("Error processing the command : " + e.getMessage());
     }

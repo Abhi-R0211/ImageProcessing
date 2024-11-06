@@ -6,21 +6,12 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.StringReader;
-import java.util.HashMap;
-import java.util.Map;
 
 import imagecontroller.Controller;
-import imagecontroller.ImageHandler;
-import imagecontroller.P3PPMHandler;
 import imagecontroller.TextImageController;
-import imagemodel.ExtendedImageOperations;
 import imagemodel.ExtendedOperations;
-import imagemodel.Image;
-import imagemodel.ImageInterface;
 import imagemodel.MockOperations;
 
 /**
@@ -455,5 +446,95 @@ public class ControllerTest {
     String actual = output.toString().replace(System.lineSeparator(), "\n");
     assertTrue(actual.contains("Split view operation performed"));
     assertTrue(actual.contains("Green Component Loaded at: output"));
+  }
+
+  @Test
+  public void testStartAndExit() throws IOException {
+    textImageController = new TextImageController(mock, new StringReader("exit\n"), output);
+    textImageController.start();
+    String actual = output.toString().replace(System.lineSeparator(), "\n");
+    assertTrue(actual.contains("  load <image-path> <image-name>                                                              - Loads an image\n" +
+            "  save <image-path> <image-name>                                                  " +
+            "            - Saves an image\n" +
+            "  red-component <image-name> <dest-image-name>                                    " +
+            "            - Gets the Red Component of the Image\n" +
+            "  red-component <image-name> <dest-image-name> split p                            " +
+            "            - Gets the Red Component of the first p% of the Image while " +
+            "retaining the rest\n" +
+            "  green-component <image-name> <dest-image-name>                                  " +
+            "            - Gets the Green Component of the Image\n" +
+            "  green-component <image-name> <dest-image-name> split p                          " +
+            "            - Gets the Green Component of the first p% of the Image while " +
+            "retaining the rest\n" +
+            "  blue-component <image-name> <dest-image-name>                                   " +
+            "            - Gets the Blue Component of the Image\n" +
+            "  blue-component <image-name> <dest-image-name> split p                           " +
+            "            - Gets the Blue Component of the first p% of the Image while " +
+            "retaining the rest\n" +
+            "  value-component <image-name> <dest-image-name>                                  " +
+            "            - Gets the Value Component of the Image\n" +
+            "  value-component <image-name> <dest-image-name> split p                          " +
+            "            - Gets the Value Component of the first p% of the Image while " +
+            "retaining the rest\n" +
+            "  luma-component <image-name> <dest-image-name>                                   " +
+            "            - Gets the Luma Component of the Image\n" +
+            "  luma-component <image-name> <dest-image-name> split p                           " +
+            "            - Gets the Luma Component of the first p% of the Image while " +
+            "retaining the rest\n" +
+            "  intensity-component <image-name> <dest-image-name>                              " +
+            "            - Gets the Intensity Component of the Image\n" +
+            "  intensity-component <image-name> <dest-image-name> split p                      " +
+            "            - Gets the Intensity Component of the first p% of the Image while " +
+            "retaining the rest\n" +
+            "  horizontal-flip <image-name> <dest-image-name>                                  " +
+            "            - Flips image horizontally\n" +
+            "  vertical-flip <image-name> <dest-image-name>                                    " +
+            "            - Flips image vertically\n" +
+            "  brighten <increment> <image-name> <dest-image-name>                             " +
+            "            - Brightens the image\n" +
+            "  rgb-split <image-name> <dest-image-name-red> <dest-image-name-green> " +
+            "<dest-image-name-blue> - Splits RGB channels\n" +
+            "  rgb-combine <dest-image-name> <red-image> <green-image> <blue-image>            " +
+            "            - Combines RGB channels\n" +
+            "  blur <image-name> <dest-image-name>                                             " +
+            "            - Blurs the image\n" +
+            "  blur <image-name> <dest-image-name> split p                                     " +
+            "            - Blurs the first p% of the Image while retaining the rest\n" +
+            "  sharpen <image-name> <dest-image-name>                                          " +
+            "            - Sharpens the image>\n" +
+            "  sharpen <image-name> <dest-image-name> split p                                  " +
+            "            - Sharpens the first p% of the Image while retaining the rest\n" +
+            "  sepia <image-name> <dest-image-name>                                            " +
+            "            - Produces a sepia tone of the image>\n" +
+            "  sepia <image-name> <dest-image-name> split p                                    " +
+            "            - Produces a sepia tone of the first p% of the Image while " +
+            "retaining the rest\n" +
+            "  compress percentage <image-name> <dest-image-name>                              " +
+            "            - Compresses the image by the given percentage\n" +
+            "  histogram <image-name> <dest-image-name>                                        " +
+            "            - Generates a histogram of the given Image\n" +
+            "  color-correct <image-name> <dest-image-name>                                    " +
+            "            - Generates a color corrected version of the given Image\n" +
+            "  color-correct <image-name> <dest-image-name> split p                            " +
+            "            - Generates a color corrected version of the first p% of " +
+            "the given Image\n" +
+            "  levels-adjust b m w <image-name> <dest-image-name>                              " +
+            "            - Generates a level adjusted version of the given Image as " +
+            "per the given black, mid and white points\n" +
+            "  levels-adjust b m w <image-name> <dest-image-name> split p                      " +
+            "            - Generates a level adjusted version of the first p% of the given " +
+            "Image as per the given black, mid and white points\n" +
+            "  run <script-file-path>                                                          " +
+            "            - Run commands from a script file\n" +
+            "Type 'exit' to quit."));
+    assertTrue(actual.contains("Exiting this application...\n"));
+  }
+
+  @Test
+  public void testDefaultCase() throws IOException {
+    textImageController = new TextImageController(mock, new StringReader("loading\nexit\n"), output);
+    textImageController.start();
+    String actual = output.toString().replace(System.lineSeparator(), "\n");
+    assertTrue(actual.contains("Unknown command: loading"));
   }
 }
