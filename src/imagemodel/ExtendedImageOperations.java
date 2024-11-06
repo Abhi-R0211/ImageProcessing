@@ -1,7 +1,12 @@
 package imagemodel;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 
 public class ExtendedImageOperations extends ImageOperations implements ExtendedOperations {
@@ -27,16 +32,171 @@ public class ExtendedImageOperations extends ImageOperations implements Extended
     return map;
   }
 
-  @Override
-  public ImageInterface compressImage(ImageInterface image, double threshold) {
-    if (threshold < 0 || threshold > 100) {
+  public ImageInterface compressImage(ImageInterface image, int percentage) {
+    if (percentage < 0 || percentage > 100) {
       throw new IllegalArgumentException("Threshold must be between 0 and 100.");
     }
     if (image == null) {
-      throw new NullPointerException("Image cannot be null.");
+      throw new IllegalArgumentException("Image cannot be null");
     }
-    //Code
-    return null;
+    int width = image.getWidth();
+    int height = image.getHeight();
+
+    double[][] redChannel = new double[height][width];
+    double[][] greenChannel = new double[height][width];
+    double[][] blueChannel = new double[height][width];
+
+
+    for (int row = 0; row < height; row++) {
+      for (int col = 0; col < width; col++) {
+        PixelInterface pixel = image.getPixel(col, row);
+        redChannel[row][col] = pixel.getRed();
+        greenChannel[row][col] = pixel.getGreen();
+        blueChannel[row][col] = pixel.getBlue();
+      }
+    }
+
+    double[][] paddedRedChannel = imagePadding(redChannel);
+    double[][] paddedGreenChannel = imagePadding(greenChannel);
+    double[][] paddedBlueChannel = imagePadding(blueChannel);
+
+    double[][] transRed = haarTransform2D(paddedRedChannel, paddedRedChannel.length);
+    double[][] transGreen = haarTransform2D(paddedGreenChannel, paddedGreenChannel.length);
+    double[][] transBlue = haarTransform2D(paddedBlueChannel, paddedBlueChannel.length);
+
+    applyThreshold(transRed, percentage);
+    applyThreshold(transGreen, percentage);
+    applyThreshold(transBlue, percentage);
+
+    double[][] inverseRed = inverseHaarTransform2D(transRed, transRed.length);
+    double[][] inverseGreen = inverseHaarTransform2D(transGreen, transGreen.length);
+    double[][] inverseBlue = inverseHaarTransform2D(transBlue, transBlue.length);
+
+    ImageCopyInterface compressedImage = new ImageCopy(width, height);
+    for (int row = 0; row < height; row++) {
+      for (int col = 0; col < width; col++) {
+        int redValue = clamp((int) Math.round(inverseRed[row][col]));
+        int greenValue = clamp((int) Math.round(inverseGreen[row][col]));
+        int blueValue = clamp((int) Math.round(inverseBlue[row][col]));
+        Pixel pixel = new Pixel(redValue, greenValue, blueValue);
+        compressedImage.setPixel(col, row, pixel);
+      }
+    }
+    return compressedImage.deepCopyImage();
+  }
+
+  private int powerOfTwo(int x) {
+    int newWidth = 1;
+    while (newWidth < x) {
+      newWidth <<= 1;
+    }
+    return newWidth;
+  }
+
+  private double[][] imagePadding(double[][] data) {
+    int originalWidth = data[0].length;
+    int originalHeight = data.length;
+    int newSize = Math.max(powerOfTwo(originalHeight), powerOfTwo(originalWidth));
+    double[][] paddingData = new double[newSize][newSize];
+    for (int i = 0; i < originalHeight; i++) {
+      System.arraycopy(data[i], 0, paddingData[i], 0, originalWidth);
+    }
+    return paddingData;
+  }
+
+  private double[][] haarTransform2D(double[][] X, int s) {
+    int c = s;
+    while (c > 1) {
+      for (int i = 0; i < c; i++) {
+        double[] result = haarTransform1D(X[i], c);
+        System.arraycopy(result, 0, X[i], 0, c);
+      }
+      for (int j = 0; j < c; j++) {
+        double[] column = new double[c];
+        for (int i = 0; i < c; i++) {
+          column[i] = X[i][j];
+        }
+        column = haarTransform1D(column, c);
+        for (int i = 0; i < c; i++) {
+          X[i][j] = column[i];
+        }
+      }
+      c /= 2;
+    }
+    return X;
+  }
+
+  private double[][] inverseHaarTransform2D(double[][] X, int s) {
+    int c = 2;
+    while (c <= s) {
+      for (int j = 0; j < c; j++) {
+        double[] column = new double[c];
+        for (int i = 0; i < c; i++) {
+          column[i] = X[i][j];
+        }
+        column = inverseHaarTransform1D(column, c);
+        for (int i = 0; i < c; i++) {
+          X[i][j] = column[i];
+        }
+      }
+      for (int i = 0; i < c; i++) {
+        double[] result = inverseHaarTransform1D(X[i], c);
+        System.arraycopy(result, 0, X[i], 0, c);
+      }
+      c *= 2;
+    }
+    return X;
+  }
+
+  private double[] haarTransform1D(double[] data, int length) {
+    double[] result = new double[length];
+    int h = length / 2;
+    for (int i = 0; i < h; i++) {
+      double a = data[2 * i];
+      double b = data[2 * i + 1];
+      result[i] = (a + b) / Math.sqrt(2);
+      result[i + h] = (a - b) / Math.sqrt(2);
+    }
+    return result;
+  }
+
+  private double[] inverseHaarTransform1D(double[] data, int length) {
+    double[] result = new double[length];
+    int half = length / 2;
+    for (int i = 0; i < half; i++) {
+      double avg = data[i];
+      double diff = data[i + half];
+      result[2 * i] = (avg + diff) / Math.sqrt(2);
+      result[2 * i + 1] = (avg - diff) / Math.sqrt(2);
+    }
+    return result;
+  }
+
+  private void applyThreshold(double[][] transformedData, double compressionRatio) {
+    int numRows = transformedData.length;
+    int numCols = transformedData[0].length;
+    Set<Double> nonZeroValuesSet = new HashSet<>();
+    for (double[] transformedDatum : transformedData) {
+      for (int col = 0; col < numCols; col++) {
+        if (transformedDatum[col] != 0) {
+          nonZeroValuesSet.add(transformedDatum[col]);
+        }
+      }
+    }
+    List<Double> nonZeroValues = new ArrayList<>(nonZeroValuesSet);
+    if (nonZeroValues.isEmpty()) {
+      return;
+    }
+    nonZeroValues.sort(Comparator.comparingDouble(Math::abs));
+    int retentionCount = (int) (nonZeroValues.size() * ((compressionRatio) / 100.0));
+    double thresholdValue = Math.abs(nonZeroValues.get(retentionCount - 1));
+    for (int row = 0; row < numRows; row++) {
+      for (int col = 0; col < numCols; col++) {
+        if (Math.abs(transformedData[row][col]) < thresholdValue) {
+          transformedData[row][col] = 0;
+        }
+      }
+    }
   }
 
   @Override

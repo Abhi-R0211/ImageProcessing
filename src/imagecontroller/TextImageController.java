@@ -347,8 +347,7 @@ public class TextImageController implements Controller {
     String destImage = tokens[3];
     ImageInterface image = images.get(sourceImage);
     if (image != null) {
-      double threshold = percentage / 100.0;
-      ImageInterface compressedImage = imageOperations.compressImage(image, threshold);
+      ImageInterface compressedImage = imageOperations.compressImage(image, percentage);
       images.put(destImage, compressedImage);
       System.out.println("Image compressed and saved as: " + destImage);
     } else {

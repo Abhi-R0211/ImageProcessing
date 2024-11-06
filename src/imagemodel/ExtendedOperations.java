@@ -2,7 +2,7 @@ package imagemodel;
 
 public interface ExtendedOperations extends Operations {
 
-  ImageInterface compressImage(ImageInterface image, double threshold);
+  ImageInterface compressImage(ImageInterface image, int percentage);
 
   ImageInterface createHistogram(ImageInterface image);
 
