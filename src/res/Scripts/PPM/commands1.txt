@@ -115,7 +115,7 @@ color-correct input colorcorrect
 save src/res/PPM/color-correct.ppm colorcorrect
 
 #levels-adjust
-levels-adjust 50 75 100 input levelsadjust
+levels-adjust 20 100 255 input levelsadjust
 
 #save
 save src/res/PPM/levels-adjust.ppm levelsadjust
@@ -177,7 +177,7 @@ sepia input sepiasplit split 50
 save src/res/PPM/sepia-split.ppm sepiasplit
 
 #levels adjust split
-levels-adjust 50 75 100 input levelsadjustsplit split 50
+levels-adjust 20 100 255 input levelsadjustsplit split 50
 
 #save
 save src/res/PPM/levels-adjust-split.ppm levelsadjustsplit
