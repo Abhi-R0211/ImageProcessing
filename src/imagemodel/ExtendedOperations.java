@@ -21,17 +21,17 @@ public interface ExtendedOperations extends Operations {
    * Creates a histogram image from the given image.
    *
    * @param image the input image to generate the histogram from.
-   * @throws NullPointerException if the input image is null.
+   * @throws IllegalArgumentException if the input image is null.
    */
-  ImageInterface createHistogram(ImageInterface image) throws NullPointerException;
+  ImageInterface createHistogram(ImageInterface image) throws IllegalArgumentException;
 
   /**
    * Adjusts color peaks to achieve a balanced color appearance across the image.
    *
    * @param image the input image to adjust.
-   * @throws NullPointerException if the input image is null.
+   * @throws IllegalArgumentException if the input image is null.
    */
-  ImageInterface colorCorrect(ImageInterface image) throws NullPointerException;
+  ImageInterface colorCorrect(ImageInterface image) throws IllegalArgumentException;
 
   /**
    * Adjusts levels in an image using specified black, mid, and white values for color mapping.
@@ -41,10 +41,10 @@ public interface ExtendedOperations extends Operations {
    * @param m     the mid-tone point for levels adjustment.
    * @param w     the white point for levels adjustment.
    * @throws IllegalArgumentException if black, mid, and white values are not in ascending order.
-   * @throws NullPointerException     if the input image is null.
+   * @throws IllegalArgumentException if the input image is null.
    */
   ImageInterface levelsAdjust(ImageInterface image, int b, int m, int w)
-          throws NullPointerException, IllegalArgumentException;
+          throws IllegalArgumentException;
 
   /**
    * Applies a split-view operation, applying an image transformation to a specified percentage
@@ -52,9 +52,9 @@ public interface ExtendedOperations extends Operations {
    *
    * @param tokens the command tokens for the split-view operation.
    * @param image  the input image to split and transform.
-   * @throws NullPointerException     if the input image is null.
+   * @throws IllegalArgumentException if the input image is null.
    * @throws IllegalArgumentException if the operation type is unsupported.
    */
   ImageInterface splitViewOperation(String[] tokens, ImageInterface image)
-          throws NullPointerException, IllegalArgumentException;
+          throws IllegalArgumentException;
 }

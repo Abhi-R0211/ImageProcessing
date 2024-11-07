@@ -17,7 +17,7 @@ green-component input green
 save src/res/PNG/Sample-green.png green
 
 #blue
-green-component input blue
+blue-component input blue
 
 #save
 save src/res/PNG/Sample-blue.png blue
@@ -95,3 +95,95 @@ rgb-combine combine red1 green1 blue1
 
 #save
 save src/res/PNG/Sample-combine.png combine
+
+#compress
+compress 50 input compressed
+
+#save
+save src/res/PNG/compressed.png compressed
+
+#histogram
+histogram input histogram
+
+#save
+save src/res/PNG/histogram.png histogram
+
+#color-correct
+color-correct input colorcorrect
+
+#save
+save src/res/PNG/color-correct.png colorcorrect
+
+#levels-adjust
+levels-adjust 50 75 100 input levelsadjust
+
+#save
+save src/res/PNG/levels-adjust.png levelsadjust
+
+#split for all functions
+
+#split red
+red-component input redsplit split 50
+
+#save
+save src/res/PNG/red-split.png redsplit
+
+#split green
+green-component input greensplit split 50
+
+#save
+save src/res/PNG/green-split.png greensplit 50
+
+#blur split
+blue-component input bluesplit split 50
+
+#save
+save src/res/PNG/blue-split.png bluesplit
+
+#value split
+value-component input valuesplit split 50
+
+#save
+save src/res/PNG/value-split.png valuesplit
+
+#luma split
+luma-component input lumasplit split 50
+
+#save
+save src/res/PNG/luma-split.png lumasplit
+
+#intensity split
+intensity-component input intensitysplit split 50
+
+#save
+save src/res/PNG/intensity-split.png intensitysplit
+
+#split blur
+blur input blursplit split 50
+
+#save
+save src/res/PNG/blur-split.png blursplit
+
+#sharpen split
+sharpen input sharpensplit split 50
+
+#save
+save src/res/PNG/sharpen-split.png sharpensplit
+
+#sepia split
+sepia input sepiasplit split 50
+
+#save
+save src/res/PNG/sepia-split.png sepiasplit
+
+#levels adjust split
+levels-adjust 50 75 100 input levelsadjustsplit split 50
+
+#save
+save src/res/PNG/levels-adjust-split.png levelsadjustsplit
+
+#color correct split
+color-correct input colorcorrectsplit split 50
+
+#save
+save src/res/PNG/color-correct-split.png colorcorrectsplit

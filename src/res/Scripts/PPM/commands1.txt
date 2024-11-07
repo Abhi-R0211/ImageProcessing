@@ -17,7 +17,7 @@ green-component input green
 save src/res/PPM/Sample-green.ppm green
 
 #blue
-green-component input blue
+blue-component input blue
 
 #save
 save src/res/PPM/Sample-blue.ppm blue
@@ -95,3 +95,95 @@ rgb-combine combine red1 green1 blue1
 
 #save
 save src/res/PPM/Sample-combine.ppm combine
+
+#compress
+compress 50 input compressed
+
+#save
+save src/res/PPM/compressed.ppm compressed
+
+#histogram
+histogram input histogram
+
+#save
+save src/res/PPM/histogram.ppm histogram
+
+#color-correct
+color-correct input colorcorrect
+
+#save
+save src/res/PPM/color-correct.ppm colorcorrect
+
+#levels-adjust
+levels-adjust 50 75 100 input levelsadjust
+
+#save
+save src/res/PPM/levels-adjust.ppm levelsadjust
+
+#split for all functions
+
+#split red
+red-component input redsplit split 50
+
+#save
+save src/res/PPM/red-split.ppm redsplit
+
+#split green
+green-component input greensplit split 50
+
+#save
+save src/res/PPM/green-split.ppm greensplit 50
+
+#blur split
+blue-component input bluesplit split 50
+
+#save
+save src/res/PPM/blue-split.ppm bluesplit
+
+#value split
+value-component input valuesplit split 50
+
+#save
+save src/res/PPM/value-split.ppm valuesplit
+
+#luma split
+luma-component input lumasplit split 50
+
+#save
+save src/res/PPM/luma-split.ppm lumasplit
+
+#intensity split
+intensity-component input intensitysplit split 50
+
+#save
+save src/res/PPM/intensity-split.ppm intensitysplit
+
+#split blur
+blur input blursplit split 50
+
+#save
+save src/res/PPM/blur-split.ppm blursplit
+
+#sharpen split
+sharpen input sharpensplit split 50
+
+#save
+save src/res/PPM/sharpen-split.ppm sharpensplit
+
+#sepia split
+sepia input sepiasplit split 50
+
+#save
+save src/res/PPM/sepia-split.ppm sepiasplit
+
+#levels adjust split
+levels-adjust 50 75 100 input levelsadjustsplit split 50
+
+#save
+save src/res/PPM/levels-adjust-split.ppm levelsadjustsplit
+
+#color correct split
+color-correct input colorcorrectsplit split 50
+
+#save 
+save src/res/PPM/color-correct-split.ppm colorcorrectsplit

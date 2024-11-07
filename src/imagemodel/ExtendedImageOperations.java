@@ -140,59 +140,59 @@ public class ExtendedImageOperations extends ImageOperations implements Extended
   /**
    * Applies a 2D Haar wavelet transform to a given matrix.
    *
-   * @param X the matrix to transform.
+   * @param x the matrix to transform.
    * @param s the size of the matrix.
    * @return the transformed matrix.
    */
-  private double[][] haarTransform2D(double[][] X, int s) {
+  private double[][] haarTransform2D(double[][] x, int s) {
     int c = s;
     while (c > 1) {
       for (int i = 0; i < c; i++) {
-        double[] result = haarTransform1D(X[i], c);
-        System.arraycopy(result, 0, X[i], 0, c);
+        double[] result = haarTransform1D(x[i], c);
+        System.arraycopy(result, 0, x[i], 0, c);
       }
       for (int j = 0; j < c; j++) {
         double[] column = new double[c];
         for (int i = 0; i < c; i++) {
-          column[i] = X[i][j];
+          column[i] = x[i][j];
         }
         column = haarTransform1D(column, c);
         for (int i = 0; i < c; i++) {
-          X[i][j] = column[i];
+          x[i][j] = column[i];
         }
       }
       c /= 2;
     }
-    return X;
+    return x;
   }
 
   /**
    * Applies a 2D inverse Haar wavelet transform to a given matrix.
    *
-   * @param X the matrix to inverse transform.
+   * @param x the matrix to inverse transform.
    * @param s the size of the matrix.
    * @return the inverse transformed matrix.
    */
-  private double[][] inverseHaarTransform2D(double[][] X, int s) {
+  private double[][] inverseHaarTransform2D(double[][] x, int s) {
     int c = 2;
     while (c <= s) {
       for (int j = 0; j < c; j++) {
         double[] column = new double[c];
         for (int i = 0; i < c; i++) {
-          column[i] = X[i][j];
+          column[i] = x[i][j];
         }
         column = inverseHaarTransform1D(column, c);
         for (int i = 0; i < c; i++) {
-          X[i][j] = column[i];
+          x[i][j] = column[i];
         }
       }
       for (int i = 0; i < c; i++) {
-        double[] result = inverseHaarTransform1D(X[i], c);
-        System.arraycopy(result, 0, X[i], 0, c);
+        double[] result = inverseHaarTransform1D(x[i], c);
+        System.arraycopy(result, 0, x[i], 0, c);
       }
       c *= 2;
     }
-    return X;
+    return x;
   }
 
   /**
@@ -276,7 +276,7 @@ public class ExtendedImageOperations extends ImageOperations implements Extended
   @Override
   public ImageInterface createHistogram(ImageInterface image) {
     if (image == null) {
-      throw new NullPointerException("Image cannot be null.");
+      throw new IllegalArgumentException("Image cannot be null.");
     }
     int width = 256;
     int height = 256;
@@ -347,7 +347,9 @@ public class ExtendedImageOperations extends ImageOperations implements Extended
     int max = 0;
     for (int[] channel : histogramData) {
       for (int frequency : channel) {
-        if (frequency > max) max = frequency;
+        if (frequency > max) {
+          max = frequency;
+        }
       }
     }
     return max;
@@ -417,7 +419,9 @@ public class ExtendedImageOperations extends ImageOperations implements Extended
       if (x0 >= 0 && x0 < width && y0 >= 0 && y0 < height) {
         image.setPixel(x0, y0, color);
       }
-      if (x0 == x1 && y0 == y1) break;
+      if (x0 == x1 && y0 == y1) {
+        break;
+      }
       int err2 = err * 2;
       if (err2 > -dy) {
         err -= dy;
@@ -440,7 +444,7 @@ public class ExtendedImageOperations extends ImageOperations implements Extended
   @Override
   public ImageInterface colorCorrect(ImageInterface image) {
     if (image == null) {
-      throw new NullPointerException("Image cannot be null.");
+      throw new IllegalArgumentException("Image cannot be null.");
     }
     int[] redHist = calculateHistogramData(image)[0];
     int[] greenHist = calculateHistogramData(image)[1];
@@ -529,11 +533,11 @@ public class ExtendedImageOperations extends ImageOperations implements Extended
   @Override
   public ImageInterface levelsAdjust(ImageInterface image, int black, int mid, int white) {
     if (black < 0 || black >= mid || mid >= white || white > 255) {
-      throw new IllegalArgumentException("Black, mid, and white values must be in ascending " +
-              "order within [0, 255].");
+      throw new IllegalArgumentException("Black, mid, and white values must be in ascending "
+              + "order within [0, 255].");
     }
     if (image == null) {
-      throw new NullPointerException("Image cannot be null.");
+      throw new IllegalArgumentException("Image cannot be null.");
     }
     int width = image.getWidth();
     int height = image.getHeight();
@@ -583,9 +587,10 @@ public class ExtendedImageOperations extends ImageOperations implements Extended
    * @throws IllegalArgumentException if the operation type is unsupported.
    */
   @Override
-  public ImageInterface splitViewOperation(String[] tokens, ImageInterface image) {
+  public ImageInterface splitViewOperation(String[] tokens, ImageInterface image)
+          throws IllegalArgumentException {
     if (image == null) {
-      throw new NullPointerException("Image cannot be null.");
+      throw new IllegalArgumentException("Image cannot be null.");
     }
     int width = image.getWidth();
     int height = image.getHeight();

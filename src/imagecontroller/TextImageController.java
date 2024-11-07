@@ -48,80 +48,80 @@ public class TextImageController implements Controller {
   private String commands() {
     StringBuilder command = new StringBuilder();
     command.append("Available commands:\n");
-    command.append("  load <image-path> <image-name>                                           " +
-            "                   - Loads an image\n");
-    command.append("  save <image-path> <image-name>                                           " +
-            "                   - Saves an image\n");
-    command.append("  red-component <image-name> <dest-image-name>                             " +
-            "                   - Gets the Red Component of the Image\n");
-    command.append("  red-component <image-name> <dest-image-name> split p                     " +
-            "                   - Gets the Red Component of the first p% of the Image while " +
-            "retaining the rest\n");
-    command.append("  green-component <image-name> <dest-image-name>                           " +
-            "                   - Gets the Green Component of the Image\n");
-    command.append("  green-component <image-name> <dest-image-name> split p                   " +
-            "                   - Gets the Green Component of the first p% of the Image while " +
-            "retaining the rest\n");
-    command.append("  blue-component <image-name> <dest-image-name>                            " +
-            "                   - Gets the Blue Component of the Image\n");
-    command.append("  blue-component <image-name> <dest-image-name> split p                    " +
-            "                   - Gets the Blue Component of the first p% of the Image while " +
-            "retaining the rest\n");
-    command.append("  value-component <image-name> <dest-image-name>                           " +
-            "                   - Gets the Value Component of the Image\n");
-    command.append("  value-component <image-name> <dest-image-name> split p                   " +
-            "                   - Gets the Value Component of the first p% of the Image while " +
-            "retaining the rest\n");
-    command.append("  luma-component <image-name> <dest-image-name>                            " +
-            "                   - Gets the Luma Component of the Image\n");
-    command.append("  luma-component <image-name> <dest-image-name> split p                    " +
-            "                   - Gets the Luma Component of the first p% of the Image while " +
-            "retaining the rest\n");
-    command.append("  intensity-component <image-name> <dest-image-name>                       " +
-            "                   - Gets the Intensity Component of the Image\n");
-    command.append("  intensity-component <image-name> <dest-image-name> split p               " +
-            "                   - Gets the Intensity Component of the first p% of the Image " +
-            "while retaining the rest\n");
-    command.append("  horizontal-flip <image-name> <dest-image-name>                           " +
-            "                   - Flips image horizontally\n");
-    command.append("  vertical-flip <image-name> <dest-image-name>                             " +
-            "                   - Flips image vertically\n");
-    command.append("  brighten <increment> <image-name> <dest-image-name>                      " +
-            "                   - Brightens the image\n");
-    command.append("  rgb-split <image-name> <dest-image-name-red> <dest-image-name-green> " +
-            "<dest-image-name-blue> - Splits RGB channels\n");
-    command.append("  rgb-combine <dest-image-name> <red-image> <green-image> <blue-image>     " +
-            "                   - Combines RGB channels\n");
-    command.append("  blur <image-name> <dest-image-name>                                      " +
-            "                   - Blurs the image\n");
-    command.append("  blur <image-name> <dest-image-name> split p                              " +
-            "                   - Blurs the first p% of the Image while retaining the rest\n");
-    command.append("  sharpen <image-name> <dest-image-name>                                   " +
-            "                   - Sharpens the image>\n");
-    command.append("  sharpen <image-name> <dest-image-name> split p                           " +
-            "                   - Sharpens the first p% of the Image while retaining the rest\n");
-    command.append("  sepia <image-name> <dest-image-name>                                     " +
-            "                   - Produces a sepia tone of the image>\n");
-    command.append("  sepia <image-name> <dest-image-name> split p                             " +
-            "                   - Produces a sepia tone of the first p% of the Image while " +
-            "retaining the rest\n");
-    command.append("  compress percentage <image-name> <dest-image-name>                       " +
-            "                   - Compresses the image by the given percentage\n");
-    command.append("  histogram <image-name> <dest-image-name>                                 " +
-            "                   - Generates a histogram of the given Image\n");
-    command.append("  color-correct <image-name> <dest-image-name>                             " +
-            "                   - Generates a color corrected version of the given Image\n");
-    command.append("  color-correct <image-name> <dest-image-name> split p                     " +
-            "                   - Generates a color corrected version of the first p% of " +
-            "the given Image\n");
-    command.append("  levels-adjust b m w <image-name> <dest-image-name>                       " +
-            "                   - Generates a level adjusted version of the given Image as " +
-            "per the given black, mid and white points\n");
-    command.append("  levels-adjust b m w <image-name> <dest-image-name> split p               " +
-            "                   - Generates a level adjusted version of the first p% of the " +
-            "given Image as per the given black, mid and white points\n");
-    command.append("  run <script-file-path>                                                   " +
-            "                   - Run commands from a script file\n");
+    command.append("  load <image-path> <image-name>                                           "
+            + "                   - Loads an image\n");
+    command.append("  save <image-path> <image-name>                                           "
+            + "                   - Saves an image\n");
+    command.append("  red-component <image-name> <dest-image-name>                             "
+            + "                   - Gets the Red Component of the Image\n");
+    command.append("  red-component <image-name> <dest-image-name> split p                     "
+            + "                   - Gets the Red Component of the first p% of the Image while "
+            + "retaining the rest\n");
+    command.append("  green-component <image-name> <dest-image-name>                           "
+            + "                   - Gets the Green Component of the Image\n");
+    command.append("  green-component <image-name> <dest-image-name> split p                   "
+            + "                   - Gets the Green Component of the first p% of the Image while "
+            + "retaining the rest\n");
+    command.append("  blue-component <image-name> <dest-image-name>                            "
+            + "                   - Gets the Blue Component of the Image\n");
+    command.append("  blue-component <image-name> <dest-image-name> split p                    "
+            + "                   - Gets the Blue Component of the first p% of the Image while "
+            + "retaining the rest\n");
+    command.append("  value-component <image-name> <dest-image-name>                           "
+            + "                   - Gets the Value Component of the Image\n");
+    command.append("  value-component <image-name> <dest-image-name> split p                   "
+            + "                   - Gets the Value Component of the first p% of the Image while "
+            + "retaining the rest\n");
+    command.append("  luma-component <image-name> <dest-image-name>                            "
+            + "                   - Gets the Luma Component of the Image\n");
+    command.append("  luma-component <image-name> <dest-image-name> split p                    "
+            + "                   - Gets the Luma Component of the first p% of the Image while "
+            + "retaining the rest\n");
+    command.append("  intensity-component <image-name> <dest-image-name>                       "
+            + "                   - Gets the Intensity Component of the Image\n");
+    command.append("  intensity-component <image-name> <dest-image-name> split p               "
+            + "                   - Gets the Intensity Component of the first p% of the Image "
+            + "while retaining the rest\n");
+    command.append("  horizontal-flip <image-name> <dest-image-name>                           "
+            + "                   - Flips image horizontally\n");
+    command.append("  vertical-flip <image-name> <dest-image-name>                             "
+            + "                   - Flips image vertically\n");
+    command.append("  brighten <increment> <image-name> <dest-image-name>                      "
+            + "                   - Brightens the image\n");
+    command.append("  rgb-split <image-name> <dest-image-name-red> <dest-image-name-green> "
+            + "<dest-image-name-blue> - Splits RGB channels\n");
+    command.append("  rgb-combine <dest-image-name> <red-image> <green-image> <blue-image>     "
+            + "                   - Combines RGB channels\n");
+    command.append("  blur <image-name> <dest-image-name>                                      "
+            + "                   - Blurs the image\n");
+    command.append("  blur <image-name> <dest-image-name> split p                              "
+            + "                   - Blurs the first p% of the Image while retaining the rest\n");
+    command.append("  sharpen <image-name> <dest-image-name>                                   "
+            + "                   - Sharpens the image>\n");
+    command.append("  sharpen <image-name> <dest-image-name> split p                           "
+            + "                   - Sharpens the first p% of the Image while retaining the rest\n");
+    command.append("  sepia <image-name> <dest-image-name>                                     "
+            + "                   - Produces a sepia tone of the image>\n");
+    command.append("  sepia <image-name> <dest-image-name> split p                             "
+            + "                   - Produces a sepia tone of the first p% of the Image while "
+            + "retaining the rest\n");
+    command.append("  compress percentage <image-name> <dest-image-name>                       "
+            + "                   - Compresses the image by the given percentage\n");
+    command.append("  histogram <image-name> <dest-image-name>                                 "
+            + "                   - Generates a histogram of the given Image\n");
+    command.append("  color-correct <image-name> <dest-image-name>                             "
+            + "                   - Generates a color corrected version of the given Image\n");
+    command.append("  color-correct <image-name> <dest-image-name> split p                     "
+            + "                   - Generates a color corrected version of the first p% of "
+            + "the given Image\n");
+    command.append("  levels-adjust b m w <image-name> <dest-image-name>                       "
+            + "                   - Generates a level adjusted version of the given Image as "
+            + "per the given black, mid and white points\n");
+    command.append("  levels-adjust b m w <image-name> <dest-image-name> split p               "
+            + "                   - Generates a level adjusted version of the first p% of the "
+            + "given Image as per the given black, mid and white points\n");
+    command.append("  run <script-file-path>                                                   "
+            + "                   - Run commands from a script file\n");
     return command.toString();
   }
 
@@ -130,9 +130,18 @@ public class TextImageController implements Controller {
    *
    * @throws IOException upon encountering incorrect input/output.
    */
-  public void start() throws IOException {
-    output.append(commands());
-    output.append("Type 'exit' to quit.\n");
+  public void start(String[] args) throws IOException {
+    if (args.length == 0) {
+      output.append(commands());
+      output.append("Type 'exit' to quit.\n");
+    } else if (args.length == 2 && (args[0].equalsIgnoreCase("-script")
+            || args[0].equalsIgnoreCase("-file"))) {
+      runScript(args[1]);
+      return;
+    } else {
+      output.append("Invalid number of arguments\n");
+      return;
+    }
     while (true) {
       System.out.print(" > ");
       String input = scanner.nextLine().trim();
@@ -476,8 +485,8 @@ public class TextImageController implements Controller {
       images.put(tokens[2], splitImages[0]);
       images.put(tokens[3], splitImages[1]);
       images.put(tokens[4], splitImages[2]);
-      output.append("RGB Components split and stored at ").append(tokens[2]).append(" ").append
-              (tokens[3]).append(" ").append(tokens[4]).append("\n");
+      output.append("RGB Components split and stored at ").append(tokens[2]).append(" ").append(
+              tokens[3]).append(" ").append(tokens[4]).append("\n");
     } else {
       output.append("Invalid rgb-split command\n");
     }
@@ -567,7 +576,8 @@ public class TextImageController implements Controller {
    * @param tokens command input.
    * @throws IOException upon encountering incorrect input/output.
    */
-  private void handleCompressCommand(String[] tokens) throws IllegalArgumentException, IOException {
+  private void handleCompressCommand(String[] tokens) throws IllegalArgumentException,
+          IOException {
     if (tokens.length != 4) {
       output.append("Invalid number of arguments\n");
       return;
@@ -642,7 +652,8 @@ public class TextImageController implements Controller {
    */
   private void handleHorizontalFlip(String[] tokens) throws IOException {
     if (tokens.length == 3) {
-      ImageInterface flippedHorizontal = imageOperations.applyHorizontalFlip(images.get(tokens[1]));
+      ImageInterface flippedHorizontal =
+              imageOperations.applyHorizontalFlip(images.get(tokens[1]));
       images.put(tokens[2], flippedHorizontal);
       output.append("Image flipped Horizontally and stored at ").append(tokens[2]).append("\n");
     } else {

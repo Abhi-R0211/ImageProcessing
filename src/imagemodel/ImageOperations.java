@@ -18,7 +18,7 @@ public class ImageOperations implements Operations {
   @Override
   public ImageInterface applyHorizontalFlip(ImageInterface image) {
     if (image == null) {
-      throw new NullPointerException("image is null");
+      throw new IllegalArgumentException("image is null");
     }
     int width = image.getWidth();
     int height = image.getHeight();
@@ -43,7 +43,7 @@ public class ImageOperations implements Operations {
   @Override
   public ImageInterface applyVerticalFlip(ImageInterface image) {
     if (image == null) {
-      throw new NullPointerException("image is null");
+      throw new IllegalArgumentException("image is null");
     }
     int width = image.getWidth();
     int height = image.getHeight();
@@ -70,7 +70,7 @@ public class ImageOperations implements Operations {
   @Override
   public ImageInterface applyBrightness(ImageInterface image, int increment) {
     if (image == null) {
-      throw new NullPointerException("image is null");
+      throw new IllegalArgumentException("image is null");
     }
     int width = image.getWidth();
     int height = image.getHeight();
@@ -107,7 +107,7 @@ public class ImageOperations implements Operations {
   @Override
   public ImageInterface applySepia(ImageInterface image) {
     if (image == null) {
-      throw new NullPointerException("image is null");
+      throw new IllegalArgumentException("image is null");
     }
     int width = image.getWidth();
     int height = image.getHeight();
@@ -136,7 +136,7 @@ public class ImageOperations implements Operations {
   @Override
   public ImageInterface applyBlur(ImageInterface image) {
     if (image == null) {
-      throw new NullPointerException("image is null");
+      throw new IllegalArgumentException("image is null");
     }
     double[][] blurKernel = {
             {1.0 / 16, 1.0 / 8, 1.0 / 16},
@@ -155,7 +155,7 @@ public class ImageOperations implements Operations {
   @Override
   public ImageInterface applySharpen(ImageInterface image) {
     if (image == null) {
-      throw new NullPointerException("image is null");
+      throw new IllegalArgumentException("image is null");
     }
     double[][] sharpenKernel = {
             {-1.0 / 8, -1.0 / 8, -1.0 / 8, -1.0 / 8, -1.0 / 8},
@@ -176,7 +176,7 @@ public class ImageOperations implements Operations {
   @Override
   public ImageInterface visualizeRedComponent(ImageInterface image) {
     if (image == null) {
-      throw new NullPointerException("image is null");
+      throw new IllegalArgumentException("image is null");
     }
     return componentHelper(image, PixelInterface::getRed);
   }
@@ -190,7 +190,7 @@ public class ImageOperations implements Operations {
   @Override
   public ImageInterface visualizeGreenComponent(ImageInterface image) {
     if (image == null) {
-      throw new NullPointerException("image is null");
+      throw new IllegalArgumentException("image is null");
     }
     return componentHelper(image, PixelInterface::getGreen);
   }
@@ -204,7 +204,7 @@ public class ImageOperations implements Operations {
   @Override
   public ImageInterface visualizeBlueComponent(ImageInterface image) {
     if (image == null) {
-      throw new NullPointerException("image is null");
+      throw new IllegalArgumentException("image is null");
     }
     return componentHelper(image, PixelInterface::getBlue);
   }
@@ -218,7 +218,7 @@ public class ImageOperations implements Operations {
   @Override
   public ImageInterface visualizeValue(ImageInterface image) {
     if (image == null) {
-      throw new NullPointerException("image is null");
+      throw new IllegalArgumentException("image is null");
     }
     return componentHelper(image, pixel -> Math.max(pixel.getRed(),
             Math.max(pixel.getGreen(), pixel.getBlue())));
@@ -233,7 +233,7 @@ public class ImageOperations implements Operations {
   @Override
   public ImageInterface visualizeIntensity(ImageInterface image) {
     if (image == null) {
-      throw new NullPointerException("image is null");
+      throw new IllegalArgumentException("image is null");
     }
     return componentHelper(image, pixel ->
             (pixel.getRed() + pixel.getGreen() + pixel.getBlue()) / 3);
@@ -248,7 +248,7 @@ public class ImageOperations implements Operations {
   @Override
   public ImageInterface visualizeLuma(ImageInterface image) {
     if (image == null) {
-      throw new NullPointerException("image is null");
+      throw new IllegalArgumentException("image is null");
     }
     return componentHelper(image, pixel -> (int) (0.2126 * pixel.getRed()
             + 0.7152 * pixel.getGreen() + 0.0722 * pixel.getBlue()));
@@ -264,7 +264,7 @@ public class ImageOperations implements Operations {
   private ImageInterface componentHelper(ImageInterface image, Function<PixelInterface,
           Integer> componentExtractor) {
     if (image == null) {
-      throw new NullPointerException("image is null");
+      throw new IllegalArgumentException("image is null");
     }
     int width = image.getWidth();
     int height = image.getHeight();
@@ -287,7 +287,7 @@ public class ImageOperations implements Operations {
    */
   private ImageInterface applyKernel(ImageInterface image, double[][] kernel) {
     if (image == null) {
-      throw new NullPointerException("image is null");
+      throw new IllegalArgumentException("image is null");
     }
     int kernelHeight = kernel.length;
     int kernelWidth = kernel[0].length;
@@ -334,7 +334,7 @@ public class ImageOperations implements Operations {
   public ImageInterface combineRGB(ImageInterface redImage, ImageInterface greenImage,
                                    ImageInterface blueImage) {
     if (redImage == null || greenImage == null || blueImage == null) {
-      throw new NullPointerException("image is null");
+      throw new IllegalArgumentException("image is null");
     }
     int width = redImage.getWidth();
     int height = redImage.getHeight();

@@ -20,7 +20,8 @@ public interface Controller {
   /**
    * Starts an interactive session between the system and user.
    *
+   * @param args input from the user.
    * @throws IOException on incorrect Input/Output.
    */
-  void start() throws IOException;
+  void start(String[] args) throws IOException;
 }

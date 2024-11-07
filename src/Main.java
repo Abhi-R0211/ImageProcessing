@@ -17,22 +17,11 @@ public class Main {
    *
    * @param args takes input of the function that the user wants to perform as a string.
    */
-  public static void main(String[] args) {
+  public static void main(String[] args) throws IOException {
     ExtendedOperations operations = new ExtendedImageOperations();
     Controller controller = new TextImageController(operations,
             new InputStreamReader(System.in), System.out);
     System.out.println("\nWelcome to the Image Processor Application!\n");
-    try {
-      if (args.length == 0) {
-        controller.start();
-      } else if (args.length == 2 && (args[0].equalsIgnoreCase("-script")
-              || args[0].equalsIgnoreCase("-file"))) {
-        controller.runCommand("run " + args[1]);
-      } else {
-        throw new IOException("Unrecognized arguments");
-      }
-    } catch (IOException e) {
-      System.out.println("Error processing the command : " + e.getMessage());
-    }
+    controller.start(args);
   }
 }
