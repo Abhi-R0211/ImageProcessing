@@ -1,4 +1,4 @@
-## Assignment 4 - Image Processing
+## Image Processor Application
 
 ## Overview
 
@@ -19,8 +19,6 @@ class.
 - `P3PPMHandler.java`: This class is used to load and save images which are of type P3PPM.
 - `ImageHandler.java`: This class is an implementation of the ImageFormatHandler Interface where it
   will load and save images based on the file type which is sent as an input.-
-  `ImageFormatHandler.java`: This is an interface which acts as an universal template for saving and
-  loading images.
 - `ImageFormatHandler.java`: This is an interface which acts as a universal template for saving and
   loading images.
 - `Controller.java`: This is an interface which is used to run any command or to get an image from
@@ -35,9 +33,20 @@ class.
   that can be performed on the image such as horizontal/vertical flipping, brighten/darken,
   component extraction and so on.
 - `Pixel.java`: Represents a data structure of type pixel in the image with RGB values.
-- `ImageInterface.java`: This interface is used for setting or accessing an Image values like the
+- `ImageInterface.java`: This interface is used for accessing an Image values like the
   Pixel, Height and the Width.
 - `PixelInterface.java`: The pixel interface is used for getting the Pixel values (R, G, B).
+- `ExtendedImageOperations.java`: This class contains functions which are implemented in later
+  stage of the project.
+- `ExtendedOperations.java`: This interface extends the older interface so all functionality is
+  used. This interface contains the prototype of all the new operations that can be performed
+  on the Image such as compress, histogram, levels-adjust and so on.
+- `ImageCopy.java`: This class is used to create a copy of this Image. This will ensure that the
+  original Image is immutable.
+- `ImageCopyInterface.java`: This interface is used to get the pixels or set the pixels in the
+  Image.
+- `MockOperations.java`:
+-
 
 **3. Main File**
 
@@ -64,16 +73,21 @@ or run the script file.
 - Blur the Image - blur <image-name> <dest-image-name>
 - Sharpen the Image - sharpen <image-name> <dest-image-name>
 - Apply a Sepia Filter - sepia <image-name> <dest-image-name>
+- Compress a Image - compress <percentage> <image-name> <dest-file-path>
+- Create Histogram - histogram <image-name> <dest-file-path>
+- Perform Colour Correction - color-correct <image-name> <dest-image-name>
+- Perform Levels Adjust - levels-adjust <b> <m> <w> <image-name> <dest-image-name>
+- Split and perform function - <Normal function command> <split> <percentage-split>
 - Run a Script File - run <script-file-path>
 
 **4. Class Diagram**
 
-![class-diagram-src.jpg](class-diagram.jpg)
+![src_class_diagram.png](src/res/Class_Diagram.png)
 
 **5. Images**
 
 This folder contains sample images for testing purposes. Images are available in various formats
-like BMP, JPEG, JPG, and PNG:
+like BMP, JPEG, JPG, PPM(P3) and PNG:
 
 - BMP: `Sample.bmp`
 - JPEG: `Sample.jpeg`
@@ -83,18 +97,9 @@ like BMP, JPEG, JPG, and PNG:
 
 **6. How to Run**
 
-**List of Commands (Sample) that will be accepted by the Program**
-
-- load src/res/PNG/Sample.png input
-- red-component input red
-- vertical-flip red vertical
-- horizontal-flip vertical horizontal
-- save src/res/PNG/Sample-horizontal.png horizontal
-
-The above lines should be typed in the Command Line Interface as an Argument to run the files. The
-output would be the red component of the input image flipped vertically and then flipped again
-horizontally. The following Script File can be run to get the output as well "
-src/res/Scripts/PNG/commands1.txt".
+- Refer USEME.md for a list of commands and their usage.
+- Following are 2 sample scripts which can be run to get a better understanding of this application:
+  "src/res/Scripts/PPM/commands1.txt" "src/res/Scripts/PNG/commands1.txt"
 
 **THE IMAGES USED IN THE PROJECT ARE OWNED BY ABHISHEK RAGHURAMAN AND AYUSH VINEET JAIN AND WE
 AUTHORIZE TO USE THE IMAGES**

@@ -6,7 +6,7 @@ import java.util.Objects;
 
 /**
  * This class is designed to represent images. It stores each pixel in a 2-dimensional list which
- * is of the type Pixel class. It also provides additional functionality of getting/setting the
+ * is of the type Pixel class. It also provides additional functionality of getting the
  * pixel value, width and height of the image.
  */
 public class Image implements ImageInterface {
@@ -15,7 +15,7 @@ public class Image implements ImageInterface {
   private int height;
 
   /**
-   * The class constructor initializes the object such that a black image is generated as the
+   * The class constructor initializes the object such that a white image is generated as the
    * default image whenever an object of this class is created.
    *
    * @param width  of the image.
@@ -39,6 +39,14 @@ public class Image implements ImageInterface {
     }
   }
 
+  /**
+   * Additional constructor for the ImageCopy class.
+   *
+   * @param width  of the image.
+   * @param height of the image.
+   * @param pixels 2-D list of pixel values.
+   * @throws IllegalArgumentException when the height or width of image is invalid.
+   */
   public Image(int width, int height, List<List<Pixel>> pixels) throws IllegalArgumentException {
     if (width <= 0 || height <= 0) {
       throw new IllegalArgumentException("Invalid image dimensions");
@@ -91,7 +99,7 @@ public class Image implements ImageInterface {
     if (!(o instanceof ImageInterface)) {
       return false;
     }
-    ImageInterface actual = (Image) o;
+    ImageInterface actual = (ImageInterface) o;
     if (this.getWidth() != actual.getWidth() || this.getHeight() != actual.getHeight()) {
       return false;
     }
