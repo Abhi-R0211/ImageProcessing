@@ -7,6 +7,8 @@ import java.io.IOException;
 
 import imagecontroller.ImageFormatHandler;
 import imagecontroller.ImageHandler;
+import imagemodel.AdditionalImageOperations;
+import imagemodel.AdditionalOperations;
 import imagemodel.ExtendedImageOperations;
 import imagemodel.ExtendedOperations;
 import imagemodel.ImageCopy;
@@ -1196,7 +1198,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void demoDOWNSIZE() throws IOException {
-    ExtendedOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface input = ih.loadImage("src/res/PNG/galaxy.png");
     ImageInterface actual = io.downscaleImage(input, 100, 100);
@@ -1205,6 +1207,22 @@ public class PNGTest extends AbstractTest {
     ih.saveImage(actual, "src/res/PNG/test.png", "png");
   }
 
+  @Test
+  public void demoPARTIAL() throws IOException {
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageFormatHandler ih = new ImageHandler();
+    ImageInterface input = ih.loadImage("src/res/PNG/manhattan-small.png");
+    ImageCopyInterface expected = new ImageCopy(input.getWidth(), input.getHeight());
+
+    for (int i = 0; i < input.getHeight() / 2; i++) {
+      for (int j = 0; j < input.getWidth() / 2; j++) {
+        expected.setPixel(j, i, new Pixel(0, 0, 0));
+      }
+    }
+
+    ImageInterface trial = io.visualizeLuma(input, expected.deepCopyImage());
+    ih.saveImage(trial, "src/res/PNG/test.png", "png");
+  }
 
 
 }

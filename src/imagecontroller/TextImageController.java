@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-import imagemodel.ExtendedOperations;
+import imagemodel.AdditionalOperations;
 import imagemodel.ImageInterface;
 
 /**
@@ -19,7 +19,7 @@ import imagemodel.ImageInterface;
 public class TextImageController implements Controller {
 
   private Map<String, ImageInterface> images;
-  private ExtendedOperations imageOperations;
+  private AdditionalOperations imageOperations;
   private final Scanner scanner;
   private final Appendable output;
 
@@ -32,7 +32,7 @@ public class TextImageController implements Controller {
    * @param input           Readable Scanner object.
    * @param output          Appendable object.
    */
-  public TextImageController(ExtendedOperations imageOperations, Readable input,
+  public TextImageController(AdditionalOperations imageOperations, Readable input,
                              Appendable output) {
     this.images = new HashMap<>();
     this.imageOperations = imageOperations;
@@ -57,37 +57,57 @@ public class TextImageController implements Controller {
     command.append("  red-component <image-name> <dest-image-name> split p                     "
             + "                   - Gets the Red Component of the first p% of the Image while "
             + "retaining the rest\n");
+    command.append("  red-component <image-name> <dest-image-name> mask <mask-image-name>         "
+            + "                - Applies the red greyscale on the pixels of the image with "
+            + "respect to the mask image\n");
     command.append("  green-component <image-name> <dest-image-name>                           "
             + "                   - Gets the Green Component of the Image\n");
     command.append("  green-component <image-name> <dest-image-name> split p                   "
             + "                   - Gets the Green Component of the first p% of the Image while "
             + "retaining the rest\n");
+    command.append("  green-component <image-name> <dest-image-name> mask <mask-image-name>    "
+            + "                   - Applies the green greyscale on the pixels of the image with "
+            + "respect to the mask image\n");
     command.append("  blue-component <image-name> <dest-image-name>                            "
             + "                   - Gets the Blue Component of the Image\n");
     command.append("  blue-component <image-name> <dest-image-name> split p                    "
             + "                   - Gets the Blue Component of the first p% of the Image while "
             + "retaining the rest\n");
+    command.append("  blue-component <image-name> <dest-image-name> mask <mask-image-name>     "
+            + "                   - Applies the blue greyscale on the pixels of the image with "
+            + "respect to the mask image\n");
     command.append("  value-component <image-name> <dest-image-name>                           "
             + "                   - Gets the Value Component of the Image\n");
     command.append("  value-component <image-name> <dest-image-name> split p                   "
             + "                   - Gets the Value Component of the first p% of the Image while "
             + "retaining the rest\n");
+    command.append("  value-component <image-name> <dest-image-name> mask <mask-image-name>       "
+            + "                - Applies the value visualization on the pixels of the image with "
+            + "respect to the mask image\n");
     command.append("  luma-component <image-name> <dest-image-name>                            "
             + "                   - Gets the Luma Component of the Image\n");
     command.append("  luma-component <image-name> <dest-image-name> split p                    "
             + "                   - Gets the Luma Component of the first p% of the Image while "
             + "retaining the rest\n");
+    command.append("  luma-component <image-name> <dest-image-name> mask <mask-image-name>     "
+            + "                   - Applies the luma visualization on the pixels of the image with "
+            + "respect to the mask image\n");
     command.append("  intensity-component <image-name> <dest-image-name>                       "
             + "                   - Gets the Intensity Component of the Image\n");
     command.append("  intensity-component <image-name> <dest-image-name> split p               "
             + "                   - Gets the Intensity Component of the first p% of the Image "
             + "while retaining the rest\n");
+    command.append("  intensity-component <image-name> <dest-image-name> mask <mask-image-name>   "
+            + "                - Applies the intensity visualization on the pixels of the image  "
+            + "with respect to the mask image\n");
     command.append("  horizontal-flip <image-name> <dest-image-name>                           "
             + "                   - Flips image horizontally\n");
     command.append("  vertical-flip <image-name> <dest-image-name>                             "
             + "                   - Flips image vertically\n");
     command.append("  brighten <increment> <image-name> <dest-image-name>                      "
             + "                   - Brightens the image\n");
+    command.append("  brighten <increment> <image-name> <dest-image-name> mask <mask-image-name>  "
+            + "                - Brightens the image depending on the mask image\n");
     command.append("  rgb-split <image-name> <dest-image-name-red> <dest-image-name-green> "
             + "<dest-image-name-blue> - Splits RGB channels\n");
     command.append("  rgb-combine <dest-image-name> <red-image> <green-image> <blue-image>     "
@@ -96,15 +116,22 @@ public class TextImageController implements Controller {
             + "                   - Blurs the image\n");
     command.append("  blur <image-name> <dest-image-name> split p                              "
             + "                   - Blurs the first p% of the Image while retaining the rest\n");
+    command.append("  blur <image-name> <dest-image-name> mask <mask-image-name>               "
+            + "                   - Blurs the image according to the mask image\n");
     command.append("  sharpen <image-name> <dest-image-name>                                   "
             + "                   - Sharpens the image>\n");
     command.append("  sharpen <image-name> <dest-image-name> split p                           "
             + "                   - Sharpens the first p% of the Image while retaining the rest\n");
+    command.append("  sharpen <image-name> <dest-image-name> mask <mask-image-name>            "
+            + "                   - Sharpens the image according to the mask image\n");
     command.append("  sepia <image-name> <dest-image-name>                                     "
             + "                   - Produces a sepia tone of the image>\n");
-    command.append("  sepia <image-name> <dest-image-name> split p                             "
-            + "                   - Produces a sepia tone of the first p% of the Image while "
+    command.append("  sepia <image-name> <dest-image-name> split p                            "
+            + "                    - Produces a sepia tone of the first p% of the Image while "
             + "retaining the rest\n");
+    command.append("  sepia <image-name> <dest-image-name> mask <mask-image-name>               "
+            + "                  - Applies the sepia visualization on the pixels of the image  "
+            + "with respect to the mask image\n");
     command.append("  compress percentage <image-name> <dest-image-name>                       "
             + "                   - Compresses the image by the given percentage\n");
     command.append("  histogram <image-name> <dest-image-name>                                 "
@@ -302,8 +329,11 @@ public class TextImageController implements Controller {
     ImageInterface redImage;
     if (tokens.length == 3) {
       redImage = imageOperations.visualizeRedComponent(images.get(tokens[1]));
-    } else if (tokens.length == 5 && tokens[tokens.length - 2].equals("split")) {
+    } else if (tokens.length == 5 && tokens[3].equals("split")) {
       redImage = imageOperations.splitViewOperation(tokens, images.get(tokens[1]));
+    } else if (tokens.length == 5 && tokens[3].equals("mask")) {
+      redImage = imageOperations.visualizeRedComponent(
+              images.get(tokens[1]), images.get(tokens[4]));
     } else {
       output.append("Invalid red-component command\n");
       return;
@@ -322,8 +352,11 @@ public class TextImageController implements Controller {
     ImageInterface greenImage;
     if (tokens.length == 3) {
       greenImage = imageOperations.visualizeGreenComponent(images.get(tokens[1]));
-    } else if (tokens.length == 5 && tokens[tokens.length - 2].equals("split")) {
+    } else if (tokens.length == 5 && tokens[3].equals("split")) {
       greenImage = imageOperations.splitViewOperation(tokens, images.get(tokens[1]));
+    } else if (tokens.length == 5 && tokens[3].equals("mask")) {
+      greenImage = imageOperations.visualizeGreenComponent(
+              images.get(tokens[1]), images.get(tokens[4]));
     } else {
       output.append("Invalid green-component command\n");
       return;
@@ -342,8 +375,11 @@ public class TextImageController implements Controller {
     ImageInterface blueImage;
     if (tokens.length == 3) {
       blueImage = imageOperations.visualizeBlueComponent(images.get(tokens[1]));
-    } else if (tokens.length == 5 && tokens[tokens.length - 2].equals("split")) {
+    } else if (tokens.length == 5 && tokens[3].equals("split")) {
       blueImage = imageOperations.splitViewOperation(tokens, images.get(tokens[1]));
+    } else if (tokens.length == 5 && tokens[3].equals("mask")) {
+      blueImage = imageOperations.visualizeBlueComponent(
+              images.get(tokens[1]), images.get(tokens[4]));
     } else {
       output.append("Invalid blue-component command\n");
       return;
@@ -362,8 +398,10 @@ public class TextImageController implements Controller {
     ImageInterface valueImage;
     if (tokens.length == 3) {
       valueImage = imageOperations.visualizeValue(images.get(tokens[1]));
-    } else if (tokens.length == 5 && tokens[tokens.length - 2].equals("split")) {
+    } else if (tokens.length == 5 && tokens[3].equals("split")) {
       valueImage = imageOperations.splitViewOperation(tokens, images.get(tokens[1]));
+    } else if (tokens.length == 5 && tokens[3].equals("mask")) {
+      valueImage = imageOperations.visualizeValue(images.get(tokens[1]), images.get(tokens[4]));
     } else {
       output.append("Invalid value-component command\n");
       return;
@@ -382,8 +420,10 @@ public class TextImageController implements Controller {
     ImageInterface lumaImage;
     if (tokens.length == 3) {
       lumaImage = imageOperations.visualizeLuma(images.get(tokens[1]));
-    } else if (tokens.length == 5 && tokens[tokens.length - 2].equals("split")) {
+    } else if (tokens.length == 5 && tokens[3].equals("split")) {
       lumaImage = imageOperations.splitViewOperation(tokens, images.get(tokens[1]));
+    } else if (tokens.length == 5 && tokens[3].equals("mask")) {
+      lumaImage = imageOperations.visualizeLuma(images.get(tokens[1]), images.get(tokens[4]));
     } else {
       output.append("Invalid luma-component command\n");
       return;
@@ -402,8 +442,11 @@ public class TextImageController implements Controller {
     ImageInterface intensityImage;
     if (tokens.length == 3) {
       intensityImage = imageOperations.visualizeIntensity(images.get(tokens[1]));
-    } else if (tokens.length == 5 && tokens[tokens.length - 2].equals("split")) {
+    } else if (tokens.length == 5 && tokens[3].equals("split")) {
       intensityImage = imageOperations.splitViewOperation(tokens, images.get(tokens[1]));
+    } else if (tokens.length == 5 && tokens[3].equals("mask")) {
+      intensityImage = imageOperations.visualizeIntensity(images.get(tokens[1]),
+              images.get(tokens[4]));
     } else {
       output.append("Invalid intensity-component command\n");
       return;
@@ -432,7 +475,7 @@ public class TextImageController implements Controller {
       return;
     }
     images.put(tokens[5], adjustedImage);
-    output.append("Levels-adjusted image stored at: ").append(tokens[5]).append("\n");
+    output.append("Levels-adjusted image stored as: ").append(tokens[5]).append("\n");
   }
 
   /**
@@ -452,7 +495,7 @@ public class TextImageController implements Controller {
       return;
     }
     images.put(tokens[2], corrected);
-    output.append("Color-corrected image stored at: ").append(tokens[2]).append("\n");
+    output.append("Color-corrected image stored as: ").append(tokens[2]).append("\n");
   }
 
   /**
@@ -466,7 +509,7 @@ public class TextImageController implements Controller {
       ImageInterface combinedImage = imageOperations.combineRGB(
               images.get(tokens[2]), images.get(tokens[3]), images.get(tokens[4]));
       images.put(tokens[1], combinedImage);
-      output.append("RGB Channels combined and stored at :").append(tokens[1]).append("\n");
+      output.append("RGB Channels combined and stored as: ").append(tokens[1]).append("\n");
       return;
     }
     output.append("Invalid RGB combine command").append("\n");
@@ -488,7 +531,7 @@ public class TextImageController implements Controller {
       images.put(tokens[2], splitImages[0]);
       images.put(tokens[3], splitImages[1]);
       images.put(tokens[4], splitImages[2]);
-      output.append("RGB Components split and stored at ").append(tokens[2]).append(" ").append(
+      output.append("RGB Components split and stored as: ").append(tokens[2]).append(" ").append(
               tokens[3]).append(" ").append(tokens[4]).append("\n");
     } else {
       output.append("Invalid rgb-split command\n");
@@ -502,15 +545,20 @@ public class TextImageController implements Controller {
    * @throws IOException upon encountering incorrect input/output.
    */
   private void handleBrightenCommand(String[] tokens) throws IOException {
+    ImageInterface outputBrightness;
+    int increment = Integer.parseInt(tokens[1]);
+    ImageInterface brightenedImage = images.get(tokens[2]);
     if (tokens.length == 4) {
-      int increment = Integer.parseInt(tokens[1]);
-      ImageInterface brightenedImage = images.get(tokens[2]);
-      ImageInterface outputBrightness = imageOperations.applyBrightness(brightenedImage, increment);
-      images.put(tokens[3], outputBrightness);
-      output.append("Image brightened and stored at ").append(tokens[3]).append("\n");
+      outputBrightness = imageOperations.applyBrightness(brightenedImage, increment);
+    } else if (tokens.length == 6 && tokens[4].equals("mask")) {
+      outputBrightness = imageOperations.applyBrightness(brightenedImage, increment,
+              images.get(tokens[5]));
     } else {
       output.append("Invalid brighten command\n");
+      return;
     }
+    images.put(tokens[3], outputBrightness);
+    output.append("Image brightened and stored as: ").append(tokens[3]).append("\n");
   }
 
   /**
@@ -523,14 +571,16 @@ public class TextImageController implements Controller {
     ImageInterface blurImage;
     if (tokens.length == 3) {
       blurImage = imageOperations.applyBlur(images.get(tokens[1]));
-    } else if (tokens.length == 5 && tokens[tokens.length - 2].equals("split")) {
+    } else if (tokens.length == 5 && tokens[3].equals("split")) {
       blurImage = imageOperations.splitViewOperation(tokens, images.get(tokens[1]));
+    } else if (tokens.length == 5 && tokens[3].equals("mask")) {
+      blurImage = imageOperations.applyBlur(images.get(tokens[1]), images.get(tokens[4]));
     } else {
       output.append("Invalid blur command\n");
       return;
     }
     images.put(tokens[2], blurImage);
-    output.append("Image blurred and stored at ").append(tokens[2]).append("\n");
+    output.append("Image blurred and stored as: ").append(tokens[2]).append("\n");
   }
 
   /**
@@ -543,14 +593,16 @@ public class TextImageController implements Controller {
     ImageInterface sharpenImage;
     if (tokens.length == 3) {
       sharpenImage = imageOperations.applySharpen(images.get(tokens[1]));
-    } else if (tokens.length == 5 && tokens[tokens.length - 2].equals("split")) {
+    } else if (tokens.length == 5 && tokens[3].equals("split")) {
       sharpenImage = imageOperations.splitViewOperation(tokens, images.get(tokens[1]));
+    } else if (tokens.length == 5 && tokens[3].equals("mask")) {
+      sharpenImage = imageOperations.applySharpen(images.get(tokens[1]), images.get(tokens[4]));
     } else {
       output.append("Invalid sharpen command\n");
       return;
     }
     images.put(tokens[2], sharpenImage);
-    output.append("Image sharpened and stored at ").append(tokens[2]).append("\n");
+    output.append("Image sharpened and stored as: ").append(tokens[2]).append("\n");
   }
 
   /**
@@ -563,14 +615,16 @@ public class TextImageController implements Controller {
     ImageInterface sepiaImage;
     if (tokens.length == 3) {
       sepiaImage = imageOperations.applySepia(images.get(tokens[1]));
-    } else if (tokens.length == 5 && tokens[tokens.length - 2].equals("split")) {
+    } else if (tokens.length == 5 && tokens[3].equals("split")) {
       sepiaImage = imageOperations.splitViewOperation(tokens, images.get(tokens[1]));
+    } else if (tokens.length == 5 && tokens[3].equals("mask")) {
+      sepiaImage = imageOperations.applySepia(images.get(tokens[1]), images.get(tokens[4]));
     } else {
       output.append("Invalid sepia command\n");
       return;
     }
     images.put(tokens[2], sepiaImage);
-    output.append("Sepia filter added and stored at ").append(tokens[2]).append("\n");
+    output.append("Sepia filter added and stored as: ").append(tokens[2]).append("\n");
   }
 
   /**
@@ -658,7 +712,7 @@ public class TextImageController implements Controller {
       ImageInterface flippedHorizontal =
               imageOperations.applyHorizontalFlip(images.get(tokens[1]));
       images.put(tokens[2], flippedHorizontal);
-      output.append("Image flipped Horizontally and stored at ").append(tokens[2]).append("\n");
+      output.append("Image flipped Horizontally and stored as: ").append(tokens[2]).append("\n");
     } else {
       output.append("Invalid horizontal flip command\n");
     }
@@ -674,15 +728,11 @@ public class TextImageController implements Controller {
     if (tokens.length == 3) {
       ImageInterface flippedVertical = imageOperations.applyVerticalFlip(images.get(tokens[1]));
       images.put(tokens[2], flippedVertical);
-      output.append("Image flipped Vertically and stored at ").append(tokens[2]).append("\n");
+      output.append("Image flipped Vertically and stored as: ").append(tokens[2]).append("\n");
     } else {
       output.append("Invalid flip command\n");
     }
   }
-
-  //-----------------------------------------------------------------------------------------------
-  // EXTRA CREDITS
-  //-----------------------------------------------------------------------------------------------
 
   private void handleDownsizeCommand(String[] tokens) throws IOException {
     ImageInterface downsizedImage;
@@ -694,6 +744,6 @@ public class TextImageController implements Controller {
       return;
     }
     images.put(tokens[2], downsizedImage);
-    output.append("Downsized image stored at: ").append(tokens[2]).append("\n");
+    output.append("Downsized image stored as: ").append(tokens[2]).append("\n");
   }
 }

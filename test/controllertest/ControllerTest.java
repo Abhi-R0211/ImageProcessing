@@ -3,6 +3,7 @@ package controllertest;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -10,6 +11,7 @@ import java.io.StringReader;
 
 import imagecontroller.Controller;
 import imagecontroller.TextImageController;
+import imagemodel.AdditionalOperations;
 import imagemodel.ExtendedOperations;
 import imagemodel.MockOperations;
 
@@ -19,7 +21,7 @@ import imagemodel.MockOperations;
 public class ControllerTest {
 
   private Controller textImageController;
-  private ExtendedOperations mock;
+  private AdditionalOperations mock;
   private StringBuilder output;
 
   @Before
@@ -38,7 +40,7 @@ public class ControllerTest {
     textImageController.start(new String[0]);
     String actual = output.toString().replace(System.lineSeparator(), "\n");
     assertTrue(actual.contains("Levels adjusted"));
-    assertTrue(actual.contains("Levels-adjusted image stored at: output"));
+    assertTrue(actual.contains("Levels-adjusted image stored as: output"));
   }
 
   @Test
@@ -81,7 +83,7 @@ public class ControllerTest {
     String actual = output.toString().replace(System.lineSeparator(), "\n");
     assertTrue(actual.contains("Visualized red component\n" + "Visualized green component\n"
             + "Visualized blue component"));
-    assertTrue(actual.contains("RGB Components split and stored at red green blue"));
+    assertTrue(actual.contains("RGB Components split and stored as: red green blue"));
   }
 
   @Test
@@ -162,7 +164,7 @@ public class ControllerTest {
     textImageController.start(new String[0]);
     String actual = output.toString().replace(System.lineSeparator(), "\n");
     assertTrue(actual.contains("Applied sepia"));
-    assertTrue(actual.contains("Sepia filter added and stored at output"));
+    assertTrue(actual.contains("Sepia filter added and stored as: output"));
   }
 
   @Test
@@ -173,7 +175,7 @@ public class ControllerTest {
     textImageController.start(new String[0]);
     String actual = output.toString().replace(System.lineSeparator(), "\n");
     assertTrue(actual.contains("Split view operation performed"));
-    assertTrue(actual.contains("Sepia filter added and stored at output"));
+    assertTrue(actual.contains("Sepia filter added and stored as: output"));
   }
 
   @Test
@@ -194,7 +196,7 @@ public class ControllerTest {
     textImageController.start(new String[0]);
     String actual = output.toString().replace(System.lineSeparator(), "\n");
     assertTrue(actual.contains("Applied sharpen"));
-    assertTrue(actual.contains("Image sharpened and stored at output"));
+    assertTrue(actual.contains("Image sharpened and stored as: output"));
   }
 
   @Test
@@ -205,7 +207,7 @@ public class ControllerTest {
     textImageController.start(new String[0]);
     String actual = output.toString().replace(System.lineSeparator(), "\n");
     assertTrue(actual.contains("Split view operation performed"));
-    assertTrue(actual.contains("Image sharpened and stored at output"));
+    assertTrue(actual.contains("Image sharpened and stored as: output"));
   }
 
   @Test
@@ -226,7 +228,7 @@ public class ControllerTest {
     textImageController.start(new String[0]);
     String actual = output.toString().replace(System.lineSeparator(), "\n");
     assertTrue(actual.contains("Applied blur"));
-    assertTrue(actual.contains("Image blurred and stored at output"));
+    assertTrue(actual.contains("Image blurred and stored as: output"));
   }
 
   @Test
@@ -237,7 +239,7 @@ public class ControllerTest {
     textImageController.start(new String[0]);
     String actual = output.toString().replace(System.lineSeparator(), "\n");
     assertTrue(actual.contains("Split view operation performed"));
-    assertTrue(actual.contains("Image blurred and stored at output"));
+    assertTrue(actual.contains("Image blurred and stored as: output"));
   }
 
   @Test
@@ -259,7 +261,7 @@ public class ControllerTest {
     textImageController.start(new String[0]);
     String actual = output.toString().replace(System.lineSeparator(), "\n");
     assertTrue(actual.contains("Combined RGB"));
-    assertTrue(actual.contains("RGB Channels combined and stored at :testImage"));
+    assertTrue(actual.contains("RGB Channels combined and stored as: testImage"));
   }
 
   @Test
@@ -280,7 +282,7 @@ public class ControllerTest {
                     + "brighten testImage output\nexit\n"), output);
     textImageController.start(new String[0]);
     String actual = output.toString().replace(System.lineSeparator(), "\n");
-    assertTrue(actual.contains("Invalid brighten command"));
+    assertTrue(actual.contains("Error executing command"));
   }
 
   @Test
@@ -291,7 +293,7 @@ public class ControllerTest {
     textImageController.start(new String[0]);
     String actual = output.toString().replace(System.lineSeparator(), "\n");
     assertTrue(actual.contains("Applied brightness"));
-    assertTrue(actual.contains("Image brightened and stored at output"));
+    assertTrue(actual.contains("Image brightened and stored as: output"));
   }
 
   @Test
@@ -302,7 +304,7 @@ public class ControllerTest {
     textImageController.start(new String[0]);
     String actual = output.toString().replace(System.lineSeparator(), "\n");
     assertTrue(actual.contains("Applied brightness"));
-    assertTrue(actual.contains("Image brightened and stored at output"));
+    assertTrue(actual.contains("Image brightened and stored as: output"));
   }
 
   @Test
@@ -313,7 +315,7 @@ public class ControllerTest {
     textImageController.start(new String[0]);
     String actual = output.toString().replace(System.lineSeparator(), "\n");
     assertTrue(actual.contains("Applied vertical flip"));
-    assertTrue(actual.contains("Image flipped Vertically and stored at output"));
+    assertTrue(actual.contains("Image flipped Vertically and stored as: output"));
   }
 
   @Test
@@ -334,7 +336,7 @@ public class ControllerTest {
     textImageController.start(new String[0]);
     String actual = output.toString().replace(System.lineSeparator(), "\n");
     assertTrue(actual.contains("Applied horizontal flip"));
-    assertTrue(actual.contains("Image flipped Horizontally and stored at output"));
+    assertTrue(actual.contains("Image flipped Horizontally and stored as: output"));
   }
 
   @Test
@@ -544,80 +546,117 @@ public class ControllerTest {
     textImageController = new TextImageController(mock, new StringReader("exit\n"), output);
     textImageController.start(new String[0]);
     String actual = output.toString().replace(System.lineSeparator(), "\n");
-    assertTrue(actual.contains("  load <image-path> <image-name>                               "
-            + "                               - Loads an image\n" +
-            "  save <image-path> <image-name>                                                  "
-            + "            - Saves an image\n" + "  red-component <image-name> <dest-image-name> "
-            + "                                   "
-            + "            - Gets the Red Component of the Image\n"
-            + "  red-component <image-name> <dest-image-name> split p                            "
-            + "            - Gets the Red Component of the first p% of the Image while "
-            + "retaining the rest\n" + "  green-component <image-name> <dest-image-name>       "
-            + "                           "
-            + "            - Gets the Green Component of the Image\n"
-            + "  green-component <image-name> <dest-image-name> split p                          "
-            + "            - Gets the Green Component of the first p% of the Image while "
-            + "retaining the rest\n"
-            + "  blue-component <image-name> <dest-image-name>                                   "
-            + "            - Gets the Blue Component of the Image\n"
-            + "  blue-component <image-name> <dest-image-name> split p                           "
-            + "            - Gets the Blue Component of the first p% of the Image while "
-            + "retaining the rest\n" + "  value-component <image-name> <dest-image-name>       "
-            + "                           "
-            + "            - Gets the Value Component of the Image\n"
-            + "  value-component <image-name> <dest-image-name> split p                          "
-            + "            - Gets the Value Component of the first p% of the Image while "
-            + "retaining the rest\n" + "  luma-component <image-name> <dest-image-name>         "
-            + "                          "
-            + "            - Gets the Luma Component of the Image\n"
-            + "  luma-component <image-name> <dest-image-name> split p                           "
-            + "            - Gets the Luma Component of the first p% of the Image while "
-            + "retaining the rest\n" + "  intensity-component <image-name> <dest-image-name>    "
-            + "                          "
-            + "            - Gets the Intensity Component of the Image\n"
-            + "  intensity-component <image-name> <dest-image-name> split p                      "
-            + "            - Gets the Intensity Component of the first p% of the Image while "
-            + "retaining the rest\n" + "  horizontal-flip <image-name> <dest-image-name>         "
-            + "                         "
-            + "            - Flips image horizontally\n"
-            + "  vertical-flip <image-name> <dest-image-name>                                    "
-            + "            - Flips image vertically\n"
-            + "  brighten <increment> <image-name> <dest-image-name>                             "
-            + "            - Brightens the image\n"
+    assertTrue(actual.contains("Available commands:\n" + "  load <image-path> <image-name>     "
+            + "                                              "
+            + "           - Loads an image\n" + "  save <image-path> <image-name>               "
+            + "                                    "
+            + "           - Saves an image\n" + "  red-component <image-name> <dest-image-name> "
+            + "                                    "
+            + "           - Gets the Red Component of the Image\n"
+            + "  red-component <image-name> <dest-image-name> split p                             "
+            + "           - Gets the Red Component of the first p% of the Image while retaining "
+            + "the rest\n" + "  red-component <image-name> <dest-image-name> "
+            + "mask <mask-image-name>" + "              "
+            + "           - Applies the red greyscale on the pixels of the image with respect"
+            + " to the" + " mask image\n" + "  green-component <image-name> <dest-image-name>     "
+            + "           " + "                   " + "           - Gets the"
+            + " Green Component of the Image\n"
+            + "  green-component <image-name> <dest-image-name> split p                           "
+            + "           - Gets the Green Component of the first p% of the Image while retaining "
+            + "the rest\n" + "  green-component <image-name> <dest-image-name> "
+            + "mask <mask-image-name>            " + "           - Applies the green greyscale "
+            + "on the pixels of the image with respect to " + "the mask image\n"
+            + "  blue-component <image-name> <dest-image-name>                                    "
+            + "           - Gets the Blue Component of the Image\n"
+            + "  blue-component <image-name> <dest-image-name> split p                            "
+            + "           - Gets the Blue Component of the first p% of the Image while retaining "
+            + "the rest\n" + "  blue-component <image-name> <dest-image-name> "
+            + "mask <mask-image-name>             " + "           - Applies the blue greyscale "
+            + "on the pixels of the image with respect to "
+            + "the mask image\n" + "  value-component <image-name> <dest-image-name>   "
+            + "                                " + "           - Gets the Value Component"
+            + " of the Image\n" + "  value-component <image-name> <dest-image-name> split p  "
+            + "                         " + "           - Gets the Value Component of the "
+            + "first p% of the Image while retaining " + "the rest\n"
+            + "  value-component <image-name> <dest-image-name> mask <mask-image-name>            "
+            + "           - Applies the value visualization on the pixels of the image "
+            + "with respect " + "to the mask image\n" + "  luma-component <image-name> "
+            + "<dest-image-name>                                    "
+            + "           - Gets the Luma Component of the Image\n" + "  luma-component "
+            + "<image-name> <dest-image-name> split p                            "
+            + "           - Gets the Luma Component of the first p% of the Image while retaining "
+            + "the rest\n" + "  luma-component <image-name> <dest-image-name> "
+            + "mask <mask-image-name>             " + "           - Applies the luma "
+            + "visualization " + "on the pixels of the image with respect " + "to the mask image\n"
+            + "  intensity-component <image-name> <dest-image-name>                               "
+            + "           - Gets the Intensity Component of the Image\n"
+            + "  intensity-component <image-name> <dest-image-name> split p                       "
+            + "           - Gets the Intensity Component of the first p% of the Image while "
+            + "retaining the rest\n" + "  intensity-component <image-name> "
+            + "<dest-image-name> mask <mask-image-name>        "
+            + "           - Applies the intensity visualization on the pixels of the image  "
+            + "with respect to the mask image\n" + "  horizontal-flip <image-name> "
+            + "<dest-image-name>                                   "
+            + "           - Flips image horizontally\n"
+            + "  vertical-flip <image-name> <dest-image-name>                                     "
+            + "           - Flips image vertically\n"
+            + "  brighten <increment> <image-name> <dest-image-name>                              "
+            +
+            "           - Brightens the image\n" + "  brighten <increment> "
+            + "<image-name> <dest-image-name> mask <mask-image-name>       "
+            + "           - Brightens the image depending on the mask image\n"
             + "  rgb-split <image-name> <dest-image-name-red> <dest-image-name-green> "
             + "<dest-image-name-blue> - Splits RGB channels\n"
-            + "  rgb-combine <dest-image-name> <red-image> <green-image> <blue-image>            "
-            + "            - Combines RGB channels\n" + "  blur <image-name> <dest-image-name>   "
-            + "                                          "
-            + "            - Blurs the image\n" + "  blur <image-name> <dest-image-name> split p  "
-            + "                                   "
-            + "            - Blurs the first p% of the Image while retaining the rest\n"
-            + "  sharpen <image-name> <dest-image-name>                                          "
-            + "            - Sharpens the image>\n"
-            + "  sharpen <image-name> <dest-image-name> split p                                  "
-            + "            - Sharpens the first p% of the Image while retaining the rest\n"
-            + "  sepia <image-name> <dest-image-name>                                            "
-            + "            - Produces a sepia tone of the image>\n"
-            + "  sepia <image-name> <dest-image-name> split p                                    "
-            + "            - Produces a sepia tone of the first p% of the Image while "
-            + "retaining the rest\n" + "  compress percentage <image-name> <dest-image-name>     "
-            + "                         "
-            + "            - Compresses the image by the given percentage\n"
-            + "  histogram <image-name> <dest-image-name>                                        "
-            + "            - Generates a histogram of the given Image\n"
-            + "  color-correct <image-name> <dest-image-name>                                    "
-            + "            - Generates a color corrected version of the given Image\n"
-            + "  color-correct <image-name> <dest-image-name> split p                            "
-            + "            - Generates a color corrected version of the first p% of "
-            + "the given Image\n" + "  levels-adjust b m w <image-name> <dest-image-name>        "
-            + "                      "
-            + "            - Generates a level adjusted version of the given Image as "
-            + "per the given black, mid and white points\n"
-            + "  levels-adjust b m w <image-name> <dest-image-name> split p                      "
-            + "            - Generates a level adjusted version of the first p% of the given "
-            + "Image as per the given black, mid and white points\n" + "  run <script-file-path> "
-            + "                                                         "
-            + "            - Run commands from a script file\n" + "Type 'exit' to quit."));
+            + "  rgb-combine <dest-image-name> <red-image> <green-image> <blue-image>             "
+            + "           - Combines RGB channels\n" + "  blur <image-name> <dest-image-name>  "
+            + "                                            " + "           - Blurs the image\n"
+            + "  blur <image-name> <dest-image-name> split p                                      "
+            +
+            "           - Blurs the first p% of the Image while retaining the rest\n"
+            + "  blur <image-name> <dest-image-name> mask <mask-image-name>                       "
+            +
+            "           - Blurs the image according to the mask image\n" +
+            "  sharpen <image-name> <dest-image-name>                                           "
+            +
+            "           - Sharpens the image>\n" +
+            "  sharpen <image-name> <dest-image-name> split p                                   "
+            +
+            "           - Sharpens the first p% of the Image while retaining the rest\n"
+            + "  sharpen <image-name> <dest-image-name> mask <mask-image-name>                    "
+            +
+            "           - Sharpens the image according to the mask image\n"
+            + "  sepia <image-name> <dest-image-name>                                             "
+            +
+            "           - Produces a sepia tone of the image>\n"
+            + "  sepia <image-name> <dest-image-name> split p                                     "
+            +
+            "           - Produces a sepia tone of the first p% of the Image while retaining "
+            + "the rest\n"
+            + "  sepia <image-name> <dest-image-name> mask <mask-image-name>                      "
+            +
+            "           - Applies the sepia visualization on the pixels of the image  with "
+            +
+            "respect to the mask image\n"
+            + "  compress percentage <image-name> <dest-image-name>                               "
+            + "           - Compresses the image by the given percentage\n"
+            + "  histogram <image-name> <dest-image-name>                                         "
+            +
+            "           - Generates a histogram of the given Image\n"
+            + "  color-correct <image-name> <dest-image-name>                                     "
+            +
+            "           - Generates a color corrected version of the given Image\n"
+            + "  color-correct <image-name> <dest-image-name> split p                             "
+            + "           - Generates a color corrected version of the first p% of the "
+            +
+            "given Image\n" + "  levels-adjust b m w <image-name> <dest-image-name>              "
+            + "                 " + "           - Generates a level adjusted version of "
+            + "the given Image as per the "
+            + "given black, mid and white points\n"
+            + "  levels-adjust b m w <image-name> <dest-image-name> split p                       "
+            + "           - Generates a level adjusted version of the first p% of the given Image "
+            + "as per the given black, mid and white points\n" + "  run <script-file-path>                                                           "
+            + "           - Run commands from a script file\n" + "Type 'exit' to quit.\n"
+            + "Exiting this application..."));
     assertTrue(actual.contains("Exiting this application...\n"));
   }
 
