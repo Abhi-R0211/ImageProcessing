@@ -3,9 +3,77 @@ package imagemodel;
 /**
  * Mock class for all image operations.
  */
-public class MockOperations implements ExtendedOperations {
+public class MockOperations implements AdditionalOperations {
 
   private StringBuilder logs;
+
+  @Override
+  public ImageInterface downscaleImage(
+          ImageInterface original, int targetWidth, int targetHeight) {
+    logs.append("Downscaling image").append("\n");
+    return null;
+  }
+
+  @Override
+  public ImageInterface applyBlur(ImageInterface image, ImageInterface maskImage) {
+    logs.append("Applied blur with mask").append("\n");
+    return null;
+  }
+
+  @Override
+  public ImageInterface applySharpen(ImageInterface image, ImageInterface maskImage) {
+    logs.append("Applied sharpen with mask").append("\n");
+    return null;
+  }
+
+  @Override
+  public ImageInterface applySepia(ImageInterface image, ImageInterface maskImage) {
+    logs.append("Applied sepia with mask").append("\n");
+    return null;
+  }
+
+  @Override
+  public ImageInterface visualizeLuma(ImageInterface image, ImageInterface maskImage) {
+    logs.append("Visualized luma with mask").append("\n");
+    return null;
+  }
+
+  @Override
+  public ImageInterface visualizeRedComponent(ImageInterface image, ImageInterface maskImage) {
+    logs.append("Visualized red with mask").append("\n");
+
+    return null;
+  }
+
+  @Override
+  public ImageInterface visualizeGreenComponent(ImageInterface image, ImageInterface maskImage) {
+    logs.append("Visualized green with mask").append("\n");
+    return null;
+  }
+
+  @Override
+  public ImageInterface visualizeBlueComponent(ImageInterface image, ImageInterface maskImage) {
+    logs.append("Visualized blue with mask").append("\n");
+    return null;
+  }
+
+  @Override
+  public ImageInterface visualizeIntensity(ImageInterface image, ImageInterface maskImage) {
+    logs.append("Visualized intensity with mask").append("\n");
+    return null;
+  }
+
+  @Override
+  public ImageInterface visualizeValue(ImageInterface image, ImageInterface maskImage) {
+    logs.append("Visualized value with mask").append("\n");
+    return null;
+  }
+
+  @Override
+  public ImageInterface applyBrightness(ImageInterface image, int increment, ImageInterface maskImage) {
+    logs.append("Brightened with mask").append("\n");
+    return null;
+  }
 
   /**
    * Class constructor that initializes the logs.

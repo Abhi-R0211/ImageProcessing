@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 
 import imagecontroller.Controller;
 import imagecontroller.TextImageController;
+import imagemodel.AdditionalImageOperations;
 import imagemodel.ExtendedImageOperations;
 
 import static org.junit.Assert.assertFalse;
@@ -18,7 +19,7 @@ import static org.junit.Assert.assertFalse;
 public abstract class AbstractTest {
 
   protected void execute(String command) throws IOException {
-    Controller obj = new TextImageController(new ExtendedImageOperations(),
+    Controller obj = new TextImageController(new AdditionalImageOperations(),
             new InputStreamReader(System.in), System.out);
     obj.runCommand(command);
   }
