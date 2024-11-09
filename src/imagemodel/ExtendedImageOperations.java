@@ -666,4 +666,66 @@ public class ExtendedImageOperations extends ImageOperations implements Extended
     }
     return croppedImage.deepCopyImage();
   }
+
+  //-----------------------------------------------------------------------------------------------
+  // EXTRA CREDITS
+  //-----------------------------------------------------------------------------------------------
+
+  @Override
+  public ImageInterface downscaleImage(ImageInterface original,
+                                       int targetWidth, int targetHeight) {
+    if (original == null) {
+      throw new IllegalArgumentException("Image cannot be null.");
+    }
+    int originalWidth = original.getWidth();
+    int originalHeight = original.getHeight();
+    if (targetWidth > originalWidth || targetHeight > originalHeight) {
+      throw new IllegalArgumentException("Target height/width should be less than original");
+    }
+    ImageCopyInterface resultImage = new ImageCopy(targetWidth, targetHeight);
+    double xScale = (double) originalWidth / targetWidth;
+    double yScale = (double) originalHeight / targetHeight;
+    for (int x = 0; x < targetWidth; x++) {
+      for (int y = 0; y < targetHeight; y++) {
+        double xSource = x * xScale;
+        double ySource = y * yScale;
+        resultImage.setPixel(x, y, interpolate(xSource, ySource, original));
+      }
+    }
+    return resultImage.deepCopyImage();
+  }
+
+  private Pixel interpolate(double x, double y, ImageInterface original) {
+    int x1 = (int) x;
+    int y1 = (int) y;
+    int x2 = Math.min(x1 + 1, original.getWidth() - 1);
+    int y2 = Math.min(y1 + 1, original.getHeight() - 1);
+    PixelInterface[] pixels = {original.getPixel(x1, y1), original.getPixel(x1, y2),
+            original.getPixel(x2, y1), original.getPixel(x2, y2)};
+    double wx = x - x1;
+    double wy = y - y1;
+
+    int red = clamp((int) Math.round(interpolateComponent(wx, wy, pixels, 0)));
+    int green = clamp((int) Math.round(interpolateComponent(wx, wy, pixels, 1)));
+    int blue = clamp((int) Math.round(interpolateComponent(wx, wy, pixels, 2)));
+
+    return new Pixel(red, green, blue);
+  }
+
+  private double interpolateComponent(double wx, double wy,
+                                      PixelInterface[] pixels, int colorIndex) {
+    return (1 - wy) * ((1 - wx) * getColorComponent(pixels[0], colorIndex)
+            + wx * getColorComponent(pixels[2], colorIndex))
+            + wy * ((1 - wx) * getColorComponent(pixels[1], colorIndex)
+            + wx * getColorComponent(pixels[3], colorIndex));
+  }
+
+  private int getColorComponent(PixelInterface pixel, int colorIndex) {
+    switch (colorIndex) {
+      case 0: return pixel.getRed();
+      case 1: return pixel.getGreen();
+      case 2: return pixel.getBlue();
+      default: throw new IllegalArgumentException("Invalid color index");
+    }
+  }
 }

@@ -1193,6 +1193,20 @@ public class PNGTest extends AbstractTest {
     expected.setPixel(1, 1, new Pixel(159, 204, 191));
     assertTrue(expected.deepCopyImage().equals(afterop2));
   }
+
+  @Test
+  public void demoDOWNSIZE() throws IOException {
+    ExtendedOperations io = new ExtendedImageOperations();
+    ImageFormatHandler ih = new ImageHandler();
+    ImageInterface input = ih.loadImage("src/res/PNG/galaxy.png");
+    ImageInterface actual = io.downscaleImage(input, 100, 100);
+    assertEquals(100, actual.getHeight());
+    assertEquals(100, actual.getWidth());
+    ih.saveImage(actual, "src/res/PNG/test.png", "png");
+  }
+
+
+
 }
 
 

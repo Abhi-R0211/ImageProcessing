@@ -57,4 +57,10 @@ public interface ExtendedOperations extends Operations {
    */
   ImageInterface splitViewOperation(String[] tokens, ImageInterface image)
           throws IllegalArgumentException;
+
+  //-----------------------------------------------------------------------------------------------
+  // EXTRA CREDITS - TRY ADAPTER OR ANY OTHER DESIGN INSTEAD OF SIMPLY EXTENDING INTERFACE
+  //-----------------------------------------------------------------------------------------------
+
+  ImageInterface downscaleImage(ImageInterface original, int targetWidth, int targetHeight);
 }

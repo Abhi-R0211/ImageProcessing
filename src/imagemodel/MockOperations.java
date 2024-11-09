@@ -7,6 +7,13 @@ public class MockOperations implements ExtendedOperations {
 
   private StringBuilder logs;
 
+  @Override
+  public ImageInterface downscaleImage(
+          ImageInterface original, int targetWidth, int targetHeight) {
+    logs.append("Downscaling image").append("\n");
+    return null;
+  }
+
   /**
    * Class constructor that initializes the logs.
    *

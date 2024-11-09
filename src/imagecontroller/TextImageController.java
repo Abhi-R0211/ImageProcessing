@@ -223,6 +223,9 @@ public class TextImageController implements Controller {
         case "levels-adjust":
           handleLevelsAdjustCommand(tokens);
           break;
+        case "downsize":
+          handleDownsizeCommand(tokens);
+          break;
         case "run":
           runScript(tokens[1]);
           break;
@@ -675,5 +678,22 @@ public class TextImageController implements Controller {
     } else {
       output.append("Invalid flip command\n");
     }
+  }
+
+  //-----------------------------------------------------------------------------------------------
+  // EXTRA CREDITS
+  //-----------------------------------------------------------------------------------------------
+
+  private void handleDownsizeCommand(String[] tokens) throws IOException {
+    ImageInterface downsizedImage;
+    if (tokens.length == 5) {
+      downsizedImage = imageOperations.downscaleImage(images.get(tokens[1]),
+              Integer.parseInt(tokens[3]), Integer.parseInt(tokens[4]));
+    } else {
+      output.append("Invalid downsize command\n");
+      return;
+    }
+    images.put(tokens[2], downsizedImage);
+    output.append("Downsized image stored at: ").append(tokens[2]).append("\n");
   }
 }
