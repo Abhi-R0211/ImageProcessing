@@ -13,7 +13,7 @@ public interface Operations {
    * @param image that needs to be flipped.
    * @return object of type Image, after flipping it horizontally.
    */
-  Image applyHorizontalFlip(Image image);
+  ImageInterface applyHorizontalFlip(ImageInterface image);
 
   /**
    * The applyVerticalFlip method will flip the image vertically.
@@ -21,7 +21,7 @@ public interface Operations {
    * @param image that needs to be flipped.
    * @return object of type Image, after flipping it vertically.
    */
-  Image applyVerticalFlip(Image image);
+  ImageInterface applyVerticalFlip(ImageInterface image);
 
   /**
    * The applyBrightness method will brighten or darken the image depending on the increment
@@ -31,7 +31,7 @@ public interface Operations {
    * @param increment factor to be applied on the image.
    * @return object of type Image after brightening/darkening.
    */
-  Image applyBrightness(Image image, int increment);
+  ImageInterface applyBrightness(ImageInterface image, int increment);
 
   /**
    * The applySepia method will apply a Sepia tone to the image.
@@ -39,7 +39,7 @@ public interface Operations {
    * @param image on which the operation is to be applied.
    * @return an object of type Image after applying a sepia tone.
    */
-  Image applySepia(Image image);
+  ImageInterface applySepia(ImageInterface image);
 
   /**
    * The applyBlur method will blur the image.
@@ -47,7 +47,7 @@ public interface Operations {
    * @param image on which the operation is to be applied.
    * @return an object of type Image after blurring.
    */
-  Image applyBlur(Image image);
+  ImageInterface applyBlur(ImageInterface image);
 
   /**
    * The applySharpen method will sharpen the image.
@@ -55,7 +55,7 @@ public interface Operations {
    * @param image on which the operation is to be applied.
    * @return an object of type Image after applying the operation.
    */
-  Image applySharpen(Image image);
+  ImageInterface applySharpen(ImageInterface image);
 
   /**
    * This method will extract the red component out of the image.
@@ -63,7 +63,7 @@ public interface Operations {
    * @param image on which the operation is to be applied.
    * @return an object of type Image after extracting the red component.
    */
-  Image visualizeRedComponent(Image image);
+  ImageInterface visualizeRedComponent(ImageInterface image);
 
   /**
    * This method will extract the green component out of the image.
@@ -71,7 +71,7 @@ public interface Operations {
    * @param image on which the operation is to be applied.
    * @return an object of type Image after extracting the green component.
    */
-  Image visualizeGreenComponent(Image image);
+  ImageInterface visualizeGreenComponent(ImageInterface image);
 
   /**
    * This method will extract the blue component out of the image.
@@ -79,7 +79,7 @@ public interface Operations {
    * @param image on which the operation is to be applied.
    * @return an object of type Image after extracting the blue component.
    */
-  Image visualizeBlueComponent(Image image);
+  ImageInterface visualizeBlueComponent(ImageInterface image);
 
   /**
    * This method will return an image with the value component of the input image.
@@ -87,7 +87,7 @@ public interface Operations {
    * @param image is the image on which the operation is to be applied.
    * @return this will return an object of type Image after applying the operation.
    */
-  Image visualizeValue(Image image);
+  ImageInterface visualizeValue(ImageInterface image);
 
   /**
    * This method will return an image with the intensity component of the input image.
@@ -95,7 +95,7 @@ public interface Operations {
    * @param image on which the operation is to be applied.
    * @return an object of type Image after applying the operation
    */
-  Image visualizeIntensity(Image image);
+  ImageInterface visualizeIntensity(ImageInterface image);
 
   /**
    * This method will return an image with the luma component of the input image.
@@ -103,7 +103,7 @@ public interface Operations {
    * @param image on which the operation is to be applied.
    * @return an object of type Image after applying the operation.
    */
-  Image visualizeLuma(Image image);
+  ImageInterface visualizeLuma(ImageInterface image);
 
   /**
    * The combineRGB method will combine the Red, Green, and Blue channels, and convert it into
@@ -114,5 +114,6 @@ public interface Operations {
    * @param blueImage  that is used for the blue-pixels of the image.
    * @return an image after combining all the three RGB Channels.
    */
-  Image combineRGB(Image redImage, Image greenImage, Image blueImage);
+  ImageInterface combineRGB(ImageInterface redImage, ImageInterface greenImage,
+                            ImageInterface blueImage);
 }

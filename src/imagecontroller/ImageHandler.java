@@ -6,13 +6,15 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import imagemodel.Image;
+import imagemodel.ImageCopy;
+import imagemodel.ImageCopyInterface;
+import imagemodel.ImageInterface;
 import imagemodel.Pixel;
+import imagemodel.PixelInterface;
 
 /**
  * ImageHandler is the class that performs the loading and saving operations of various file types
- * such as JPG/JPEG, BMP and PNG. If a PPM image is received, it will be redirected to its
- * respective class.
+ * such as JPG/JPEG, BMP and PNG.
  */
 public class ImageHandler implements ImageFormatHandler {
 
@@ -24,13 +26,11 @@ public class ImageHandler implements ImageFormatHandler {
    * @throws IOException if invalid width or height is received.
    */
   @Override
-  public Image loadImage(String path) throws IOException {
-
+  public ImageInterface loadImage(String path) throws IOException {
     BufferedImage bufferedImage = ImageIO.read(new File(path));
     int width = bufferedImage.getWidth();
     int height = bufferedImage.getHeight();
-    Image image = new Image(width, height);
-
+    ImageCopyInterface image = new ImageCopy(width, height);
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
         int rgb = bufferedImage.getRGB(x, y);
@@ -40,7 +40,7 @@ public class ImageHandler implements ImageFormatHandler {
         image.setPixel(x, y, new Pixel(red, green, blue));
       }
     }
-    return image;
+    return image.deepCopyImage();
   }
 
   /**
@@ -51,14 +51,13 @@ public class ImageHandler implements ImageFormatHandler {
    * @param extension of the image to be saved.
    * @throws IOException if invalid width or height is received.
    */
-  public void saveImage(Image image, String path, String extension) throws IOException {
+  public void saveImage(ImageInterface image, String path, String extension) throws IOException {
     int width = image.getWidth();
     int height = image.getHeight();
     BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
-        Pixel pixel = image.getPixel(x, y);
+        PixelInterface pixel = image.getPixel(x, y);
         int rgb = (pixel.getRed() << 16) | (pixel.getGreen() << 8) | pixel.getBlue();
         bufferedImage.setRGB(x, y, rgb);
       }
