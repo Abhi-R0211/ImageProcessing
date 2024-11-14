@@ -179,6 +179,18 @@ public class ControllerTest {
   }
 
   @Test
+  public void testSepiaValid3() throws IOException {
+    textImageController = new TextImageController(mock, new StringReader(
+            "load src/res/PNG/galaxy.png testImage\n"
+                    + "load src/res/PNG/galaxy.png mask\n"
+                    + "sepia testImage output mask mask \nexit\n"), output);
+    textImageController.start(new String[0]);
+    String actual = output.toString().replace(System.lineSeparator(), "\n");
+    assertTrue(actual.contains("Applied sepia with mask"));
+    assertTrue(actual.contains("Sepia filter added and stored as: output"));
+  }
+
+  @Test
   public void testSepiaInvalid1() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
             "load src/res/PNG/galaxy.png testImage\n"
@@ -211,6 +223,18 @@ public class ControllerTest {
   }
 
   @Test
+  public void testSharpenValid3() throws IOException {
+    textImageController = new TextImageController(mock, new StringReader(
+            "load src/res/PNG/galaxy.png testImage\n"
+                    + "load src/res/PNG/galaxy.png mask\n"
+                    + "sharpen testImage output mask mask\nexit\n"), output);
+    textImageController.start(new String[0]);
+    String actual = output.toString().replace(System.lineSeparator(), "\n");
+    assertTrue(actual.contains("Applied sharpen with mask"));
+    assertTrue(actual.contains("Image sharpened and stored as: output"));
+  }
+
+  @Test
   public void testSharpenInvalid1() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
             "load src/res/PNG/galaxy.png testImage\n"
@@ -239,6 +263,18 @@ public class ControllerTest {
     textImageController.start(new String[0]);
     String actual = output.toString().replace(System.lineSeparator(), "\n");
     assertTrue(actual.contains("Split view operation performed"));
+    assertTrue(actual.contains("Image blurred and stored as: output"));
+  }
+
+  @Test
+  public void testBlurValid3() throws IOException {
+    textImageController = new TextImageController(mock, new StringReader(
+            "load src/res/PNG/galaxy.png testImage\n"
+                    + "load src/res/PNG/galaxy.png mask\n"
+                    + "blur testImage output mask mask\nexit\n"), output);
+    textImageController.start(new String[0]);
+    String actual = output.toString().replace(System.lineSeparator(), "\n");
+    assertTrue(actual.contains("Applied blur with mask"));
     assertTrue(actual.contains("Image blurred and stored as: output"));
   }
 
@@ -297,6 +333,18 @@ public class ControllerTest {
   }
 
   @Test
+  public void testBrightenValid2() throws IOException {
+    textImageController = new TextImageController(mock, new StringReader(
+            "load src/res/PNG/galaxy.png testImage\n"
+                    + "load src/res/PNG/galaxy.png mask\n"
+                    + "brighten 50 testImage output mask mask\nexit\n"), output);
+    textImageController.start(new String[0]);
+    String actual = output.toString().replace(System.lineSeparator(), "\n");
+    assertTrue(actual.contains("Brightened with mask"));
+    assertTrue(actual.contains("Image brightened and stored as: output"));
+  }
+
+  @Test
   public void testDarkenValid() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
             "load src/res/PNG/galaxy.png testImage\n"
@@ -304,6 +352,18 @@ public class ControllerTest {
     textImageController.start(new String[0]);
     String actual = output.toString().replace(System.lineSeparator(), "\n");
     assertTrue(actual.contains("Applied brightness"));
+    assertTrue(actual.contains("Image brightened and stored as: output"));
+  }
+
+  @Test
+  public void testDarkenValid2() throws IOException {
+    textImageController = new TextImageController(mock, new StringReader(
+            "load src/res/PNG/galaxy.png testImage\n"
+                    + "load src/res/PNG/galaxy.png mask\n"
+                    + "brighten -50 testImage output mask mask\nexit\n"), output);
+    textImageController.start(new String[0]);
+    String actual = output.toString().replace(System.lineSeparator(), "\n");
+    assertTrue(actual.contains("Brightened with mask"));
     assertTrue(actual.contains("Image brightened and stored as: output"));
   }
 
@@ -372,6 +432,18 @@ public class ControllerTest {
   }
 
   @Test
+  public void testIntensityValid3() throws IOException {
+    textImageController = new TextImageController(mock, new StringReader(
+            "load src/res/PNG/galaxy.png testImage\n"
+                    + "load src/res/PNG/galaxy.png mask\n"
+                    + "intensity-component testImage output mask mask\nexit\n"), output);
+    textImageController.start(new String[0]);
+    String actual = output.toString().replace(System.lineSeparator(), "\n");
+    assertTrue(actual.contains("Visualized intensity with mask"));
+    assertTrue(actual.contains("Intensity Component Loaded at: output"));
+  }
+
+  @Test
   public void testIntensityInvalid1() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
             "load src/res/PNG/galaxy.png testImage\n"
@@ -400,6 +472,18 @@ public class ControllerTest {
     textImageController.start(new String[0]);
     String actual = output.toString().replace(System.lineSeparator(), "\n");
     assertTrue(actual.contains("Split view operation performed"));
+    assertTrue(actual.contains("Luma Component Loaded at: output"));
+  }
+
+  @Test
+  public void testLumaValid3() throws IOException {
+    textImageController = new TextImageController(mock, new StringReader(
+            "load src/res/PNG/galaxy.png testImage\n"
+                    + "load src/res/PNG/galaxy.png mask\n"
+                    + "luma-component testImage output mask mask\nexit\n"), output);
+    textImageController.start(new String[0]);
+    String actual = output.toString().replace(System.lineSeparator(), "\n");
+    assertTrue(actual.contains("Visualized luma with mask"));
     assertTrue(actual.contains("Luma Component Loaded at: output"));
   }
 
@@ -436,6 +520,18 @@ public class ControllerTest {
   }
 
   @Test
+  public void testValueValid3() throws IOException {
+    textImageController = new TextImageController(mock, new StringReader(
+            "load src/res/PNG/galaxy.png testImage\n"
+                    + "load src/res/PNG/galaxy.png mask\n"
+                    + "value-component testImage output mask mask\nexit\n"), output);
+    textImageController.start(new String[0]);
+    String actual = output.toString().replace(System.lineSeparator(), "\n");
+    assertTrue(actual.contains("Visualized value with mask"));
+    assertTrue(actual.contains("Value Component Loaded at: output"));
+  }
+
+  @Test
   public void testValueInvalid1() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
             "load src/res/PNG/galaxy.png testImage\n"
@@ -456,13 +552,14 @@ public class ControllerTest {
   }
 
   @Test
-  public void testBlueValid1() throws IOException {
+  public void testBlueValid3() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
             "load src/res/PNG/galaxy.png testImage\n"
-                    + "blue-component testImage output\nexit\n"), output);
+                    + "load src/res/PNG/galaxy.png mask\n"
+                    + "blue-component testImage output mask mask\nexit\n"), output);
     textImageController.start(new String[0]);
     String actual = output.toString().replace(System.lineSeparator(), "\n");
-    assertTrue(actual.contains("Visualized blue component"));
+    assertTrue(actual.contains("Visualized blue with mask"));
     assertTrue(actual.contains("Blue Component Loaded at: output"));
   }
 
@@ -474,6 +571,17 @@ public class ControllerTest {
     textImageController.start(new String[0]);
     String actual = output.toString().replace(System.lineSeparator(), "\n");
     assertTrue(actual.contains("Split view operation performed"));
+    assertTrue(actual.contains("Blue Component Loaded at: output"));
+  }
+
+  @Test
+  public void testBlueValid1() throws IOException {
+    textImageController = new TextImageController(mock, new StringReader(
+            "load src/res/PNG/galaxy.png testImage\n"
+                    + "blue-component testImage output\nexit\n"), output);
+    textImageController.start(new String[0]);
+    String actual = output.toString().replace(System.lineSeparator(), "\n");
+    assertTrue(actual.contains("Visualized blue component"));
     assertTrue(actual.contains("Blue Component Loaded at: output"));
   }
 
@@ -510,6 +618,18 @@ public class ControllerTest {
   }
 
   @Test
+  public void testRedValid3() throws IOException {
+    textImageController = new TextImageController(mock, new StringReader(
+            "load src/res/PNG/galaxy.png testImage\n"
+                    + "load src/res/PNG/galaxy.png mask\n"
+                    + "red-component testImage output mask mask\nexit\n"), output);
+    textImageController.start(new String[0]);
+    String actual = output.toString().replace(System.lineSeparator(), "\n");
+    assertTrue(actual.contains("Visualized red with mask"));
+    assertTrue(actual.contains("Red Component Loaded at: output"));
+  }
+
+  @Test
   public void testGreenInvalid1() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
             "load src/res/PNG/galaxy.png testImage\n"
@@ -538,6 +658,18 @@ public class ControllerTest {
     textImageController.start(new String[0]);
     String actual = output.toString().replace(System.lineSeparator(), "\n");
     assertTrue(actual.contains("Split view operation performed"));
+    assertTrue(actual.contains("Green Component Loaded at: output"));
+  }
+
+  @Test
+  public void testGreenValid3() throws IOException {
+    textImageController = new TextImageController(mock, new StringReader(
+            "load src/res/PNG/galaxy.png testImage\n"
+                    + "load src/res/PNG/galaxy.png mask\n"
+                    + "green-component testImage output mask mask\nexit\n"), output);
+    textImageController.start(new String[0]);
+    String actual = output.toString().replace(System.lineSeparator(), "\n");
+    assertTrue(actual.contains("Visualized green with mask"));
     assertTrue(actual.contains("Green Component Loaded at: output"));
   }
 
@@ -654,8 +786,13 @@ public class ControllerTest {
             + "given black, mid and white points\n"
             + "  levels-adjust b m w <image-name> <dest-image-name> split p                       "
             + "           - Generates a level adjusted version of the first p% of the given Image "
-            + "as per the given black, mid and white points\n" + "  run <script-file-path>                                                           "
-            + "           - Run commands from a script file\n" + "Type 'exit' to quit.\n"
+            + "as per the given black, mid and white points\n"
+            + "  downsize <image-name> <dest-image-name> <target-image-width> "
+            + "<target-image-height>         "
+            + " - Downscales an image to fit target height and width\n"
+            + "  run <script-file-path>                                                           "
+            + "           - Run commands from a script file\n"
+            + "Type 'exit' to quit.\n"
             + "Exiting this application..."));
     assertTrue(actual.contains("Exiting this application...\n"));
   }
@@ -667,5 +804,26 @@ public class ControllerTest {
     textImageController.start(new String[0]);
     String actual = output.toString().replace(System.lineSeparator(), "\n");
     assertTrue(actual.contains("Unknown command: loading"));
+  }
+
+  @Test
+  public void testDownscalingInvalid() throws IOException {
+    textImageController = new TextImageController(mock, new StringReader(
+            "load src/res/PNG/galaxy.png testImage\n"
+                    + "downsize testImage output mask mask test\nexit\n"), output);
+    textImageController.start(new String[0]);
+    String actual = output.toString().replace(System.lineSeparator(), "\n");
+    assertTrue(actual.contains("Invalid downsize command"));
+  }
+
+  @Test
+  public void testDownscalingValid() throws IOException {
+    textImageController = new TextImageController(mock, new StringReader(
+            "load src/res/PNG/galaxy.png testImage\n"
+                    + "downsize testImage output 100 100\nexit\n"), output);
+    textImageController.start(new String[0]);
+    String actual = output.toString().replace(System.lineSeparator(), "\n");
+    assertTrue(actual.contains("Downscaling image"));
+    assertTrue(actual.contains("Downsized image stored as: output"));
   }
 }

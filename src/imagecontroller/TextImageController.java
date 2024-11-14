@@ -147,6 +147,9 @@ public class TextImageController implements Controller {
     command.append("  levels-adjust b m w <image-name> <dest-image-name> split p               "
             + "                   - Generates a level adjusted version of the first p% of the "
             + "given Image as per the given black, mid and white points\n");
+    command.append("  downsize <image-name> <dest-image-name> <target-image-width> "
+            + "<target-image-height>"
+            + "          - Downscales an image to fit target height and width\n");
     command.append("  run <script-file-path>                                                   "
             + "                   - Run commands from a script file\n");
     return command.toString();

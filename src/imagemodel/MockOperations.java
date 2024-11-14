@@ -70,7 +70,8 @@ public class MockOperations implements AdditionalOperations {
   }
 
   @Override
-  public ImageInterface applyBrightness(ImageInterface image, int increment, ImageInterface maskImage) {
+  public ImageInterface applyBrightness(ImageInterface image, int increment,
+                                        ImageInterface maskImage) {
     logs.append("Brightened with mask").append("\n");
     return null;
   }
