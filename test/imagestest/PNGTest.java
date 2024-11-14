@@ -1,12 +1,15 @@
 package imagestest;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
 
+import imagecontroller.Controller;
 import imagecontroller.ImageFormatHandler;
 import imagecontroller.ImageHandler;
+import imagecontroller.TextImageController;
 import imagemodel.AdditionalImageOperations;
 import imagemodel.AdditionalOperations;
 import imagemodel.ExtendedImageOperations;
@@ -1196,35 +1199,364 @@ public class PNGTest extends AbstractTest {
     assertTrue(expected.deepCopyImage().equals(afterop2));
   }
 
-  @Test
-  public void demoDOWNSIZE() throws IOException {
+  @Test(expected = IllegalArgumentException.class)
+  public void downsizeInvalid1() throws IOException {
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface temp = io.downscaleImage(null, 100, 100);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void downsizeInvalid2() throws IOException {
     AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
-    ImageInterface input = ih.loadImage("src/res/PNG/galaxy.png");
-    ImageInterface actual = io.downscaleImage(input, 100, 100);
-    assertEquals(100, actual.getHeight());
-    assertEquals(100, actual.getWidth());
-    ih.saveImage(actual, "src/res/PNG/test.png", "png");
+    ImageInterface temp = io.downscaleImage(ih.loadImage("src/res/PNG/Sample.png"),
+            100, 1);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void downsizeInvalid3() throws IOException {
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageFormatHandler ih = new ImageHandler();
+    ImageInterface temp = io.downscaleImage(ih.loadImage("src/res/PNG/Sample.png"),
+            1, 100);
   }
 
   @Test
-  public void demoPARTIAL() throws IOException {
+  public void downsize() throws IOException {
     AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
-    ImageInterface input = ih.loadImage("src/res/PNG/manhattan-small.png");
-    ImageCopyInterface expected = new ImageCopy(input.getWidth(), input.getHeight());
-
-    for (int i = 0; i < input.getHeight() / 2; i++) {
-      for (int j = 0; j < input.getWidth() / 2; j++) {
-        expected.setPixel(j, i, new Pixel(0, 0, 0));
-      }
-    }
-
-    ImageInterface trial = io.visualizeLuma(input, expected.deepCopyImage());
-    ih.saveImage(trial, "src/res/PNG/test.png", "png");
+    ImageInterface actual = io.downscaleImage(ih.loadImage("src/res/PNG/Sample.png"),
+            1, 1);
+    ImageCopyInterface expected = new ImageCopy(1, 1);
+    expected.setPixel(0, 0, new Pixel(193, 252, 251));
+    assertTrue(expected.deepCopyImage().equals(actual));
   }
 
+  ImageInterface mask;
 
+  @Before
+  public void setUp() {
+    ImageCopyInterface temp = new ImageCopy(1, 1);
+    temp.setPixel(0, 0, new Pixel(0, 0, 0));
+    mask = temp.deepCopyImage();
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void invalidBlurMask1() throws IOException {
+    ImageFormatHandler ih = new ImageHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface image = ih.loadImage("src/res/PNG/Sample.png");
+    ImageInterface transformed = io.applyBlur(image, null);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void invalidBlurMask2() {
+    ImageFormatHandler ih = new ImageHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface transformed = io.applyBlur(null, null);
+  }
+
+  @Test
+  public void blurMask() throws IOException {
+    ImageFormatHandler ih = new ImageHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface image = ih.loadImage("src/res/PNG/Sample.png");
+    ImageInterface transformed = io.applyBlur(image, mask);
+    ImageCopyInterface expected = new ImageCopy(2, 2);
+    expected.setPixel(0, 0, new Pixel(159, 204, 191));
+    expected.setPixel(1, 0, new Pixel(119, 90, 47));
+    expected.setPixel(0, 1, new Pixel(131, 201, 172));
+    expected.setPixel(1, 1, new Pixel(62, 130, 143));
+    assertTrue(expected.deepCopyImage().equals(transformed));
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void invalidSharpenMask1() throws IOException {
+    ImageFormatHandler ih = new ImageHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface image = ih.loadImage("src/res/PNG/Sample.png");
+    ImageInterface transformed = io.applySharpen(image, null);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void invalidSharpenMask2() {
+    ImageFormatHandler ih = new ImageHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface transformed = io.applySharpen(null, null);
+  }
+
+  @Test
+  public void sharpenMask() throws IOException {
+    ImageFormatHandler ih = new ImageHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface image = ih.loadImage("src/res/PNG/Sample.png");
+    ImageInterface transformed = io.applySharpen(image, mask);
+    ImageCopyInterface expected = new ImageCopy(2, 2);
+    expected.setPixel(0, 0, new Pixel(209, 255, 255));
+    expected.setPixel(1, 0, new Pixel(119, 90, 47));
+    expected.setPixel(0, 1, new Pixel(131, 201, 172));
+    expected.setPixel(1, 1, new Pixel(62, 130, 143));
+    assertTrue(expected.deepCopyImage().equals(transformed));
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void invalidSepiaMask1() throws IOException {
+    ImageFormatHandler ih = new ImageHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface image = ih.loadImage("src/res/PNG/Sample.png");
+    ImageInterface transformed = io.applySepia(image, null);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void invalidSepiaMask2() {
+    ImageFormatHandler ih = new ImageHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface transformed = io.applySepia(null, null);
+  }
+
+  @Test
+  public void sepiaMask() throws IOException {
+    ImageFormatHandler ih = new ImageHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface image = ih.loadImage("src/res/PNG/Sample.png");
+    ImageInterface transformed = io.applySepia(image, mask);
+    ImageCopyInterface expected = new ImageCopy(2, 2);
+    expected.setPixel(0, 0, new Pixel(255, 255, 219));
+    expected.setPixel(1, 0, new Pixel(119, 90, 47));
+    expected.setPixel(0, 1, new Pixel(131, 201, 172));
+    expected.setPixel(1, 1, new Pixel(62, 130, 143));
+    assertTrue(expected.deepCopyImage().equals(transformed));
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void invalidLumaMask1() throws IOException {
+    ImageFormatHandler ih = new ImageHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface image = ih.loadImage("src/res/PNG/Sample.png");
+    ImageInterface transformed = io.visualizeLuma(image, null);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void invalidLumaMask2() {
+    ImageFormatHandler ih = new ImageHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface transformed = io.visualizeLuma(null, null);
+  }
+
+  @Test
+  public void lumaMask() throws IOException {
+    ImageFormatHandler ih = new ImageHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface image = ih.loadImage("src/res/PNG/Sample.png");
+    ImageInterface transformed = io.visualizeLuma(image, mask);
+    ImageCopyInterface expected = new ImageCopy(2, 2);
+    expected.setPixel(0, 0, new Pixel(239, 239, 239));
+    expected.setPixel(1, 0, new Pixel(119, 90, 47));
+    expected.setPixel(0, 1, new Pixel(131, 201, 172));
+    expected.setPixel(1, 1, new Pixel(62, 130, 143));
+    assertTrue(expected.deepCopyImage().equals(transformed));
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void invalidRedMask1() throws IOException {
+    ImageFormatHandler ih = new ImageHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface image = ih.loadImage("src/res/PNG/Sample.png");
+    ImageInterface transformed = io.visualizeRedComponent(image, null);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void invalidRedMask2() {
+    ImageFormatHandler ih = new ImageHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface transformed = io.visualizeRedComponent(null, null);
+  }
+
+  @Test
+  public void redMask() throws IOException {
+    ImageFormatHandler ih = new ImageHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface image = ih.loadImage("src/res/PNG/Sample.png");
+    ImageInterface transformed = io.visualizeRedComponent(image, mask);
+    ImageCopyInterface expected = new ImageCopy(2, 2);
+    expected.setPixel(0, 0, new Pixel(193, 193, 193));
+    expected.setPixel(1, 0, new Pixel(119, 90, 47));
+    expected.setPixel(0, 1, new Pixel(131, 201, 172));
+    expected.setPixel(1, 1, new Pixel(62, 130, 143));
+    assertTrue(expected.deepCopyImage().equals(transformed));
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void invalidBlueMask1() throws IOException {
+    ImageFormatHandler ih = new ImageHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface image = ih.loadImage("src/res/PNG/Sample.png");
+    ImageInterface transformed = io.visualizeBlueComponent(image, null);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void invalidBlueMask2() {
+    ImageFormatHandler ih = new ImageHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface transformed = io.visualizeBlueComponent(null, null);
+  }
+
+  @Test
+  public void blueMask() throws IOException {
+    ImageFormatHandler ih = new ImageHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface image = ih.loadImage("src/res/PNG/Sample.png");
+    ImageInterface transformed = io.visualizeBlueComponent(image, mask);
+    ImageCopyInterface expected = new ImageCopy(2, 2);
+    expected.setPixel(0, 0, new Pixel(251, 251, 251));
+    expected.setPixel(1, 0, new Pixel(119, 90, 47));
+    expected.setPixel(0, 1, new Pixel(131, 201, 172));
+    expected.setPixel(1, 1, new Pixel(62, 130, 143));
+    assertTrue(expected.deepCopyImage().equals(transformed));
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void invalidGreenMask1() throws IOException {
+    ImageFormatHandler ih = new ImageHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface image = ih.loadImage("src/res/PNG/Sample.png");
+    ImageInterface transformed = io.visualizeGreenComponent(image, null);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void invalidGreenMask2() {
+    ImageFormatHandler ih = new ImageHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface transformed = io.visualizeGreenComponent(null, null);
+  }
+
+  @Test
+  public void greenMask() throws IOException {
+    ImageFormatHandler ih = new ImageHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface image = ih.loadImage("src/res/PNG/Sample.png");
+    ImageInterface transformed = io.visualizeGreenComponent(image, mask);
+    ImageCopyInterface expected = new ImageCopy(2, 2);
+    expected.setPixel(0, 0, new Pixel(252, 252, 252));
+    expected.setPixel(1, 0, new Pixel(119, 90, 47));
+    expected.setPixel(0, 1, new Pixel(131, 201, 172));
+    expected.setPixel(1, 1, new Pixel(62, 130, 143));
+    assertTrue(expected.deepCopyImage().equals(transformed));
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void invalidIntensityMask1() throws IOException {
+    ImageFormatHandler ih = new ImageHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface image = ih.loadImage("src/res/PNG/Sample.png");
+    ImageInterface transformed = io.visualizeIntensity(image, null);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void invalidIntensityMask2() {
+    ImageFormatHandler ih = new ImageHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface transformed = io.visualizeIntensity(null, null);
+  }
+
+  @Test
+  public void intensityMask() throws IOException {
+    ImageFormatHandler ih = new ImageHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface image = ih.loadImage("src/res/PNG/Sample.png");
+    ImageInterface transformed = io.visualizeIntensity(image, mask);
+    ImageCopyInterface expected = new ImageCopy(2, 2);
+    expected.setPixel(0, 0, new Pixel(232, 232, 232));
+    expected.setPixel(1, 0, new Pixel(119, 90, 47));
+    expected.setPixel(0, 1, new Pixel(131, 201, 172));
+    expected.setPixel(1, 1, new Pixel(62, 130, 143));
+    assertTrue(expected.deepCopyImage().equals(transformed));
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void invalidValueMask1() throws IOException {
+    ImageFormatHandler ih = new ImageHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface image = ih.loadImage("src/res/PNG/Sample.png");
+    ImageInterface transformed = io.visualizeValue(image, null);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void invalidValueMask2() {
+    ImageFormatHandler ih = new ImageHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface transformed = io.visualizeValue(null, null);
+  }
+
+  @Test
+  public void valueMask() throws IOException {
+    ImageFormatHandler ih = new ImageHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface image = ih.loadImage("src/res/PNG/Sample.png");
+    ImageInterface transformed = io.visualizeValue(image, mask);
+    ImageCopyInterface expected = new ImageCopy(2, 2);
+    expected.setPixel(0, 0, new Pixel(252, 252, 252));
+    expected.setPixel(1, 0, new Pixel(119, 90, 47));
+    expected.setPixel(0, 1, new Pixel(131, 201, 172));
+    expected.setPixel(1, 1, new Pixel(62, 130, 143));
+    assertTrue(expected.deepCopyImage().equals(transformed));
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void invalidBrightenMask1() throws IOException {
+    ImageFormatHandler ih = new ImageHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface image = ih.loadImage("src/res/PNG/Sample.png");
+    ImageInterface transformed = io.applyBrightness(image, 50, null);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void invalidBrightenMask2() {
+    ImageFormatHandler ih = new ImageHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface transformed = io.applyBrightness(null, 50, null);
+  }
+
+  @Test
+  public void brightenMask() throws IOException {
+    ImageFormatHandler ih = new ImageHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface image = ih.loadImage("src/res/PNG/Sample.png");
+    ImageInterface transformed = io.applyBrightness(image, 50, mask);
+    ImageCopyInterface expected = new ImageCopy(2, 2);
+    expected.setPixel(0, 0, new Pixel(243, 255, 255));
+    expected.setPixel(1, 0, new Pixel(119, 90, 47));
+    expected.setPixel(0, 1, new Pixel(131, 201, 172));
+    expected.setPixel(1, 1, new Pixel(62, 130, 143));
+    assertTrue(expected.deepCopyImage().equals(transformed));
+  }
+
+  @Test
+  public void darkenMask() throws IOException {
+    ImageFormatHandler ih = new ImageHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface image = ih.loadImage("src/res/PNG/Sample.png");
+    ImageInterface transformed = io.applyBrightness(image, -50, mask);
+    ImageCopyInterface expected = new ImageCopy(2, 2);
+    expected.setPixel(0, 0, new Pixel(143, 202, 201));
+    expected.setPixel(1, 0, new Pixel(119, 90, 47));
+    expected.setPixel(0, 1, new Pixel(131, 201, 172));
+    expected.setPixel(1, 1, new Pixel(62, 130, 143));
+    assertTrue(expected.deepCopyImage().equals(transformed));
+  }
+
+  @Test
+  public void testScript() throws IOException {
+    ImageFormatHandler ih = new ImageHandler();
+    execute("run src/res/Scripts/PNG/test.txt");
+    ImageInterface actual = ih.loadImage("src/res/PNG/Sample-save.png");
+    ImageCopyInterface expected = new ImageCopy(2, 2);
+    expected.setPixel(0, 0, new Pixel(193, 252, 251));
+    expected.setPixel(1, 0, new Pixel(119, 90, 47));
+    expected.setPixel(0, 1, new Pixel(131, 201, 172));
+    expected.setPixel(1, 1, new Pixel(62, 130, 143));
+    assertTrue(expected.deepCopyImage().equals(actual));
+  }
 }
 
 

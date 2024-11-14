@@ -1,5 +1,6 @@
 package imagestest;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
@@ -8,6 +9,8 @@ import java.io.IOException;
 import imagecontroller.ImageFormatHandler;
 import imagecontroller.ImageHandler;
 import imagecontroller.P3PPMHandler;
+import imagemodel.AdditionalImageOperations;
+import imagemodel.AdditionalOperations;
 import imagemodel.ExtendedImageOperations;
 import imagemodel.ExtendedOperations;
 import imagemodel.ImageCopy;
@@ -1191,5 +1194,359 @@ public class PPMTest extends AbstractTest {
     expected.setPixel(0, 1, new Pixel(56, 47, 32));
     expected.setPixel(1, 1, new Pixel(18, 15, 10));
     assertTrue(expected.deepCopyImage().equals(afterop2));
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void downsizeInvalid1() throws IOException {
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageFormatHandler ih = new P3PPMHandler();
+    ImageInterface temp = io.downscaleImage(ih.loadImage("src/res/PPM/Sample.ppm"),
+            100, 1);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void downsizeInvalid3() throws IOException {
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageFormatHandler ih = new P3PPMHandler();
+    ImageInterface temp = io.downscaleImage(ih.loadImage("src/res/PPM/Sample.ppm"),
+            1, 100);
+  }
+
+  @Test
+  public void downsize() throws IOException {
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageFormatHandler ih = new P3PPMHandler();
+    ImageInterface actual = io.downscaleImage(ih.loadImage("src/res/PPM/Sample.ppm"),
+            1, 1);
+    ImageCopyInterface expected = new ImageCopy(1, 1);
+    expected.setPixel(0, 0, new Pixel(0, 0, 0));
+    assertTrue(expected.deepCopyImage().equals(actual));
+  }
+
+  ImageInterface mask;
+
+  @Before
+  public void setUp() {
+    ImageCopyInterface temp = new ImageCopy(2, 2);
+    temp.setPixel(1, 0, new Pixel(0, 0, 0));
+    mask = temp.deepCopyImage();
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void invalidBlurMask1() throws IOException {
+    ImageFormatHandler ih = new P3PPMHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface image = ih.loadImage("src/res/PPM/Sample.ppm");
+    ImageInterface transformed = io.applyBlur(image, null);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void invalidBlurMask2() {
+    ImageFormatHandler ih = new P3PPMHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface transformed = io.applyBlur(null, null);
+  }
+
+  @Test
+  public void blurMask() throws IOException {
+    ImageFormatHandler ih = new P3PPMHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface image = ih.loadImage("src/res/PPM/Sample.ppm");
+    ImageInterface transformed = io.applyBlur(image, mask);
+    ImageCopyInterface expected = new ImageCopy(2, 2);
+    expected.setPixel(0, 0, new Pixel(0, 0, 0));
+    expected.setPixel(1, 0, new Pixel(56, 47, 32));
+    expected.setPixel(0, 1, new Pixel(0, 0, 0));
+    expected.setPixel(1, 1, new Pixel(0, 255, 175));
+    assertTrue(expected.deepCopyImage().equals(transformed));
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void invalidSharpenMask1() throws IOException {
+    ImageFormatHandler ih = new P3PPMHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface image = ih.loadImage("src/res/PPM/Sample.ppm");
+    ImageInterface transformed = io.applySharpen(image, null);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void invalidSharpenMask2() {
+    ImageFormatHandler ih = new P3PPMHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface transformed = io.applySharpen(null, null);
+  }
+
+  @Test
+  public void sharpenMask() throws IOException {
+    ImageFormatHandler ih = new P3PPMHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface image = ih.loadImage("src/res/PPM/Sample.ppm");
+    ImageInterface transformed = io.applySharpen(image, mask);
+    ImageCopyInterface expected = new ImageCopy(2, 2);
+    expected.setPixel(0, 0, new Pixel(0, 0, 0));
+    expected.setPixel(1, 0, new Pixel(112, 0, 0));
+    expected.setPixel(0, 1, new Pixel(0, 0, 0));
+    expected.setPixel(1, 1, new Pixel(0, 255, 175));
+    assertTrue(expected.deepCopyImage().equals(transformed));
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void invalidSepiaMask1() throws IOException {
+    ImageFormatHandler ih = new P3PPMHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface image = ih.loadImage("src/res/PPM/Sample.ppm");
+    ImageInterface transformed = io.applySepia(image, null);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void invalidSepiaMask2() {
+    ImageFormatHandler ih = new P3PPMHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface transformed = io.applySepia(null, null);
+  }
+
+  @Test
+  public void sepiaMask() throws IOException {
+    ImageFormatHandler ih = new P3PPMHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface image = ih.loadImage("src/res/PPM/Sample.ppm");
+    ImageInterface transformed = io.applySepia(image, mask);
+    ImageCopyInterface expected = new ImageCopy(2, 2);
+    System.out.println(transformed.getPixel(1, 0));
+    expected.setPixel(0, 0, new Pixel(0, 0, 0));
+    expected.setPixel(1, 0, new Pixel(39, 34, 27));
+    expected.setPixel(0, 1, new Pixel(0, 0, 0));
+    expected.setPixel(1, 1, new Pixel(0, 255, 175));
+    assertTrue(expected.deepCopyImage().equals(transformed));
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void invalidLumaMask1() throws IOException {
+    ImageFormatHandler ih = new P3PPMHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface image = ih.loadImage("src/res/PPM/Sample.ppm");
+    ImageInterface transformed = io.visualizeLuma(image, null);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void invalidLumaMask2() {
+    ImageFormatHandler ih = new P3PPMHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface transformed = io.visualizeLuma(null, null);
+  }
+
+  @Test
+  public void lumaMask() throws IOException {
+    ImageFormatHandler ih = new P3PPMHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface image = ih.loadImage("src/res/PPM/Sample.ppm");
+    ImageInterface transformed = io.visualizeLuma(image, mask);
+    ImageCopyInterface expected = new ImageCopy(2, 2);
+    expected.setPixel(0, 0, new Pixel(0, 0, 0));
+    expected.setPixel(1, 0, new Pixel(21, 21, 21));
+    expected.setPixel(0, 1, new Pixel(0, 0, 0));
+    expected.setPixel(1, 1, new Pixel(0, 255, 175));
+    assertTrue(expected.deepCopyImage().equals(transformed));
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void invalidRedMask1() throws IOException {
+    ImageFormatHandler ih = new P3PPMHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface image = ih.loadImage("src/res/PPM/Sample.ppm");
+    ImageInterface transformed = io.visualizeRedComponent(image, null);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void invalidRedMask2() {
+    ImageFormatHandler ih = new P3PPMHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface transformed = io.visualizeRedComponent(null, null);
+  }
+
+  @Test
+  public void redMask() throws IOException {
+    ImageFormatHandler ih = new P3PPMHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface image = ih.loadImage("src/res/PPM/Sample.ppm");
+    ImageInterface transformed = io.visualizeRedComponent(image, mask);
+    ImageCopyInterface expected = new ImageCopy(2, 2);
+    expected.setPixel(0, 0, new Pixel(0, 0, 0));
+    expected.setPixel(1, 0, new Pixel(100, 100, 100));
+    expected.setPixel(0, 1, new Pixel(0, 0, 0));
+    expected.setPixel(1, 1, new Pixel(0, 255, 175));
+    assertTrue(expected.deepCopyImage().equals(transformed));
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void invalidBlueMask1() throws IOException {
+    ImageFormatHandler ih = new P3PPMHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface image = ih.loadImage("src/res/PPM/Sample.ppm");
+    ImageInterface transformed = io.visualizeBlueComponent(image, null);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void invalidBlueMask2() {
+    ImageFormatHandler ih = new P3PPMHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface transformed = io.visualizeBlueComponent(null, null);
+  }
+
+  @Test
+  public void blueMask() throws IOException {
+    ImageFormatHandler ih = new P3PPMHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface image = ih.loadImage("src/res/PPM/Sample.ppm");
+    ImageInterface transformed = io.visualizeBlueComponent(image, mask);
+    ImageCopyInterface expected = new ImageCopy(2, 2);
+    expected.setPixel(0, 0, new Pixel(0, 0, 0));
+    expected.setPixel(1, 0, new Pixel(0, 0, 0));
+    expected.setPixel(0, 1, new Pixel(0, 0, 0));
+    expected.setPixel(1, 1, new Pixel(0, 255, 175));
+    assertTrue(expected.deepCopyImage().equals(transformed));
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void invalidGreenMask1() throws IOException {
+    ImageFormatHandler ih = new P3PPMHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface image = ih.loadImage("src/res/PPM/Sample.ppm");
+    ImageInterface transformed = io.visualizeGreenComponent(image, null);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void invalidGreenMask2() {
+    ImageFormatHandler ih = new P3PPMHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface transformed = io.visualizeGreenComponent(null, null);
+  }
+
+  @Test
+  public void greenMask() throws IOException {
+    ImageFormatHandler ih = new P3PPMHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface image = ih.loadImage("src/res/PPM/Sample.ppm");
+    ImageInterface transformed = io.visualizeGreenComponent(image, mask);
+    ImageCopyInterface expected = new ImageCopy(2, 2);
+    expected.setPixel(0, 0, new Pixel(0, 0, 0));
+    expected.setPixel(1, 0, new Pixel(0, 0, 0));
+    expected.setPixel(0, 1, new Pixel(0, 0, 0));
+    expected.setPixel(1, 1, new Pixel(0, 255, 175));
+    assertTrue(expected.deepCopyImage().equals(transformed));
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void invalidIntensityMask1() throws IOException {
+    ImageFormatHandler ih = new P3PPMHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface image = ih.loadImage("src/res/PPM/Sample.ppm");
+    ImageInterface transformed = io.visualizeIntensity(image, null);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void invalidIntensityMask2() {
+    ImageFormatHandler ih = new P3PPMHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface transformed = io.visualizeIntensity(null, null);
+  }
+
+  @Test
+  public void intensityMask() throws IOException {
+    ImageFormatHandler ih = new P3PPMHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface image = ih.loadImage("src/res/PPM/Sample.ppm");
+    ImageInterface transformed = io.visualizeIntensity(image, mask);
+    ImageCopyInterface expected = new ImageCopy(2, 2);
+    expected.setPixel(0, 0, new Pixel(0, 0, 0));
+    expected.setPixel(1, 0, new Pixel(33, 33, 33));
+    expected.setPixel(0, 1, new Pixel(0, 0, 0));
+    expected.setPixel(1, 1, new Pixel(0, 255, 175));
+    assertTrue(expected.deepCopyImage().equals(transformed));
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void invalidValueMask1() throws IOException {
+    ImageFormatHandler ih = new P3PPMHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface image = ih.loadImage("src/res/PPM/Sample.ppm");
+    ImageInterface transformed = io.visualizeValue(image, null);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void invalidValueMask2() {
+    ImageFormatHandler ih = new P3PPMHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface transformed = io.visualizeValue(null, null);
+  }
+
+  @Test
+  public void valueMask() throws IOException {
+    ImageFormatHandler ih = new P3PPMHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface image = ih.loadImage("src/res/PPM/Sample.ppm");
+    ImageInterface transformed = io.visualizeValue(image, mask);
+    ImageCopyInterface expected = new ImageCopy(2, 2);
+    expected.setPixel(0, 0, new Pixel(0, 0, 0));
+    expected.setPixel(1, 0, new Pixel(100, 100, 100));
+    expected.setPixel(0, 1, new Pixel(0, 0, 0));
+    expected.setPixel(1, 1, new Pixel(0, 255, 175));
+    assertTrue(expected.deepCopyImage().equals(transformed));
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void invalidBrightenMask1() throws IOException {
+    ImageFormatHandler ih = new P3PPMHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface image = ih.loadImage("src/res/PPM/Sample.ppm");
+    ImageInterface transformed = io.applyBrightness(image, 50, null);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void invalidBrightenMask2() {
+    ImageFormatHandler ih = new P3PPMHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface transformed = io.applyBrightness(null, 50, null);
+  }
+
+  @Test
+  public void brightenMask() throws IOException {
+    ImageFormatHandler ih = new P3PPMHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface image = ih.loadImage("src/res/PPM/Sample.ppm");
+    ImageInterface transformed = io.applyBrightness(image, 50, mask);
+    ImageCopyInterface expected = new ImageCopy(2, 2);
+    expected.setPixel(0, 0, new Pixel(0, 0, 0));
+    expected.setPixel(1, 0, new Pixel(150, 50, 50));
+    expected.setPixel(0, 1, new Pixel(0, 0, 0));
+    expected.setPixel(1, 1, new Pixel(0, 255, 175));
+    assertTrue(expected.deepCopyImage().equals(transformed));
+  }
+
+  @Test
+  public void darkenMask() throws IOException {
+    ImageFormatHandler ih = new P3PPMHandler();
+    AdditionalOperations io = new AdditionalImageOperations();
+    ImageInterface image = ih.loadImage("src/res/PPM/Sample.ppm");
+    ImageInterface transformed = io.applyBrightness(image, -50, mask);
+    ImageCopyInterface expected = new ImageCopy(2, 2);
+    expected.setPixel(0, 0, new Pixel(0, 0, 0));
+    expected.setPixel(1, 0, new Pixel(50, 0, 0));
+    expected.setPixel(0, 1, new Pixel(0, 0, 0));
+    expected.setPixel(1, 1, new Pixel(0, 255, 175));
+    assertTrue(expected.deepCopyImage().equals(transformed));
+  }
+
+  @Test
+  public void testScript() throws IOException {
+    ImageFormatHandler ih = new P3PPMHandler();
+    execute("run src/res/Scripts/PPM/test.txt");
+    ImageInterface actual = ih.loadImage("src/res/PPM/Sample-save.ppm");
+    ImageCopyInterface expected = new ImageCopy(2, 2);
+    expected.setPixel(0, 0, new Pixel(0, 0, 0));
+    expected.setPixel(1, 0, new Pixel(100, 0, 0));
+    expected.setPixel(0, 1, new Pixel(0, 0, 0));
+    expected.setPixel(1, 1, new Pixel(0, 255, 175));
+    assertTrue(expected.deepCopyImage().equals(actual));
   }
 }
