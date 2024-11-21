@@ -7,6 +7,35 @@ operations on images such as vertical-flip, horizontal-flip, brighten, greyscale
 The project uses a Model-View-Controller (MVC) design pattern. The project also supports multiple
 file formats like JPG, PNG, JPEG, BMP, PPM (P3 format).
 
+# Updates
+
+1. **Graphical User Interface (GUI):**
+
+- A fully functional GUI has been implemented to enhance usability.
+- Features accessible through the GUI include:
+    - Load
+    - Save
+    - Blur
+    - Sharpen
+    - Sepia filter
+    - Red, Green, and Blue component extraction
+    - Luma, Value and Intensity Component extraction
+    - Horizontal and Vertical flipping
+    - Brightness adjustment
+    - Histogram display
+    - Image compression
+    - Levels adjustment
+    - Downscaling of an Image
+- Added a split-view slider for side-by-side comparison of the original and modified images.
+
+2. **Model Enhancements:**
+
+- **Downsizing Functionality:** The model now supports downsizing images to custom dimensions,
+  maintaining aspect ratio if required.
+- **Masking of Images:** Introduced masking functionality for selective modifications to specific
+  image regions.
+- Extended compatibility for popular image formats, including BMP, PNG, JPEG, and PPM.
+
 ## Project Structure
 
 The project is based on the Model-View-Controller. The code has two interfaces and the Main.java
@@ -46,7 +75,11 @@ class.
 - `ImageCopyInterface.java`: This interface is used to get the pixels or set the pixels in the
   Image.
 - `MockOperations.java`:
--
+- `AdditionalImageOperations.java`: This class contains features which are implemented in the third
+  stage of the project. These features include Downscaling of an image and Masking of an image.
+- `AdditionalOperations.java`: This interface extends the ExtendedOperations.java interface so all
+  the older functionality is used. This interface contains the prototype of all the new operations
+  that can be performed on the Image.
 
 **3. Main File**
 
@@ -78,6 +111,8 @@ or run the script file.
 - Perform Colour Correction - color-correct <image-name> <dest-image-name>
 - Perform Levels Adjust - levels-adjust <b> <m> <w> <image-name> <dest-image-name>
 - Split and perform function - <Normal function command> <split> <percentage-split>
+- Downscale an Image -
+- Masking of an Image -
 - Run a Script File - run <script-file-path>
 
 **4. Class Diagram**

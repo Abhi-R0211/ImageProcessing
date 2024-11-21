@@ -11,7 +11,9 @@ Below is a summary of each command and conditions for their use.
 ### 1. blur
 
 - Description: This function will apply a blur effect to an image.
-- Usage: blur <image-name> <dest-image-name> [split] [split percentage]
+- Usage: blur <image-name> <dest-image-name>
+- Usage with split: blur <image-name> <dest-image-name> split <split percentage>
+- Usage with mask: blur <image-name> <dest-image-name> mask <masked Image>
 - Example:
     - blur test output
     - blur myImage blurredImage split 50
@@ -22,7 +24,9 @@ Below is a summary of each command and conditions for their use.
 ### 2. sharpen
 
 - Description: sharpens an image.
-- Usage: sharpen <image-name> <dest-image-name> [split] [split percentage]
+- Usage: sharpen <image-name> <dest-image-name>
+- Usage with split: sharpen <image-name> <dest-image-name> split <split percentage>
+- Usage with mask: sharpen <image-name> <dest-image-name> mask <masked Image>
 - Example:
     - sharpen test output
     - sharpen myImage blurredImage split 50
@@ -33,7 +37,9 @@ Below is a summary of each command and conditions for their use.
 ### 3. red-component
 
 - Description: Extracts the red component of the image.
-- Usage: red-component <image-name> <dest-image-name> [split] [split percentage]
+- Usage: red-component <image-name> <dest-image-name>
+- Usage with split: red-component <image-name> <dest-image-name> split <split percentage>
+- Usage with mask: red-component <image-name> <dest-image-name> mask <masked Image>
 - Example:
     - red-component myImage redImage
     - red-component myImage redImage split 50
@@ -45,7 +51,9 @@ Below is a summary of each command and conditions for their use.
 ### 4. green-component
 
 - Description: Extracts the green component of the image.
-- Usage: green-component <image-name> <dest-image-name> [split] [split percentage]
+- Usage: green-component <image-name> <dest-image-name>
+- Usage with split: green-component <image-name> <dest-image-name> split <split percentage>
+- Usage with mask: green-component <image-name> <dest-image-name> mask <masked Image>
 - Example:
     - green-component test output
     - green-component test output split 50
@@ -57,7 +65,9 @@ Below is a summary of each command and conditions for their use.
 ### 5. blue-component
 
 - Description: Extracts the blue component of the image.
-- Usage: blue-component <image-name> <dest-image-name> [split] [split percentage]
+- Usage: blue-component <image-name> <dest-image-name>
+- Usage with split: blue-component <image-name> <dest-image-name> split <split percentage>
+- Usage with mask: blue-component <image-name> <dest-image-name> mask <masked Image>
 - Example:
     - blue-component test output
     - blue-component test output split 50
@@ -69,7 +79,9 @@ Below is a summary of each command and conditions for their use.
 ### 6. intensity-component
 
 - Description: Calculates the intensity of the image by averaging the RGB components.
-- Usage: intensity-component <image-name> <dest-image-name> [split] [split percentage]
+- Usage: intensity-component <image-name> <dest-image-name>
+- Usage with split: intensity-component <image-name> <dest-image-name> split <split percentage>
+- Usage with mask: intensity-component <image-name> <dest-image-name> mask <masked Image>
 - Example:
 - intensity-component test output
 - intensity-component test output split 50
@@ -82,7 +94,9 @@ Below is a summary of each command and conditions for their use.
 
 - Description: This function extracts the luma (brightness) component of the image
   using a weighted sum of RGB values.
-- Usage: luma-component <image-name> <dest-image-name> [split] [split percentage]
+- Usage: luma-component <image-name> <dest-image-name>
+- Usage with split: luma-component <image-name> <dest-image-name> split <split percentage>
+- Usage with mask: luma-component <image-name> <dest-image-name> mask <masked Image>
 - Example:
 - luma-component test output
 - luma-component test output split 50
@@ -94,7 +108,9 @@ Below is a summary of each command and conditions for their use.
 ### 8. value-component
 
 - Description: Extracts the value component (the maximum of RGB values for each pixel).
-- Usage: value-component <image-name> <dest-image-name> [split] [split percentage]
+- Usage: value-component <image-name> <dest-image-name>
+- Usage with split: value-component <image-name> <dest-image-name> split <split percentage>
+- Usage with mask: value-component <image-name> <dest-image-name> mask <masked Image>
 - Example:
 - value-component test output
 - value-component test output split 50
@@ -137,7 +153,9 @@ Below is a summary of each command and conditions for their use.
 ### 12. sepia
 
 - Description: Applies a sepia tone effect to the specified image.
-- Usage: sepia <image-name> <dest-image-name> [split] [split percentage]
+- Usage: sepia <image-name> <dest-image-name>
+- Usage with split: sepia <image-name> <dest-image-name> split <split percentage>
+- Usage with mask: sepia <image-name> <dest-image-name> mask <masked Image>
 - Example: sepia test output
 - Conditions:
     - Note: Image must be loaded before running this command.
@@ -181,7 +199,8 @@ Below is a summary of each command and conditions for their use.
 ### 17. color-correct
 
 - Description: Adjusts the color balance of the image to correct color imbalances.
-- Usage: color-correct <image-name> <dest-image-name> [split] [split percentage]
+- Usage: color-correct <image-name> <dest-image-name>
+- Usage with split: color-correct <image-name> <dest-image-name> split <split percentage>
 - Example:
 - color-correct test output
 - color-correct test output split 50
@@ -192,6 +211,8 @@ Below is a summary of each command and conditions for their use.
 
 - Description: Adjusts the brightness levels across shadows, midtones, and highlights in the image.
 - Usage: levels-adjust <black-level> <mid-level> <white-level> <image-name> <
+  dest-image-name>
+- Usage with split: levels-adjust <black-level> <mid-level> <white-level> <image-name> <
   dest-image-name> [split] [split percentage]
 - Example:
 - levels-adjust test output 20 50 90

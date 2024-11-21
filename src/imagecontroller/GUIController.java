@@ -1,290 +1,210 @@
 package imagecontroller;
 
-import java.io.File;
 import java.io.IOException;
-
-import javax.swing.*;
+import java.util.ArrayList;
 
 import imagemodel.AdditionalOperations;
 import imagemodel.ImageInterface;
 import imageview.MainFrame;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class GUIController implements controllerGUI {
-
-  private Map<String, ImageInterface> images;
+/**
+ * Controller class for managing GUI-based image processing operations.
+ * It interacts with the model and then updates the view accordingly.
+ */
+public class GUIController implements ControllerGui {
   private final AdditionalOperations operations;
   private ImageInterface currentImage;
-  private final JTextArea output;
-  private final MainFrame mainFrame;  // Added reference to MainFrame
+  private final MainFrame mainFrame;
 
-  public GUIController(AdditionalOperations operations, JTextArea output, MainFrame mainFrame) {
+  /**
+   * Constructs a GUIController instance with the specified operations and view.
+   *
+   * @param operations the image operations model.
+   * @param mainFrame  the main frame for displaying images and user interaction.
+   */
+  public GUIController(AdditionalOperations operations, MainFrame mainFrame) {
     this.operations = operations;
-    this.images = new HashMap<>();
-    this.output = output;
-    this.mainFrame = mainFrame;  // Initialize the reference
+    this.mainFrame = mainFrame;
   }
 
-  public void runCommand(String command) throws IOException {
-    String[] tokens = command.split(" ");
-    String cmd = tokens[0].toLowerCase();
-
-    try {
-      switch (cmd) {
-        case "save":
-          handleSaveCommand();
-          break;
-        case "load":
-          handleLoadCommand();
-          break;
-        case "sharpen":
-          handleSharpenCommand();
-          break;
-        case "sepia":
-          handleSepiaCommand();
-          break;
-        case "red-component":
-          handleRedComponent();
-          break;
-        case "green-component":
-          handleGreenComponent();
-          break;
-        case "blue-component":
-          handleBlueComponent();
-          break;
-        case "blur":
-          handleBlurCommand();
-          break;
-        case "luma-component":
-          handleLumaComponent();
-          break;
-        case "value-component":
-          handleValueComponent();
-          break;
-        case "intensity-component":
-          handleIntensityComponent();
-          break;
-        case "horizontal-flip":
-          flipHorizontal();
-          break;
-        case "vertical-flip":
-          flipVertical();
-          break;
-        default:
-          output.append("Unknown command: ");
-          output.append(command);
-          output.append("\n");
-          break;
-      }
-    } catch (Exception e) {
-      output.append("Error executing command\n" + e.getMessage());
-    }
-  }
-
+  /**
+   * Extracts the file extension from the given file path.
+   *
+   * @param path the file path.
+   * @return the file extension in lowercase.
+   */
   private String getFileExtension(String path) {
     return path.substring(path.lastIndexOf('.') + 1).toLowerCase();
   }
 
-  @Override
-  public void handleLoadCommand() {
-    JFileChooser fileChooser = new JFileChooser();
-    fileChooser.setDialogTitle("Select an Image File");
+  /**
+   * Loads an image from the specified file path and displays it in the view.
+   *
+   * @throws IOException if an error occurs during loading.
+   */
+  public void loadImage() throws IOException {
+    String filePath = mainFrame.loadImage();
+    ImageInterface image;
+    ImageFormatHandler loader = new ImageHandler();
 
-    int result = fileChooser.showOpenDialog(null);
-    if (result == JFileChooser.APPROVE_OPTION) {
-      File selectedFile = fileChooser.getSelectedFile();
-      String fileName = selectedFile.getName();
-      ImageInterface image;
-      ImageFormatHandler loader = new ImageHandler();
-
-      try {
-        String extension = getFileExtension(fileName);
-        if (extension.equals("ppm")) {
-          ImageFormatHandler ppm = new P3PPMHandler();
-          image = ppm.loadImage(String.valueOf(selectedFile)); // Load as PPM
-        } else {
-          image = loader.loadImage(String.valueOf(selectedFile)); // Load as generic format
-        }
-
-        // Set current image and add it to the images map
-        currentImage = image;
-        String imageIdentifier = fileName.substring(0, fileName.lastIndexOf('.'));
-        images.put("currentImage", currentImage); // Store in map with "currentImage" as key
-        images.put(imageIdentifier, image); // Also store with the filename identifier
-
-        // Update the MainFrame to display the loaded image
-        mainFrame.displayImage(currentImage);
-
-        // Notify user of successful load
-        output.append("Image loaded successfully: ");
-        output.append(imageIdentifier);
-        output.append("\n");
-      } catch (IOException e) {
-        output.append("Error loading image: ");
-        output.append(e.getMessage());
-        output.append("\n");
-      }
+    String extension = getFileExtension(filePath);
+    if (extension.equals("ppm")) {
+      ImageFormatHandler ppm = new P3PPMHandler();
+      image = ppm.loadImage(filePath);
     } else {
-      output.append("Image loading canceled.\n");
+      image = loader.loadImage(filePath);
     }
+    currentImage = image;
+    mainFrame.displayImage(currentImage);
+  }
+
+  /**
+   * Saves the currently loaded image to the specified file path and format.
+   *
+   * @throws IOException if an error occurs during saving.
+   */
+  public void saveImage() throws IOException {
+    String filePath = mainFrame.saveImage();
+    String extension = getFileExtension(filePath);
+    ImageFormatHandler saver = new ImageHandler();
+    saver.saveImage(currentImage, filePath, extension);
   }
 
 
-  private void handleSaveCommand() {
-    JFileChooser fileChooser = new JFileChooser();
-    fileChooser.setDialogTitle("Save Image");
-    fileChooser.addChoosableFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("PPM Image", "ppm"));
-    fileChooser.addChoosableFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("PNG Image", "png"));
-    fileChooser.addChoosableFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("JPEG Image", "jpg", "jpeg"));
-
-    int result = fileChooser.showSaveDialog(null);
-
-    if (result == JFileChooser.APPROVE_OPTION) {
-      File selectedFile = fileChooser.getSelectedFile();
-      String selectedFilePath = selectedFile.getAbsolutePath();
-      String extension = getFileExtension(selectedFilePath);
-
-      // If no extension provided, default to .png
-      if (extension.isEmpty()) {
-        selectedFilePath += ".png";
-        extension = "png";
-      }
-
-      // Verify that the path is valid and does not contain invalid sequences
-      if (selectedFilePath.contains("::{")) {
-        output.append("Invalid path selected for saving. Please choose a standard directory.\n");
-        return;
-      }
-
-      ImageInterface image = images.get("currentImage");
-      ImageFormatHandler saver = new ImageHandler();
-      try {
-        saver.saveImage(image, selectedFilePath, extension);
-        output.append("Image saved successfully at: " + selectedFilePath + "\n");
-      } catch (IOException e) {
-        output.append("Error saving image: " + e.getMessage() + "\n");
-      }
-    } else {
-      output.append("Save operation was canceled.\n");
-    }
+  /**
+   * Calls the applySharpen command from the Model to apply the sharpen filter.
+   */
+  public void handleSharpenCommand() {
+    currentImage = operations.applySharpen(currentImage);
+    mainFrame.displayImage(currentImage);
   }
 
+  /**
+   * Calls the applySepia command from the Model to apply the Sepia filter.
+   */
+  public void handleSepiaCommand() {
+    currentImage = operations.applySepia(currentImage);
+    mainFrame.displayImage(currentImage);
+  }
 
-  private void handleSharpenCommand() {
-    if (currentImage == null) {
-      output.append("No current image loaded to apply sharpen filter.\n");
+  /**
+   * Calls the Red Component command from the Model to extract the Red Component.
+   */
+  public void handleRedComponent() {
+    currentImage = operations.visualizeRedComponent(currentImage);
+    mainFrame.displayImage(currentImage);
+  }
+
+  /**
+   * Calls the Green Component command from the Model to extract the Green Component.
+   */
+  public void handleGreenComponent() {
+    currentImage = operations.visualizeGreenComponent(currentImage);
+    mainFrame.displayImage(currentImage);
+  }
+
+  /**
+   * Calls the Blue Component command from the Model to extract the Blue Component.
+   */
+  public void handleBlueComponent() {
+    currentImage = operations.visualizeBlueComponent(currentImage);
+    mainFrame.displayImage(currentImage);
+  }
+
+  /**
+   * Calls the Intensity Component command from the Model to extract the Intensity Component.
+   */
+  public void handleIntensityComponent() {
+    currentImage = operations.visualizeIntensity(currentImage);
+    mainFrame.displayImage(currentImage);
+  }
+
+  /**
+   * Calls the Value Component command from the Model to extract the Value Component.
+   */
+  public void handleValueComponent() {
+    currentImage = operations.visualizeValue(currentImage);
+    mainFrame.displayImage(currentImage);
+  }
+
+  /**
+   * Calls the Flip Vertical command from the Model to flip the image vertically.
+   */
+  public void flipVertical() {
+    currentImage = operations.applyVerticalFlip(currentImage);
+    mainFrame.displayImage(currentImage);
+  }
+
+  /**
+   * Calls the Flip Horizontal command from the Model to flip the image Horizontally.
+   */
+  public void flipHorizontal() {
+    currentImage = operations.applyHorizontalFlip(currentImage);
+    mainFrame.displayImage(currentImage);
+  }
+
+  /**
+   * Calls the Luma Component command from the Model to extract the Luma Component.
+   */
+  public void handleLumaComponent() {
+    currentImage = operations.visualizeLuma(currentImage);
+    mainFrame.displayImage(currentImage);
+  }
+
+  /**
+   * Calls the Luma Component command from the Model to extract the Luma Component.
+   */
+  public void handleBlurCommand() {
+    currentImage = operations.applyBlur(currentImage);
+    mainFrame.displayImage(currentImage);
+  }
+
+  /**
+   * Call the createHistogram command to create a Histogram and then displays on the view.
+   */
+  public void createHistogram() {
+    ImageInterface histogram = operations.createHistogram(currentImage);
+    mainFrame.displayHistogram(histogram);
+  }
+
+  /**
+   * Calls the levels adjust command and then displays it on the view.
+   */
+  public void handleLevelsAdjustCommand() {
+    ArrayList<Integer> value = MainFrame.showLevelsAdjustDialog();
+    if (value == null) {
+      System.out.println("User canceled the dialog.");
       return;
     }
-
-    try {
-      currentImage = operations.applySharpen(currentImage);
-      images.put("currentImage", currentImage);
-
-      output.append("Sharpen filter applied to current image.\n");
-      mainFrame.displayImage(currentImage);
-    } catch (Exception e) {
-      output.append("Error applying sharpen filter: " + e.getMessage() + "\n");
-    }
+    currentImage = operations.levelsAdjust(currentImage, value.get(0), value.get(1), value.get(2));
+    mainFrame.displayImage(currentImage);
   }
 
-  private void handleSepiaCommand() {
-    if (currentImage == null) {
-      output.append("No current image loaded to apply sepia filter.\n");
-      return;
-    }
-
-    // Apply sepia effect
-    try {
-      currentImage = operations.applySepia(currentImage);
-      images.put("currentImage", currentImage);
-
-      output.append("Sepia filter applied to current image.\n");
-      mainFrame.displayImage(currentImage);
-    } catch (Exception e) {
-      output.append("Error applying sepia filter: " + e.getMessage() + "\n");
-    }
+  /**
+   * Applies color correction to the current image and displays the result.
+   */
+  public void handleColorCorrectCommand() {
+    currentImage = operations.colorCorrect(currentImage);
+    mainFrame.displayImage(currentImage);
   }
 
-  private void handleRedComponent() {
-
+  /**
+   * Compresses the current image by the specified percentage and displays the result.
+   */
+  public void applyCompression() {
+    int percentage = MainFrame.showCompressionDialog();
+    currentImage = operations.compressImage(currentImage, percentage);
+    mainFrame.displayImage(currentImage);
   }
 
-  private void handleGreenComponent() {
-
+  /**
+   * Downsizes the current image to the specified width and height, and displays the result.
+   */
+  public void downsizeImage() {
+    ArrayList<Integer> dimension = MainFrame.showDownsizeDialog();
+    ImageInterface downsizedImage = operations.downscaleImage(currentImage,
+            dimension.get(0), dimension.get(1));
+    mainFrame.displayImage(downsizedImage);
   }
 
-  private void handleBlueComponent() {
-
-  }
-
-  private void handleIntensityComponent() {
-  }
-
-  private void handleValueComponent() {
-  }
-
-
-  private void flipVertical() {
-    if (currentImage == null) {
-      output.append("No current image loaded to flip vertically.\n");
-      return;
-    }
-
-    // Apply vertical flip
-    try {
-      currentImage = operations.applyVerticalFlip(currentImage);
-      images.put("currentImage", currentImage);
-
-      output.append("Image flipped vertically.\n");
-      mainFrame.displayImage(currentImage);
-    } catch (Exception e) {
-      output.append("Error flipping image vertically: " + e.getMessage() + "\n");
-    }
-  }
-
-  private void flipHorizontal() {
-    if (currentImage == null) {
-      System.out.println("1");
-      output.append("No current image loaded to flip horizontally.\n");
-      return;
-    }
-
-    System.out.println("2");
-    // Apply horizontal flip
-    try {
-      System.out.println("3");
-      currentImage = operations.applyHorizontalFlip(currentImage);
-      System.out.println("4");
-      images.put("currentImage", currentImage);
-      System.out.println("5");
-      output.append("Image flipped horizontally.\n");
-      System.out.println("6");
-      mainFrame.displayImage(currentImage);
-    } catch (Exception e) {
-      System.out.println("7");
-      output.append("Error flipping image horizontally: " + e.getMessage() + "\n");
-    }
-  }
-
-  private void handleLumaComponent() {
-  }
-
-  private void handleBlurCommand() {
-    if (currentImage == null) {
-      output.append("No current image loaded to apply blur filter.\n");
-      return;
-    }
-
-    try {
-      currentImage = operations.applyBlur(currentImage);
-      images.put("currentImage", currentImage);
-
-      output.append("Blur filter applied to current image.\n");
-      mainFrame.displayImage(currentImage);
-    } catch (Exception e) {
-      output.append("Error applying blur filter: " + e.getMessage() + "\n");
-    }
-  }
 }

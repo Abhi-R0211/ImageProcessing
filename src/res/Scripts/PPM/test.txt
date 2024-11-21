@@ -1,5 +1,0 @@
-#load
-load src/res/PPM/Sample.ppm input
-
-#save
-save src/res/PPM/Sample-save.ppm input

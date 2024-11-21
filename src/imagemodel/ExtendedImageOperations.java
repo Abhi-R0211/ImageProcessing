@@ -16,35 +16,6 @@ import java.util.function.Function;
  */
 public class ExtendedImageOperations extends ImageOperations implements ExtendedOperations {
 
-  private final Map<String, Function<ImageInterface, ImageInterface>> operations;
-
-  /**
-   * Constructor initializes the operations map with supported operations.
-   */
-  public ExtendedImageOperations() {
-    operations = initializeOperations();
-  }
-
-  /**
-   * Initializes the operations map with predefined image transformation operations.
-   *
-   * @return a map of operation names to corresponding function implementations.
-   */
-  private Map<String, Function<ImageInterface, ImageInterface>> initializeOperations() {
-    Map<String, Function<ImageInterface, ImageInterface>> map = new HashMap<>();
-    map.put("blur", this::applyBlur);
-    map.put("sharpen", this::applySharpen);
-    map.put("sepia", this::applySepia);
-    map.put("red-component", this::visualizeRedComponent);
-    map.put("blue-component", this::visualizeBlueComponent);
-    map.put("green-component", this::visualizeGreenComponent);
-    map.put("value-component", this::visualizeValue);
-    map.put("luma-component", this::visualizeLuma);
-    map.put("intensity-component", this::visualizeIntensity);
-    map.put("color-correct", this::colorCorrect);
-    return map;
-  }
-
   /**
    * Compresses an image by applying Haar wavelet transformation and thresholding.
    *
@@ -580,48 +551,28 @@ public class ExtendedImageOperations extends ImageOperations implements Extended
    * Applies a split-view operation, applying an image transformation to a specified percentage
    * of the image width.
    *
-   * @param tokens the command tokens for the split-view operation.
+   * @param percentage of image to be split.
    * @param image  the input image to split and transform.
-   * @return the processed image with the transformation applied to the specified section.
-   * @throws NullPointerException     if the input image is null.
+   * @param operation lambda function that performs the necessary operation.
+   * @throws IllegalArgumentException if the input image is null.
    * @throws IllegalArgumentException if the operation type is unsupported.
    */
   @Override
-  public ImageInterface splitViewOperation(String[] tokens, ImageInterface image)
+  public ImageInterface splitViewOperation(int percentage, ImageInterface image,
+                                           Function<ImageInterface, ImageInterface> operation)
           throws IllegalArgumentException {
     if (image == null) {
       throw new IllegalArgumentException("Image cannot be null.");
     }
-    int width = image.getWidth();
-    int height = image.getHeight();
-    int splitPosition = getSplitPosition(tokens, width);
-    ImageInterface partToProcess = cropImage(image, splitPosition, height);
-    String operationType = tokens[0];
-    ImageInterface processedPart;
-    if (operationType.equals("levels-adjust")) {
-      processedPart = parseLevelsAdjust(tokens, partToProcess);
-    } else if (operations.containsKey(operationType)) {
-      processedPart = operations.get(operationType).apply(partToProcess);
-    } else {
-      throw new IllegalArgumentException("Unsupported operation: " + operationType);
-    }
-    return mergeImages(processedPart, image, splitPosition, width, height);
-  }
-
-  /**
-   * Calculates the split position in pixels based on a percentage of the image width.
-   *
-   * @param tokens the command tokens containing the split percentage.
-   * @param width  the width of the image.
-   * @return the calculated split position in pixels.
-   * @throws IllegalArgumentException if the percentage is not within [0, 100].
-   */
-  private int getSplitPosition(String[] tokens, int width) {
-    int percentage = Integer.parseInt(tokens[tokens.length - 1]);
-    if (percentage > 100 || percentage < 0) {
+    if (percentage < 0 || percentage > 100) {
       throw new IllegalArgumentException("Percentage must be between 0 and 100.");
     }
-    return width * percentage / 100;
+    int width = image.getWidth();
+    int height = image.getHeight();
+    int splitPosition = width * percentage / 100;
+    ImageInterface partToProcess = cropImage(image, splitPosition, height);
+    ImageInterface processedPart = operation.apply(partToProcess);
+    return mergeImages(processedPart, image, splitPosition, width, height);
   }
 
   /**

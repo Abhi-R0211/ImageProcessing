@@ -161,7 +161,7 @@ public class TextImageController implements Controller {
    * @throws IOException upon encountering incorrect input/output.
    */
   public void start(String[] args) throws IOException {
-    if (args.length == 0) {
+    if (args.length == 1) {
       output.append(commands());
       output.append("Type 'exit' to quit.\n");
     } else if (args.length == 2 && (args[0].equalsIgnoreCase("-script")
@@ -333,10 +333,12 @@ public class TextImageController implements Controller {
     if (tokens.length == 3) {
       redImage = imageOperations.visualizeRedComponent(images.get(tokens[1]));
     } else if (tokens.length == 5 && tokens[3].equals("split")) {
-      redImage = imageOperations.splitViewOperation(tokens, images.get(tokens[1]));
+      int percentage = Integer.parseInt(tokens[4]);
+      redImage = imageOperations.splitViewOperation( percentage, images.get(tokens[1]),
+              imageOperations::visualizeRedComponent);
     } else if (tokens.length == 5 && tokens[3].equals("mask")) {
-      redImage = imageOperations.visualizeRedComponent(
-              images.get(tokens[1]), images.get(tokens[4]));
+      redImage = imageOperations.visualizeRedComponent(images.get(tokens[1]),
+              images.get(tokens[4]));
     } else {
       output.append("Invalid red-component command\n");
       return;
@@ -356,10 +358,12 @@ public class TextImageController implements Controller {
     if (tokens.length == 3) {
       greenImage = imageOperations.visualizeGreenComponent(images.get(tokens[1]));
     } else if (tokens.length == 5 && tokens[3].equals("split")) {
-      greenImage = imageOperations.splitViewOperation(tokens, images.get(tokens[1]));
+      int percentage = Integer.parseInt(tokens[4]);
+      greenImage = imageOperations.splitViewOperation(percentage, images.get(tokens[1]),
+              imageOperations::visualizeGreenComponent);
     } else if (tokens.length == 5 && tokens[3].equals("mask")) {
-      greenImage = imageOperations.visualizeGreenComponent(
-              images.get(tokens[1]), images.get(tokens[4]));
+      greenImage = imageOperations.visualizeGreenComponent(images.get(tokens[1]),
+              images.get(tokens[4]));
     } else {
       output.append("Invalid green-component command\n");
       return;
@@ -367,6 +371,7 @@ public class TextImageController implements Controller {
     images.put(tokens[2], greenImage);
     output.append("Green Component Loaded at: ").append(tokens[2]).append("\n");
   }
+
 
   /**
    * Helper method to calculate the blue-component.
@@ -379,10 +384,12 @@ public class TextImageController implements Controller {
     if (tokens.length == 3) {
       blueImage = imageOperations.visualizeBlueComponent(images.get(tokens[1]));
     } else if (tokens.length == 5 && tokens[3].equals("split")) {
-      blueImage = imageOperations.splitViewOperation(tokens, images.get(tokens[1]));
+      int percentage = Integer.parseInt(tokens[4]);
+      blueImage = imageOperations.splitViewOperation(percentage, images.get(tokens[1]),
+              imageOperations::visualizeBlueComponent);
     } else if (tokens.length == 5 && tokens[3].equals("mask")) {
-      blueImage = imageOperations.visualizeBlueComponent(
-              images.get(tokens[1]), images.get(tokens[4]));
+      blueImage = imageOperations.visualizeBlueComponent(images.get(tokens[1]),
+              images.get(tokens[4]));
     } else {
       output.append("Invalid blue-component command\n");
       return;
@@ -402,7 +409,9 @@ public class TextImageController implements Controller {
     if (tokens.length == 3) {
       valueImage = imageOperations.visualizeValue(images.get(tokens[1]));
     } else if (tokens.length == 5 && tokens[3].equals("split")) {
-      valueImage = imageOperations.splitViewOperation(tokens, images.get(tokens[1]));
+      int percentage = Integer.parseInt(tokens[4]);
+      valueImage = imageOperations.splitViewOperation(percentage, images.get(tokens[1]),
+              imageOperations::visualizeValue);
     } else if (tokens.length == 5 && tokens[3].equals("mask")) {
       valueImage = imageOperations.visualizeValue(images.get(tokens[1]), images.get(tokens[4]));
     } else {
@@ -424,7 +433,9 @@ public class TextImageController implements Controller {
     if (tokens.length == 3) {
       lumaImage = imageOperations.visualizeLuma(images.get(tokens[1]));
     } else if (tokens.length == 5 && tokens[3].equals("split")) {
-      lumaImage = imageOperations.splitViewOperation(tokens, images.get(tokens[1]));
+      int percentage = Integer.parseInt(tokens[4]);
+      lumaImage = imageOperations.splitViewOperation(percentage, images.get(tokens[1]),
+              imageOperations::visualizeLuma);
     } else if (tokens.length == 5 && tokens[3].equals("mask")) {
       lumaImage = imageOperations.visualizeLuma(images.get(tokens[1]), images.get(tokens[4]));
     } else {
@@ -446,7 +457,9 @@ public class TextImageController implements Controller {
     if (tokens.length == 3) {
       intensityImage = imageOperations.visualizeIntensity(images.get(tokens[1]));
     } else if (tokens.length == 5 && tokens[3].equals("split")) {
-      intensityImage = imageOperations.splitViewOperation(tokens, images.get(tokens[1]));
+      int percentage = Integer.parseInt(tokens[4]);
+      intensityImage = imageOperations.splitViewOperation(percentage, images.get(tokens[1]),
+              imageOperations::visualizeIntensity);
     } else if (tokens.length == 5 && tokens[3].equals("mask")) {
       intensityImage = imageOperations.visualizeIntensity(images.get(tokens[1]),
               images.get(tokens[4]));
@@ -472,7 +485,13 @@ public class TextImageController implements Controller {
       int w = Integer.parseInt(tokens[3]);
       adjustedImage = imageOperations.levelsAdjust(images.get(tokens[4]), b, m, w);
     } else if (tokens.length == 8 && tokens[tokens.length - 2].equals("split")) {
-      adjustedImage = imageOperations.splitViewOperation(tokens, images.get(tokens[4]));
+      int percentage = Integer.parseInt(tokens[7]);
+      adjustedImage = imageOperations.splitViewOperation(percentage, images.get(tokens[4]),
+              img -> {int b = Integer.parseInt(tokens[1]);
+                int m = Integer.parseInt(tokens[2]);
+                int w = Integer.parseInt(tokens[3]);
+                return imageOperations.levelsAdjust(img, b, m, w);
+              });
     } else {
       output.append("Invalid level command\n");
       return;
@@ -492,7 +511,9 @@ public class TextImageController implements Controller {
     if (tokens.length == 3) {
       corrected = imageOperations.colorCorrect(images.get(tokens[1]));
     } else if (tokens.length == 5 && tokens[tokens.length - 2].equals("split")) {
-      corrected = imageOperations.splitViewOperation(tokens, images.get(tokens[1]));
+      int percentage = Integer.parseInt(tokens[4]);
+      corrected = imageOperations.splitViewOperation(percentage, images.get(tokens[1]),
+              imageOperations::colorCorrect);
     } else {
       output.append("Invalid color correct command\n");
       return;
@@ -500,6 +521,7 @@ public class TextImageController implements Controller {
     images.put(tokens[2], corrected);
     output.append("Color-corrected image stored as: ").append(tokens[2]).append("\n");
   }
+
 
   /**
    * Helper method to combine red, green and blue channels.
@@ -575,7 +597,9 @@ public class TextImageController implements Controller {
     if (tokens.length == 3) {
       blurImage = imageOperations.applyBlur(images.get(tokens[1]));
     } else if (tokens.length == 5 && tokens[3].equals("split")) {
-      blurImage = imageOperations.splitViewOperation(tokens, images.get(tokens[1]));
+      int percentage = Integer.parseInt(tokens[4]);
+      blurImage = imageOperations.splitViewOperation(percentage, images.get(tokens[1]),
+              imageOperations::applyBlur);
     } else if (tokens.length == 5 && tokens[3].equals("mask")) {
       blurImage = imageOperations.applyBlur(images.get(tokens[1]), images.get(tokens[4]));
     } else {
@@ -585,6 +609,7 @@ public class TextImageController implements Controller {
     images.put(tokens[2], blurImage);
     output.append("Image blurred and stored as: ").append(tokens[2]).append("\n");
   }
+
 
   /**
    * Helper method to sharpen an image.
@@ -597,7 +622,9 @@ public class TextImageController implements Controller {
     if (tokens.length == 3) {
       sharpenImage = imageOperations.applySharpen(images.get(tokens[1]));
     } else if (tokens.length == 5 && tokens[3].equals("split")) {
-      sharpenImage = imageOperations.splitViewOperation(tokens, images.get(tokens[1]));
+      int percentage = Integer.parseInt(tokens[4]);
+      sharpenImage = imageOperations.splitViewOperation(percentage, images.get(tokens[1]),
+              imageOperations::applySharpen);
     } else if (tokens.length == 5 && tokens[3].equals("mask")) {
       sharpenImage = imageOperations.applySharpen(images.get(tokens[1]), images.get(tokens[4]));
     } else {
@@ -619,7 +646,9 @@ public class TextImageController implements Controller {
     if (tokens.length == 3) {
       sepiaImage = imageOperations.applySepia(images.get(tokens[1]));
     } else if (tokens.length == 5 && tokens[3].equals("split")) {
-      sepiaImage = imageOperations.splitViewOperation(tokens, images.get(tokens[1]));
+      int percentage = Integer.parseInt(tokens[4]);
+      sepiaImage = imageOperations.splitViewOperation(percentage, images.get(tokens[1]),
+              imageOperations::applySepia);
     } else if (tokens.length == 5 && tokens[3].equals("mask")) {
       sepiaImage = imageOperations.applySepia(images.get(tokens[1]), images.get(tokens[4]));
     } else {

@@ -1,5 +1,7 @@
 package imagemodel;
 
+import java.util.function.Function;
+
 /**
  * Mock class for all image operations.
  */
@@ -23,6 +25,18 @@ public class MockOperations implements AdditionalOperations {
   @Override
   public ImageInterface applySharpen(ImageInterface image, ImageInterface maskImage) {
     logs.append("Applied sharpen with mask").append("\n");
+    return null;
+  }
+
+  /**
+   * Mock for sharpen.
+   *
+   * @param image to be sharpened.
+   * @return null.
+   */
+  @Override
+  public ImageInterface applySharpen(ImageInterface image) {
+    logs.append("Applied sharpen").append("\n");
     return null;
   }
 
@@ -140,12 +154,14 @@ public class MockOperations implements AdditionalOperations {
   /**
    * Mock for split operation.
    *
-   * @param image  to be split.
-   * @param tokens command.
+   * @param percentage of image to be split.
+   * @param image  the input image to split and transform.
+   * @param operation lambda function that performs the necessary operation.
    * @return null.
    */
   @Override
-  public ImageInterface splitViewOperation(String[] tokens, ImageInterface image) {
+  public ImageInterface splitViewOperation(int percentage, ImageInterface image,
+                                           Function<ImageInterface, ImageInterface> operation) {
     logs.append("Split view operation performed").append("\n");
     return null;
   }
@@ -208,18 +224,6 @@ public class MockOperations implements AdditionalOperations {
   @Override
   public ImageInterface applyBlur(ImageInterface image) {
     logs.append("Applied blur").append("\n");
-    return null;
-  }
-
-  /**
-   * Mock for sharpen.
-   *
-   * @param image to be sharpened.
-   * @return null.
-   */
-  @Override
-  public ImageInterface applySharpen(ImageInterface image) {
-    logs.append("Applied sharpen").append("\n");
     return null;
   }
 

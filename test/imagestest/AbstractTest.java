@@ -9,7 +9,6 @@ import java.io.InputStreamReader;
 import imagecontroller.Controller;
 import imagecontroller.TextImageController;
 import imagemodel.AdditionalImageOperations;
-import imagemodel.ExtendedImageOperations;
 
 import static org.junit.Assert.assertFalse;
 
