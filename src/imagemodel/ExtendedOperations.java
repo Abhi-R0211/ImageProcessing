@@ -53,8 +53,8 @@ public interface ExtendedOperations extends Operations {
    * of the image width.
    *
    * @param percentage of image to be split.
-   * @param image  the input image to split and transform.
-   * @param operation lambda function that performs the necessary operation.
+   * @param image      the input image to split and transform.
+   * @param operation  lambda function that performs the necessary operation.
    * @throws IllegalArgumentException if the input image is null.
    * @throws IllegalArgumentException if the operation type is unsupported.
    */

@@ -101,4 +101,14 @@ public interface ControllerGui {
    * Downsizes the current image to the specified width and height.
    */
   void downsizeImage();
+
+  /**
+   * This will handle the Split View.
+   */
+  void handleSplitView();
+
+  /**
+   * This function is to for the toggle functionality.
+   */
+  void toggleSplitView();
 }

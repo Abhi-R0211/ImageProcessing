@@ -13,6 +13,7 @@ import imageview.MainFrame;
  * The entry point of the image processing application.
  */
 public class Main {
+
   /**
    * Main method to start the application.
    *
@@ -34,16 +35,13 @@ public class Main {
       Controller textController = new TextImageController(operations,
               new InputStreamReader(System.in), System.out);
       textController.start(args);
-    } else if (args.length == 1 && args[0].equalsIgnoreCase("-gui")) {
-      MainFrame mainFrame = new MainFrame(args);
+    } else if (args.length == 0) {
+      MainFrame mainFrame = new MainFrame();
       GUIController guiController = new GUIController(operations, mainFrame);
       mainFrame.setController(guiController);
       mainFrame.setVisible(true);
     } else {
-      System.out.println("Invalid arguments. Usage:");
-      System.out.println("  java Main -file <file_path>   // For file-based input");
-      System.out.println("  java Main -text              // For text-based CLI");
-      System.out.println("  java Main -gui               // To launch the GUI");
+      System.out.println("Invalid arguments");
     }
   }
 }

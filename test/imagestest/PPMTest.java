@@ -1048,7 +1048,7 @@ public class PPMTest extends AbstractTest {
     ExtendedOperations io = new ExtendedImageOperations();
     ImageFormatHandler ih = new P3PPMHandler();
     ImageInterface actual = io.splitViewOperation(50, ih.loadImage(
-            "res/PPM/Sample.ppm"),  img -> io.levelsAdjust(img, 10, 15, 20));
+            "res/PPM/Sample.ppm"), img -> io.levelsAdjust(img, 10, 15, 20));
     ImageCopyInterface expected = new ImageCopy(2, 2);
     expected.setPixel(0, 0, new Pixel(0, 0, 0));
     expected.setPixel(1, 0, new Pixel(100, 0, 0));

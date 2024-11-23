@@ -1,5 +1,5 @@
 #load
-load res/PNG/Sample.png input
+load PNG/Sample.png input
 
 #save
-save res/PNG/Sample-save.png input
+save PNG/Sample-save.png input

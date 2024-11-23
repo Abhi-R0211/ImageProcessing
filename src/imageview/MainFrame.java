@@ -11,12 +11,14 @@ import javax.swing.JFileChooser;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import imagecontroller.ControllerGui;
 import imagemodel.ImageInterface;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -35,28 +37,24 @@ public class MainFrame extends JFrame implements MainFrameInterface {
   private final ImageDisplayPanel histogramDisplayPanel;
   private final JScrollPane scrollPane;
   private final JPanel buttonPanel;
+  private final JPanel buttonPanelLower;
   private final JSplitPane splitPane;
   private int count;
 
   /**
    * Constructs the main frame for the Image Processor.
-   *
-   * @param args Command-line arguments.
    */
-  public MainFrame(String[] args) {
+  public MainFrame() {
     setTitle("Image Processor");
-    setSize(900, 600);
+    setSize(900, 800);
     setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
     addWindowListener(new WindowAdapter() {
       @Override
       public void windowClosing(WindowEvent e) {
         if (count == 1) {
-          int option = JOptionPane.showConfirmDialog(
-                  MainFrame.this,
+          int option = JOptionPane.showConfirmDialog(MainFrame.this,
                   "There are unsaved changes. Do you want to exit without saving?",
-                  "Unsaved Changes",
-                  JOptionPane.YES_NO_OPTION
-          );
+                  "Unsaved Changes", JOptionPane.YES_NO_OPTION);
           if (option == JOptionPane.NO_OPTION) {
             return;
           }
@@ -79,11 +77,48 @@ public class MainFrame extends JFrame implements MainFrameInterface {
     add(splitPane, BorderLayout.CENTER);
     buttonPanel = new JPanel();
     add(buttonPanel, BorderLayout.NORTH);
+    buttonPanelLower = new JPanel();
+    buttonPanelLower.setLayout(new GridLayout(2, 1));
+    add(buttonPanelLower, BorderLayout.SOUTH);
   }
 
+  /**
+   * This is a Panel which shows at the bottom of the GUI.
+   *
+   * @param controller takes input of controller.
+   */
+  private void addButtonsToSecondPanel(ControllerGui controller) {
+    JButton toggleSplit = new JButton("Toggle Split");
+    toggleSplit.setPreferredSize(new Dimension(150, 30));
+    toggleSplit.addActionListener(e -> {
+      controller.toggleSplitView();
+    });
+    buttonPanelLower.setLayout(new FlowLayout(FlowLayout.CENTER));
+    buttonPanelLower.add(toggleSplit);
+  }
 
+  /**
+   * This will display an option of if the user wants to Toggle to the previous view.
+   *
+   * @return this will return a boolean if the toggle is accepted or not.
+   */
+  @Override
+  public boolean toggleOption() {
+    int option = JOptionPane.showConfirmDialog(MainFrame.this,
+            "Are you sure you want to switch to the previous Image",
+            "Toggle View", JOptionPane.YES_NO_OPTION);
+    return option != JOptionPane.NO_OPTION;
+  }
+
+  /**
+   * This will initialize the controller for the two button functions.
+   *
+   * @param controller is the object of the Interface ControllerGUI.
+   */
+  @Override
   public void setController(ControllerGui controller) {
     addAdditionalButtons(controller);
+    addButtonsToSecondPanel(controller);
   }
 
   /**
@@ -91,6 +126,7 @@ public class MainFrame extends JFrame implements MainFrameInterface {
    *
    * @param image The image to display.
    */
+  @Override
   public void displayImage(ImageInterface image) {
     imageDisplayPanel.setImage(image);
     imageDisplayPanel.setPreferredSize(new Dimension(image.getWidth(), image.getHeight()));
@@ -104,6 +140,7 @@ public class MainFrame extends JFrame implements MainFrameInterface {
    *
    * @param histogramImage The image representing the histogram.
    */
+  @Override
   public void displayHistogram(ImageInterface histogramImage) {
     histogramDisplayPanel.setImage(histogramImage);
     histogramDisplayPanel.revalidate();
@@ -114,11 +151,11 @@ public class MainFrame extends JFrame implements MainFrameInterface {
    * Prompts the user to load an image and updates the display by calling the load function
    * from the controller.
    */
+  @Override
   public String loadImage() {
     File selectedFile = null;
     JFileChooser fileChooser = new JFileChooser();
     fileChooser.setDialogTitle("Select an Image File");
-
     int result = fileChooser.showOpenDialog(this);
     if (result == JFileChooser.APPROVE_OPTION) {
       selectedFile = fileChooser.getSelectedFile();
@@ -130,14 +167,22 @@ public class MainFrame extends JFrame implements MainFrameInterface {
    * Prompts the user to save the current image to a file and calls the save function
    * from the controller.
    */
+  @Override
   public String saveImage() {
     JFileChooser fileChooser = new JFileChooser();
+    FileNameExtensionFilter jpgFilter = new FileNameExtensionFilter(
+            "JPEG Files (*.jpg)", "jpg");
+    FileNameExtensionFilter pngFilter = new FileNameExtensionFilter(
+            "PNG Files (*.png)", "png");
+    FileNameExtensionFilter bmpFilter = new FileNameExtensionFilter(
+            "Bitmap Files (*.bmp)", "bmp");
+
+    fileChooser.addChoosableFileFilter(jpgFilter);
+    fileChooser.addChoosableFileFilter(pngFilter);
+    fileChooser.addChoosableFileFilter(bmpFilter);
     String selectedFilePath = null;
-    String extension = null;
     fileChooser.setDialogTitle("Save Image");
-
     int result = fileChooser.showSaveDialog(this);
-
     if (result == JFileChooser.APPROVE_OPTION) {
       File selectedFile = fileChooser.getSelectedFile();
       selectedFilePath = selectedFile.getAbsolutePath();
@@ -149,7 +194,8 @@ public class MainFrame extends JFrame implements MainFrameInterface {
    * Opens a dialog for levels adjustment (black, mid, and white levels)
    * and calls the levels adjust from the controller.
    */
-  public static ArrayList<Integer> showLevelsAdjustDialog() {
+  @Override
+  public ArrayList<Integer> showLevelsAdjustDialog() {
     JSlider blackSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 128);
     JSlider midSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 128);
     JSlider whiteSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 128);
@@ -177,13 +223,8 @@ public class MainFrame extends JFrame implements MainFrameInterface {
     inputPanel.add(new JLabel("White Level:"));
     inputPanel.add(whiteSlider);
 
-    int result = JOptionPane.showConfirmDialog(
-            null,
-            inputPanel,
-            "Levels Adjustment",
-            JOptionPane.OK_CANCEL_OPTION,
-            JOptionPane.PLAIN_MESSAGE
-    );
+    int result = JOptionPane.showConfirmDialog(null, inputPanel,
+            "Levels Adjustment", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
     if (result != JOptionPane.OK_OPTION) {
       return null;
@@ -205,7 +246,8 @@ public class MainFrame extends JFrame implements MainFrameInterface {
    * Opens a dialog for image compression with adjustable compression percentage and calls the
    * compression function from the controller.
    */
-  public static int showCompressionDialog() {
+  @Override
+  public int showCompressionDialog() {
     int percentage = 0;
     JSlider slider = new JSlider(JSlider.HORIZONTAL, 0, 100, 50);
     slider.setMajorTickSpacing(10);
@@ -213,13 +255,9 @@ public class MainFrame extends JFrame implements MainFrameInterface {
     slider.setPaintTicks(true);
     slider.setPaintLabels(true);
 
-    int option = JOptionPane.showConfirmDialog(
-            null,
-            slider,
-            "Select Compression Percentage",
-            JOptionPane.OK_CANCEL_OPTION,
-            JOptionPane.PLAIN_MESSAGE
-    );
+    int option = JOptionPane.showConfirmDialog(null, slider,
+            "Select Compression Percentage", JOptionPane.OK_CANCEL_OPTION,
+            JOptionPane.PLAIN_MESSAGE);
 
     if (option == JOptionPane.OK_OPTION) {
       percentage = slider.getValue();
@@ -231,11 +269,9 @@ public class MainFrame extends JFrame implements MainFrameInterface {
    * Opens a dialog for downsizing the image by specifying new dimensions
    * and calls the downsize function in the controller.
    */
-  public static ArrayList<Integer> showDownsizeDialog() {
+  @Override
+  public ArrayList<Integer> showDownsizeDialog() {
     JPanel inputPanel = new JPanel(new GridLayout(2, 2));
-    int newWidth = 0;
-    int newHeight = 0;
-
     JTextField widthField = new JTextField();
     JTextField heightField = new JTextField();
 
@@ -244,51 +280,52 @@ public class MainFrame extends JFrame implements MainFrameInterface {
     inputPanel.add(new JLabel("Enter new height:"));
     inputPanel.add(heightField);
 
-    int result = JOptionPane.showConfirmDialog(
-            null,
-            inputPanel,
-            "Downsize Image",
-            JOptionPane.OK_CANCEL_OPTION,
-            JOptionPane.PLAIN_MESSAGE
-    );
+    int result = JOptionPane.showConfirmDialog(null, inputPanel,
+            "Downsize Image", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
     if (result == JOptionPane.OK_OPTION) {
-      newWidth = Integer.parseInt(widthField.getText());
-      newHeight = Integer.parseInt(heightField.getText());
+      try {
+        int newWidth = Integer.parseInt(widthField.getText().trim());
+        int newHeight = Integer.parseInt(heightField.getText().trim());
+        ArrayList<Integer> dimension = new ArrayList<>();
+        dimension.add(newWidth);
+        dimension.add(newHeight);
+        return dimension;
+      } catch (NumberFormatException e) {
+        showErrorDialog("Error: Please enter valid numeric values for width and height.");
+      }
     }
-    ArrayList<Integer> dimension = new ArrayList<>();
-    dimension.add(newWidth);
-    dimension.add(newHeight);
+    return null; // Return null if canceled or invalid input
+  }
 
-    return dimension;
+  /**
+   * Pops up a dialog which shows the error that is being thrown.
+   *
+   * @param message is a String of what the error is.
+   */
+  @Override
+  public void showErrorDialog(String message) {
+    JOptionPane.showMessageDialog(null, message,
+            "Error", JOptionPane.ERROR_MESSAGE);
   }
 
   /**
    * Opens a slider dialog to adjust the split view divider.
    */
-  public void showSplitViewSliderDialog() {
-    JSlider splitViewSlider = new JSlider(JSlider.HORIZONTAL, 0, 100, 50);
-    splitViewSlider.setMajorTickSpacing(25);
-    splitViewSlider.setMinorTickSpacing(5);
-    splitViewSlider.setPaintTicks(true);
-    splitViewSlider.setPaintLabels(true);
-
-    JPanel sliderPanel = new JPanel(new BorderLayout());
-    sliderPanel.add(new JLabel("Adjust Split View", JLabel.CENTER), BorderLayout.NORTH);
-    sliderPanel.add(splitViewSlider, BorderLayout.CENTER);
-
-    int result = JOptionPane.showConfirmDialog(
-            this,
-            sliderPanel,
-            "Split View Adjustment",
-            JOptionPane.OK_CANCEL_OPTION,
-            JOptionPane.PLAIN_MESSAGE
-    );
-
+  @Override
+  public int showSplitDialog() {
+    JSlider splitSlider = new JSlider(JSlider.HORIZONTAL, 0, 100, 0);
+    splitSlider.setMajorTickSpacing(10);
+    splitSlider.setMinorTickSpacing(5);
+    splitSlider.setPaintTicks(true);
+    splitSlider.setPaintLabels(true);
+    int result = JOptionPane.showConfirmDialog(null, splitSlider,
+            "Split View Adjustment", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+    System.out.println(splitSlider.getValue());
     if (result == JOptionPane.OK_OPTION) {
-      int value = splitViewSlider.getValue();
-      adjustSplitView(value);
+      return splitSlider.getValue();
     }
+    return 0;
   }
 
   /**
@@ -309,44 +346,54 @@ public class MainFrame extends JFrame implements MainFrameInterface {
     });
     addButton("Save Image", e -> {
       try {
+        count = 0;
         controller.saveImage();
       } catch (IOException ex) {
         throw new RuntimeException(ex);
       }
     });
     addButton("Sepia", e -> {
+      controller.handleSplitView();
       controller.handleSepiaCommand();
       controller.createHistogram();
     });
     addButton("Red Component", e -> {
+      controller.handleSplitView();
       controller.handleRedComponent();
       controller.createHistogram();
     });
     addButton("Green Component", e -> {
+      controller.handleSplitView();
       controller.handleGreenComponent();
       controller.createHistogram();
     });
     addButton("Blue Component", e -> {
+      controller.handleSplitView();
       controller.handleBlueComponent();
       controller.createHistogram();
     });
     addButton("Blur", e -> {
+      controller.handleSplitView();
       controller.handleBlurCommand();
       controller.createHistogram();
     });
     addButton("Sharpen", e -> {
+      controller.handleSplitView();
       controller.handleSharpenCommand();
       controller.createHistogram();
     });
     addButton("Luma", e -> {
+      controller.handleSplitView();
       controller.handleLumaComponent();
       controller.createHistogram();
     });
     addButton("Value", e -> {
+      controller.handleSplitView();
       controller.handleValueComponent();
       controller.createHistogram();
     });
     addButton("Intensity", e -> {
+      controller.handleSplitView();
       controller.handleIntensityComponent();
       controller.createHistogram();
     });
@@ -359,6 +406,7 @@ public class MainFrame extends JFrame implements MainFrameInterface {
       controller.createHistogram();
     });
     addButton("Color Correct", e -> {
+      controller.handleSplitView();
       controller.handleColorCorrectCommand();
       controller.createHistogram();
     });
@@ -371,11 +419,8 @@ public class MainFrame extends JFrame implements MainFrameInterface {
       controller.createHistogram();
     });
     addButton("Levels Adjust", e -> {
+      controller.handleSplitView();
       controller.handleLevelsAdjustCommand();
-      controller.createHistogram();
-    });
-    addButton("Split View", e -> {
-      showSplitViewSliderDialog();
       controller.createHistogram();
     });
 
@@ -393,14 +438,5 @@ public class MainFrame extends JFrame implements MainFrameInterface {
     JButton button = new JButton(label);
     button.addActionListener(action);
     buttonPanel.add(button);
-  }
-
-  /**
-   * Adjusts the split view divider based on a specified value from the split slider.
-   *
-   * @param value The new position of the divider.
-   */
-  private void adjustSplitView(int value) {
-
   }
 }

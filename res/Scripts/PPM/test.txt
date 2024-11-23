@@ -1,5 +1,5 @@
 #load
-load res/PPM/Sample.ppm input
+load PPM/Sample.ppm input
 
 #save
-save res/PPM/Sample-save.ppm input
+save PPM/Sample-save.ppm input

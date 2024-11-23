@@ -1063,7 +1063,7 @@ public class PNGTest extends AbstractTest {
     ExtendedOperations io = new ExtendedImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.splitViewOperation(50, ih.loadImage(
-            "res/PNG/Sample.png"),  img -> io.levelsAdjust(img, 10, 15, 20));
+            "res/PNG/Sample.png"), img -> io.levelsAdjust(img, 10, 15, 20));
     ImageCopyInterface expected = new ImageCopy(2, 2);
     expected.setPixel(0, 0, new Pixel(255, 255, 255));
     expected.setPixel(1, 0, new Pixel(119, 90, 47));
