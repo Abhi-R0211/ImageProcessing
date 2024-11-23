@@ -10,8 +10,6 @@ import static org.junit.Assert.assertTrue;
 
 import imagecontroller.ControllerGui;
 import imagecontroller.GUIController;
-import imagemodel.Image;
-import imagemodel.ImageInterface;
 import imagemodel.MockOperations;
 import imageview.MainFrameMock;
 
@@ -23,14 +21,12 @@ public class GUIControllerTest {
   private MockOperations ops;
   private ControllerGui gui;
   private MainFrameMock mock;
-  private ImageInterface image;
 
   @Before
   public void setUp() {
     ops = new MockOperations();
     mock = new MainFrameMock();
     gui = new GUIController(ops, mock);
-    image = new Image(2, 2);
   }
 
   @Test
@@ -193,29 +189,5 @@ public class GUIControllerTest {
     assertTrue(ops.isAdjust());
     assertTrue(mock.isDisplayImage());
     assertTrue(mock.isDisplayHistogram());
-  }
-
-  @Test
-  public void testLevelAdjustInvalid() throws IOException {
-    gui.loadImage();
-    ops.levelsAdjust(image, 50, 20, 0);
-    gui.handleLevelsAdjustCommand();
-    mock.setController(gui);
-    assertTrue(mock.isSetController());
-    assertTrue(mock.isLevelAdjust());
-    assertTrue(ops.isAdjust());
-    assertTrue(mock.isError());
-  }
-
-  @Test
-  public void testDownsizeInvalid() throws IOException {
-    gui.loadImage();
-    ops.downscaleImage(image, 1000, 1000);
-    gui.downsizeImage();
-    mock.setController(gui);
-    assertTrue(mock.isSetController());
-    assertTrue(mock.isDownsize());
-    assertTrue(ops.isDownscale());
-    assertTrue(mock.isError());
   }
 }

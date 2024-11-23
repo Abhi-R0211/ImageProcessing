@@ -1,7 +1,7 @@
 package imagecontroller;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
 import imagemodel.AdditionalOperations;
 import imagemodel.ImageInterface;
@@ -253,10 +253,10 @@ public class GUIController implements ControllerGui {
    */
   public void handleLevelsAdjustCommand() {
     try {
-      ArrayList<Integer> value = mainFrame.showLevelsAdjustDialog();
+      List<Integer> value = mainFrame.showLevelsAdjustDialog();
       if (value == null) {
         System.out.println("User canceled the dialog.");
-        return; // User canceled the dialog
+        return;
       }
       previousImage = currentImage;
       if (percentage == 0) {
@@ -265,7 +265,7 @@ public class GUIController implements ControllerGui {
         mainFrame.displayImage(currentImage);
       } else {
         displayImage = operations.splitViewOperation(percentage, currentImage,
-          img -> operations.levelsAdjust(img, value.get(0), value.get(1), value.get(2)));
+                img -> operations.levelsAdjust(img, value.get(0), value.get(1), value.get(2)));
         mainFrame.displayImage(displayImage);
         currentImage = operations.levelsAdjust(currentImage,
                 value.get(0), value.get(1), value.get(2));
@@ -274,7 +274,6 @@ public class GUIController implements ControllerGui {
       mainFrame.showErrorDialog("Error: " + e.getMessage());
     }
   }
-
 
   /**
    * This will be used to get the percentage of the Split View.
@@ -317,9 +316,9 @@ public class GUIController implements ControllerGui {
    */
   public void downsizeImage() {
     try {
-      ArrayList<Integer> dimension = mainFrame.showDownsizeDialog();
+      List<Integer> dimension = mainFrame.showDownsizeDialog();
       if (dimension == null || dimension.isEmpty()) {
-        return; // User canceled the dialog
+        return;
       }
       ImageInterface downsizedImage = operations.downscaleImage(currentImage,
               dimension.get(0), dimension.get(1));

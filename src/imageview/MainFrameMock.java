@@ -1,6 +1,7 @@
 package imageview;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import imagecontroller.ControllerGui;
 import imagemodel.ImageInterface;
@@ -151,7 +152,7 @@ public class MainFrameMock implements MainFrameInterface {
    * @return ArrayList containing b, m, w values.
    */
   @Override
-  public ArrayList<Integer> showLevelsAdjustDialog() {
+  public List<Integer> showLevelsAdjustDialog() {
     level = true;
     ArrayList<Integer> temp = new ArrayList<>();
     temp.add(10);
@@ -195,7 +196,7 @@ public class MainFrameMock implements MainFrameInterface {
    * @return ArrayList containing downsized image dimensions.
    */
   @Override
-  public ArrayList<Integer> showDownsizeDialog() {
+  public List<Integer> showDownsizeDialog() {
     downsize = true;
     ArrayList<Integer> temp = new ArrayList<>();
     temp.add(1);

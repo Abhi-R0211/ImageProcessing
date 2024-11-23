@@ -13,5 +13,4 @@ public interface ImageDisplayPanelInterface {
    * @param image is the Image to be displayed.
    */
   void setImage(ImageInterface image);
-
 }

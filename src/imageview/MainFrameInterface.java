@@ -1,6 +1,6 @@
 package imageview;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import imagecontroller.ControllerGui;
 import imagemodel.ImageInterface;
@@ -50,7 +50,7 @@ public interface MainFrameInterface {
    *
    * @return It will return an Array List which has the values of black, mid and white.
    */
-  ArrayList<Integer> showLevelsAdjustDialog();
+  List<Integer> showLevelsAdjustDialog();
 
   /**
    * This will show a dialog which takes input of the compression percentage from the user.
@@ -64,7 +64,7 @@ public interface MainFrameInterface {
    *
    * @return an Array List which has the new Height and the Width.
    */
-  ArrayList<Integer> showDownsizeDialog();
+  List<Integer> showDownsizeDialog();
 
   /**
    * This is to toggle between the current and the previous image.

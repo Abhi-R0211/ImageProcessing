@@ -251,7 +251,6 @@ public class AdditionalImageOperations extends ExtendedImageOperations
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
         PixelInterface pixel = transformed.getPixel(x, y);
-
         if (x < maskWidth && y < maskHeight && isBlack(maskImage.getPixel(x, y))) {
           copy.setPixel(x, y, pixel);
         } else {

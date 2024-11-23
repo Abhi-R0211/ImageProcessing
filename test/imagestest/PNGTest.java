@@ -10,12 +10,9 @@ import imagecontroller.ImageFormatHandler;
 import imagecontroller.ImageHandler;
 import imagemodel.AdditionalImageOperations;
 import imagemodel.AdditionalOperations;
-import imagemodel.ExtendedImageOperations;
-import imagemodel.ExtendedOperations;
 import imagemodel.ImageCopy;
 import imagemodel.ImageCopyInterface;
 import imagemodel.ImageInterface;
-import imagemodel.ImageOperations;
 import imagemodel.Pixel;
 
 import static org.junit.Assert.assertEquals;
@@ -55,7 +52,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void testHorizontalFlip() throws IOException {
-    ImageOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.applyHorizontalFlip(ih.loadImage(
             "res/PNG/Sample.png"));
@@ -69,7 +66,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void invalidTestHorizontalFlip() throws IOException {
-    ImageOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.applyHorizontalFlip(ih.loadImage(
             "res/PNG/Sample.png"));
@@ -83,7 +80,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void testVerticalFlip() throws IOException {
-    ImageOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.applyVerticalFlip(ih.loadImage(
             "res/PNG/Sample.png"));
@@ -97,7 +94,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void invalidTestVerticalFlip() throws IOException {
-    ImageOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.applyVerticalFlip(ih.loadImage(
             "res/PNG/Sample.png"));
@@ -111,7 +108,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void brightness() throws IOException {
-    ImageOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.applyBrightness(ih.loadImage(
             "res/PNG/Sample.png"), 10);
@@ -125,7 +122,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void invalidBrightness() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.applyBrightness(ih.loadImage(
             "res/PNG/Sample.png"), 10);
@@ -139,7 +136,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void darken() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.applyBrightness(ih.loadImage(
             "res/PNG/Sample.png"), -10);
@@ -153,7 +150,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void invalidDarken() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.applyBrightness(ih.loadImage(
             "res/PNG/Sample.png"), -10);
@@ -167,7 +164,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void redComponent() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.visualizeRedComponent(ih.loadImage(
             "res/PNG/Sample.png"));
@@ -181,7 +178,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void invalidRedComponent() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.visualizeRedComponent(ih.loadImage(
             "res/PNG/Sample.png"));
@@ -195,7 +192,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void blueComponent() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.visualizeBlueComponent(ih.loadImage(
             "res/PNG/Sample.png"));
@@ -209,7 +206,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void invalidBlueComponent() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.visualizeBlueComponent(ih.loadImage(
             "res/PNG/Sample.png"));
@@ -223,7 +220,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void greenComponent() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.visualizeGreenComponent(ih.loadImage(
             "res/PNG/Sample.png"));
@@ -237,7 +234,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void invalidGreenComponent() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.visualizeGreenComponent(ih.loadImage(
             "res/PNG/Sample.png"));
@@ -251,7 +248,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void valueComponent() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.visualizeValue(ih.loadImage("res/PNG/Sample.png"));
     ImageCopyInterface expected = new ImageCopy(2, 2);
@@ -264,7 +261,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void invalidValueComponent() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.visualizeValue(ih.loadImage("res/PNG/Sample.png"));
     ImageCopyInterface expected = new ImageCopy(2, 2);
@@ -277,7 +274,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void lumaComponent() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.visualizeLuma(ih.loadImage("res/PNG/Sample.png"));
     ImageCopyInterface expected = new ImageCopy(2, 2);
@@ -290,7 +287,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void invalidLumaComponent() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.visualizeLuma(ih.loadImage("res/PNG/Sample.png"));
     ImageCopyInterface expected = new ImageCopy(2, 2);
@@ -303,7 +300,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void intensityComponent() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.visualizeIntensity(ih.loadImage("res/PNG/Sample.png"));
     ImageCopyInterface expected = new ImageCopy(2, 2);
@@ -316,7 +313,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void invalidIntensityComponent() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.visualizeIntensity(ih.loadImage("res/PNG/Sample.png"));
     ImageCopyInterface expected = new ImageCopy(2, 2);
@@ -329,7 +326,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void rgbSplit() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actualr = io.visualizeRedComponent(ih.loadImage(
             "res/PNG/Sample.png"));
@@ -359,7 +356,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void invalidRgbSplit() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actualr = io.visualizeRedComponent(ih.loadImage(
             "res/PNG/Sample.png"));
@@ -389,7 +386,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void RgbCombine() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actualr = io.visualizeRedComponent(ih.loadImage(
             "res/PNG/Sample.png"));
@@ -408,7 +405,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void invalidRgbCombine() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actualr = io.visualizeRedComponent(ih.loadImage(
             "res/PNG/Sample.png"));
@@ -427,7 +424,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void blur() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.applyBlur(ih.loadImage("res/PNG/Sample.png"));
     ImageCopyInterface expected = new ImageCopy(2, 2);
@@ -440,7 +437,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void invalidBlur() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.applyBlur(ih.loadImage("res/PNG/Sample.png"));
     ImageCopyInterface expected = new ImageCopy(2, 2);
@@ -453,7 +450,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void sharped() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.applySharpen(ih.loadImage("res/PNG/Sample.png"));
     ImageCopyInterface expected = new ImageCopy(2, 2);
@@ -466,7 +463,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void invalidSharped() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.applySharpen(ih.loadImage("res/PNG/Sample.png"));
     ImageCopyInterface expected = new ImageCopy(2, 2);
@@ -479,7 +476,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void sepia() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.applySepia(ih.loadImage("res/PNG/Sample.png"));
     ImageCopyInterface expected = new ImageCopy(2, 2);
@@ -492,7 +489,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void invalidSepia() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.applySepia(ih.loadImage("res/PNG/Sample.png"));
     ImageCopyInterface expected = new ImageCopy(2, 2);
@@ -505,7 +502,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void compress() throws IOException {
-    ExtendedOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.compressImage(ih.loadImage(
             "res/PNG/Sample.png"), 50);
@@ -519,7 +516,7 @@ public class PNGTest extends AbstractTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void wrongCompress1() throws IllegalArgumentException, IOException {
-    ExtendedOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.compressImage(ih.loadImage(
             "res/PNG/Sample.png"), 110);
@@ -533,7 +530,7 @@ public class PNGTest extends AbstractTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void wrongCompress2() throws IllegalArgumentException, IOException {
-    ExtendedOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.compressImage(ih.loadImage(
             "res/PNG/Sample.png"), -10);
@@ -547,7 +544,7 @@ public class PNGTest extends AbstractTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void wrongCompress3() throws IllegalArgumentException, IOException {
-    ExtendedOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.compressImage(null, 20);
     ImageCopyInterface expected = new ImageCopy(2, 2);
@@ -560,7 +557,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void histogram() throws IOException {
-    ExtendedOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.createHistogram(ih.loadImage("res/PNG/Sample.png"));
     for (int i = 0; i < 2; i++) {
@@ -577,7 +574,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void invalidHistogram1() throws IOException {
-    ExtendedOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.createHistogram(ih.loadImage("res/PNG/Sample.png"));
     ImageCopyInterface expected = new ImageCopy(2, 2);
@@ -590,7 +587,7 @@ public class PNGTest extends AbstractTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void invalidHistogram2() throws IOException {
-    ExtendedOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.createHistogram(null);
     ImageCopyInterface expected = new ImageCopy(2, 2);
@@ -603,7 +600,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void colourCorrect() throws IOException {
-    ExtendedOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.colorCorrect(ih.loadImage("res/PNG/Sample.png"));
     ImageCopyInterface expected = new ImageCopy(2, 2);
@@ -616,7 +613,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void invalidColour1() throws IOException {
-    ExtendedOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.colorCorrect(ih.loadImage("res/PNG/Sample.png"));
     ImageCopyInterface expected = new ImageCopy(2, 2);
@@ -629,7 +626,7 @@ public class PNGTest extends AbstractTest {
 
   @Test(expected = NullPointerException.class)
   public void invalidColour2() throws IOException {
-    ExtendedOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.colorCorrect(ih.loadImage(null));
     ImageCopyInterface expected = new ImageCopy(2, 2);
@@ -642,7 +639,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void levelsAdjust() throws IOException {
-    ExtendedOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.levelsAdjust(ih.loadImage(
             "res/PNG/Sample.png"), 10, 15, 20);
@@ -656,7 +653,7 @@ public class PNGTest extends AbstractTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void invalidWhiteLevelsAdjust() throws IOException {
-    ExtendedOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.levelsAdjust(ih.loadImage(
             "res/PNG/Sample.png"), 10, 15, -10);
@@ -670,7 +667,7 @@ public class PNGTest extends AbstractTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void invalidBlackLevelsAdjust() throws IOException {
-    ExtendedOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.levelsAdjust(ih.loadImage(
             "res/PNG/Sample.png"), -10, 15, 20);
@@ -684,7 +681,7 @@ public class PNGTest extends AbstractTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void invalidMidLevelsAdjust() throws IOException {
-    ExtendedOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.levelsAdjust(ih.loadImage(
             "res/PNG/Sample.png"), 10, -15, 20);
@@ -698,7 +695,7 @@ public class PNGTest extends AbstractTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void invalidAllLevelsAdjust1() throws IOException {
-    ExtendedOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.levelsAdjust(ih.loadImage(
             "res/PNG/Sample.png"), 20, 10, 5);
@@ -712,7 +709,7 @@ public class PNGTest extends AbstractTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void invalidAllLevelsAdjust2() throws IOException {
-    ExtendedOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.levelsAdjust(ih.loadImage(
             "res/PNG/Sample.png"), 10, 20, 5);
@@ -726,7 +723,7 @@ public class PNGTest extends AbstractTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void invalidAllLevelsAdjust3() throws IOException {
-    ExtendedOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.levelsAdjust(ih.loadImage(
             "res/PNG/Sample.png"), 10, 50, 5);
@@ -740,7 +737,7 @@ public class PNGTest extends AbstractTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void invalidAllLevelsAdjust4() throws IOException {
-    ExtendedOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.levelsAdjust(null, 10, 50, 100);
     ImageCopyInterface expected = new ImageCopy(2, 2);
@@ -753,7 +750,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void splitBlurCheck() throws IOException {
-    ExtendedOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.splitViewOperation(50, ih.loadImage(
             "res/PNG/Sample.png"), io::applyBlur);
@@ -767,7 +764,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void splitInvalidBlurCheck1() throws IOException {
-    ExtendedOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.splitViewOperation(50, ih.loadImage(
             "res/PNG/Sample.png"), io::applyBlur);
@@ -781,7 +778,7 @@ public class PNGTest extends AbstractTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void splitInvalidBlurCheck2() throws IOException {
-    ExtendedOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.splitViewOperation(250, ih.loadImage(
             "res/PNG/Sample.png"), io::applyBlur);
@@ -795,7 +792,7 @@ public class PNGTest extends AbstractTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void splitInvalidBlurCheck3() throws IOException {
-    ExtendedOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.splitViewOperation(-50, ih.loadImage(
             "res/PNG/Sample.png"), io::applyBlur);
@@ -809,7 +806,7 @@ public class PNGTest extends AbstractTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void splitInvalidBlurCheck4() throws IOException {
-    ExtendedOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.splitViewOperation(50, null, io::applyBlur);
     ImageCopyInterface expected = new ImageCopy(2, 2);
@@ -822,7 +819,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void splitSharpenCheck() throws IOException {
-    ExtendedOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.splitViewOperation(50, ih.loadImage(
             "res/PNG/Sample.png"), io::applySharpen);
@@ -836,7 +833,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void splitInvalidSharpenCheck() throws IOException {
-    ExtendedOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.splitViewOperation(50, ih.loadImage(
             "res/PNG/Sample.png"), io::applySharpen);
@@ -850,7 +847,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void splitSepiaCheck() throws IOException {
-    ExtendedOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.splitViewOperation(50, ih.loadImage(
             "res/PNG/Sample.png"), io::applySepia);
@@ -864,7 +861,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void splitInvalidSepiaCheck() throws IOException {
-    ExtendedOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.splitViewOperation(50, ih.loadImage(
             "res/PNG/Sample.png"), io::applySepia);
@@ -878,7 +875,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void splitRedComponentCheck() throws IOException {
-    ExtendedOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.splitViewOperation(50, ih.loadImage(
             "res/PNG/Sample.png"), io::visualizeRedComponent);
@@ -892,7 +889,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void splitInvalidRedComponentCheck() throws IOException {
-    ExtendedOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.splitViewOperation(50, ih.loadImage(
             "res/PNG/Sample.png"), io::visualizeRedComponent);
@@ -906,7 +903,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void splitGreenComponentCheck() throws IOException {
-    ExtendedOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.splitViewOperation(50, ih.loadImage(
             "res/PNG/Sample.png"), io::visualizeGreenComponent);
@@ -920,7 +917,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void splitInvalidGreenComponentCheck() throws IOException {
-    ExtendedOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.splitViewOperation(50, ih.loadImage(
             "res/PNG/Sample.png"), io::visualizeGreenComponent);
@@ -934,7 +931,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void splitBlueComponentCheck() throws IOException {
-    ExtendedOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.splitViewOperation(50, ih.loadImage(
             "res/PNG/Sample.png"), io::visualizeBlueComponent);
@@ -948,7 +945,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void splitInvalidBlueComponentCheck() throws IOException {
-    ExtendedOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.splitViewOperation(50, ih.loadImage(
             "res/PNG/Sample.png"), io::visualizeBlueComponent);
@@ -962,7 +959,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void splitLumaComponentCheck() throws IOException {
-    ExtendedOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.splitViewOperation(50, ih.loadImage(
             "res/PNG/Sample.png"), io::visualizeLuma);
@@ -976,7 +973,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void splitInvalidLumaComponentCheck() throws IOException {
-    ExtendedOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.splitViewOperation(50, ih.loadImage(
             "res/PNG/Sample.png"), io::visualizeLuma);
@@ -990,7 +987,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void splitValueComponentCheck() throws IOException {
-    ExtendedOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.splitViewOperation(50, ih.loadImage(
             "res/PNG/Sample.png"), io::visualizeValue);
@@ -1004,7 +1001,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void splitIntensityComponentCheck() throws IOException {
-    ExtendedOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.splitViewOperation(50, ih.loadImage(
             "res/PNG/Sample.png"), io::visualizeIntensity);
@@ -1018,7 +1015,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void splitInvalidIntensityComponentCheck() throws IOException {
-    ExtendedOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.splitViewOperation(50, ih.loadImage(
             "res/PNG/Sample.png"), io::visualizeValue);
@@ -1032,7 +1029,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void splitInvalidColourCorrectComponentCheck() throws IOException {
-    ExtendedOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.splitViewOperation(50, ih.loadImage(
             "res/PNG/Sample.png"), io::colorCorrect);
@@ -1046,7 +1043,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void splitColourCorrectComponentCheck() throws IOException {
-    ExtendedOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.splitViewOperation(50, ih.loadImage(
             "res/PNG/Sample.png"), io::colorCorrect);
@@ -1060,7 +1057,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void splitlevelAdjustComponentCheck() throws IOException {
-    ExtendedOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.splitViewOperation(50, ih.loadImage(
             "res/PNG/Sample.png"), img -> io.levelsAdjust(img, 10, 15, 20));
@@ -1075,7 +1072,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void multipleFunction() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.applySepia(ih.loadImage("res/PNG/Sample.png"));
     ImageInterface afterop = io.applyVerticalFlip(actual);
@@ -1147,7 +1144,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void multipleFunction2() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.applyBlur(ih.loadImage("res/PNG/Sample.png"));
     ImageInterface afterop = io.applyHorizontalFlip(actual);
@@ -1161,7 +1158,7 @@ public class PNGTest extends AbstractTest {
 
   @Test
   public void multipleFunction3() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new ImageHandler();
     ImageInterface actual = io.applyBlur(ih.loadImage("res/PNG/Sample.png"));
     ImageInterface afterop = io.applyVerticalFlip(actual);
@@ -1518,18 +1515,5 @@ public class PNGTest extends AbstractTest {
     expected.setPixel(0, 1, new Pixel(131, 201, 172));
     expected.setPixel(1, 1, new Pixel(62, 130, 143));
     assertEquals(expected.deepCopyImage(), transformed);
-  }
-
-  @Test
-  public void testScript() throws IOException {
-    ImageFormatHandler ih = new ImageHandler();
-    execute("run res/Scripts/PNG/test.txt");
-    ImageInterface actual = ih.loadImage("res/PNG/Sample-save.png");
-    ImageCopyInterface expected = new ImageCopy(2, 2);
-    expected.setPixel(0, 0, new Pixel(193, 252, 251));
-    expected.setPixel(1, 0, new Pixel(119, 90, 47));
-    expected.setPixel(0, 1, new Pixel(131, 201, 172));
-    expected.setPixel(1, 1, new Pixel(62, 130, 143));
-    assertEquals(expected.deepCopyImage(), actual);
   }
 }

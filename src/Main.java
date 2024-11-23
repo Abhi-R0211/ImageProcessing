@@ -2,6 +2,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import imagecontroller.ControllerGui;
 import imagecontroller.GUIController;
 import imagemodel.AdditionalImageOperations;
 import imagemodel.AdditionalOperations;
@@ -37,7 +38,7 @@ public class Main {
       textController.start(args);
     } else if (args.length == 0) {
       MainFrame mainFrame = new MainFrame();
-      GUIController guiController = new GUIController(operations, mainFrame);
+      ControllerGui guiController = new GUIController(operations, mainFrame);
       mainFrame.setController(guiController);
       mainFrame.setVisible(true);
     } else {

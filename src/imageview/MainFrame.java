@@ -26,6 +26,7 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This is the MainFrame which displays the Graphical User Interface (GUI) of the program.
@@ -195,7 +196,7 @@ public class MainFrame extends JFrame implements MainFrameInterface {
    * and calls the levels adjust from the controller.
    */
   @Override
-  public ArrayList<Integer> showLevelsAdjustDialog() {
+  public List<Integer> showLevelsAdjustDialog() {
     JSlider blackSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 128);
     JSlider midSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 128);
     JSlider whiteSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 128);
@@ -234,7 +235,7 @@ public class MainFrame extends JFrame implements MainFrameInterface {
     int midLevel = midSlider.getValue();
     int whiteLevel = whiteSlider.getValue();
 
-    ArrayList<Integer> value = new ArrayList<>();
+    List<Integer> value = new ArrayList<>();
     value.add(blackLevel);
     value.add(midLevel);
     value.add(whiteLevel);
@@ -270,7 +271,7 @@ public class MainFrame extends JFrame implements MainFrameInterface {
    * and calls the downsize function in the controller.
    */
   @Override
-  public ArrayList<Integer> showDownsizeDialog() {
+  public List<Integer> showDownsizeDialog() {
     JPanel inputPanel = new JPanel(new GridLayout(2, 2));
     JTextField widthField = new JTextField();
     JTextField heightField = new JTextField();
@@ -287,7 +288,7 @@ public class MainFrame extends JFrame implements MainFrameInterface {
       try {
         int newWidth = Integer.parseInt(widthField.getText().trim());
         int newHeight = Integer.parseInt(heightField.getText().trim());
-        ArrayList<Integer> dimension = new ArrayList<>();
+        List<Integer> dimension = new ArrayList<>();
         dimension.add(newWidth);
         dimension.add(newHeight);
         return dimension;
@@ -295,7 +296,7 @@ public class MainFrame extends JFrame implements MainFrameInterface {
         showErrorDialog("Error: Please enter valid numeric values for width and height.");
       }
     }
-    return null; // Return null if canceled or invalid input
+    return null;
   }
 
   /**

@@ -27,13 +27,13 @@ public class ControllerTest {
     output = new StringBuilder();
     mock = new MockOperations(output);
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png input\nexit\n"), output);
+            "load res/PNG/Sample.png input\nexit\n"), output);
   }
 
   @Test
   public void testLevelValid() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
+            "load res/PNG/Sample.png testImage\n"
                     + "levels-adjust 10 20 30 testImage output\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -44,7 +44,7 @@ public class ControllerTest {
   @Test
   public void testLevelInvalid() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
+            "load res/PNG/Sample.png testImage\n"
                     + "levels-adjust 30 testImage output\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -54,7 +54,7 @@ public class ControllerTest {
   @Test
   public void testColorCorrectValid() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
+            "load res/PNG/Sample.png testImage\n"
                     + "color-correct testImage output\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -65,7 +65,7 @@ public class ControllerTest {
   @Test
   public void testColorCorrectInvalid() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
+            "load res/PNG/Sample.png testImage\n"
                     + "color-correct\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -75,7 +75,7 @@ public class ControllerTest {
   @Test
   public void testRGBSplitValid() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
+            "load res/PNG/Sample.png testImage\n"
                     + "rgb-split testImage red green blue\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -87,7 +87,7 @@ public class ControllerTest {
   @Test
   public void testRGBSplitInvalid() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
+            "load res/PNG/Sample.png testImage\n"
                     + "rgb-split red green blue\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -127,7 +127,7 @@ public class ControllerTest {
   @Test
   public void testCompressInvalid1() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
+            "load res/PNG/Sample.png testImage\n"
                     + "compress testImage output\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -157,7 +157,7 @@ public class ControllerTest {
   @Test
   public void testSepiaValid1() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
+            "load res/PNG/Sample.png testImage\n"
                     + "sepia testImage output\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -168,7 +168,7 @@ public class ControllerTest {
   @Test
   public void testSepiaValid2() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
+            "load res/PNG/Sample.png testImage\n"
                     + "sepia testImage output split 25\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -179,8 +179,8 @@ public class ControllerTest {
   @Test
   public void testSepiaValid3() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
-                    + "load res/PNG/galaxy.png mask\n"
+            "load res/PNG/Sample.png testImage\n"
+                    + "load res/PNG/Sample.png mask\n"
                     + "sepia testImage mask output \nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -191,7 +191,7 @@ public class ControllerTest {
   @Test
   public void testSepiaInvalid1() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
+            "load res/PNG/Sample.png testImage\n"
                     + "sepia testImage output 1 2 3\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -201,7 +201,7 @@ public class ControllerTest {
   @Test
   public void testSharpenValid1() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
+            "load res/PNG/Sample.png testImage\n"
                     + "sharpen testImage output\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -212,7 +212,7 @@ public class ControllerTest {
   @Test
   public void testSharpenValid2() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
+            "load res/PNG/Sample.png testImage\n"
                     + "sharpen testImage output split 25\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -223,8 +223,8 @@ public class ControllerTest {
   @Test
   public void testSharpenValid3() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
-                    + "load res/PNG/galaxy.png mask\n"
+            "load res/PNG/Sample.png testImage\n"
+                    + "load res/PNG/Sample.png mask\n"
                     + "sharpen testImage mask output\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -235,7 +235,7 @@ public class ControllerTest {
   @Test
   public void testSharpenInvalid1() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
+            "load res/PNG/Sample.png testImage\n"
                     + "sharpen testImage output 1 2 3\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -245,7 +245,7 @@ public class ControllerTest {
   @Test
   public void testBlurValid1() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
+            "load res/PNG/Sample.png testImage\n"
                     + "blur testImage output\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -256,7 +256,7 @@ public class ControllerTest {
   @Test
   public void testBlurValid2() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
+            "load res/PNG/Sample.png testImage\n"
                     + "blur testImage output split 25\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -267,8 +267,8 @@ public class ControllerTest {
   @Test
   public void testBlurValid3() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
-                    + "load res/PNG/galaxy.png mask\n"
+            "load res/PNG/Sample.png testImage\n"
+                    + "load res/PNG/Sample.png mask\n"
                     + "blur testImage mask output\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -279,7 +279,7 @@ public class ControllerTest {
   @Test
   public void testBlurInvalid1() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
+            "load res/PNG/Sample.png testImage\n"
                     + "blur testImage output 1 2 3\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -289,8 +289,8 @@ public class ControllerTest {
   @Test
   public void testCombineValid() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png red\n"
-                    + "load res/PNG/galaxy.png green\nload res/PNG/galaxy.png blue\n"
+            "load res/PNG/Sample.png red\n"
+                    + "load res/PNG/Sample.png green\nload res/PNG/Sample.png blue\n"
                     + "rgb-combine testImage red green blue\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -301,8 +301,8 @@ public class ControllerTest {
   @Test
   public void testCombineInvalid() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png red\n"
-                    + "load res/PNG/galaxy.png green\nload res/PNG/galaxy.png blue\n"
+            "load res/PNG/Sample.png red\n"
+                    + "load res/PNG/Sample.png green\nload res/PNG/Sample.png blue\n"
                     + "rgb-combine testImage red green\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -312,7 +312,7 @@ public class ControllerTest {
   @Test
   public void testBrightenInvalid() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
+            "load res/PNG/Sample.png testImage\n"
                     + "brighten testImage output\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -322,7 +322,7 @@ public class ControllerTest {
   @Test
   public void testBrightenValid() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
+            "load res/PNG/Sample.png testImage\n"
                     + "brighten 50 testImage output\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -333,8 +333,8 @@ public class ControllerTest {
   @Test
   public void testBrightenValid2() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
-                    + "load res/PNG/galaxy.png mask\n"
+            "load res/PNG/Sample.png testImage\n"
+                    + "load res/PNG/Sample.png mask\n"
                     + "brighten 50 testImage mask output\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -345,7 +345,7 @@ public class ControllerTest {
   @Test
   public void testDarkenValid() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
+            "load res/PNG/Sample.png testImage\n"
                     + "brighten -50 testImage output\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -356,8 +356,8 @@ public class ControllerTest {
   @Test
   public void testDarkenValid2() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
-                    + "load res/PNG/galaxy.png mask\n"
+            "load res/PNG/Sample.png testImage\n"
+                    + "load res/PNG/Sample.png mask\n"
                     + "brighten -50 testImage mask output\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -368,7 +368,7 @@ public class ControllerTest {
   @Test
   public void testVerticalFlipValid() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
+            "load res/PNG/Sample.png testImage\n"
                     + "vertical-flip testImage output\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -379,7 +379,7 @@ public class ControllerTest {
   @Test
   public void testVerticalFlipInvalid() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
+            "load res/PNG/Sample.png testImage\n"
                     + "vertical-flip output\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -389,7 +389,7 @@ public class ControllerTest {
   @Test
   public void testHorizontalFlipValid() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
+            "load res/PNG/Sample.png testImage\n"
                     + "horizontal-flip testImage output\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -400,7 +400,7 @@ public class ControllerTest {
   @Test
   public void testHorizontalFlipInvalid() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
+            "load res/PNG/Sample.png testImage\n"
                     + "horizontal-flip output\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -410,7 +410,7 @@ public class ControllerTest {
   @Test
   public void testIntensityValid1() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
+            "load res/PNG/Sample.png testImage\n"
                     + "intensity-component testImage output\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -421,7 +421,7 @@ public class ControllerTest {
   @Test
   public void testIntensityValid2() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
+            "load res/PNG/Sample.png testImage\n"
                     + "intensity-component testImage output split 25\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -432,8 +432,8 @@ public class ControllerTest {
   @Test
   public void testIntensityValid3() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
-                    + "load res/PNG/galaxy.png mask\n"
+            "load res/PNG/Sample.png testImage\n"
+                    + "load res/PNG/Sample.png mask\n"
                     + "intensity-component testImage mask output\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -444,7 +444,7 @@ public class ControllerTest {
   @Test
   public void testIntensityInvalid1() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
+            "load res/PNG/Sample.png testImage\n"
                     + "intensity-component testImage output 1 2 3\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -454,7 +454,7 @@ public class ControllerTest {
   @Test
   public void testLumaValid1() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
+            "load res/PNG/Sample.png testImage\n"
                     + "luma-component testImage output\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -465,7 +465,7 @@ public class ControllerTest {
   @Test
   public void testLumaValid2() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
+            "load res/PNG/Sample.png testImage\n"
                     + "luma-component testImage output split 25\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -476,8 +476,8 @@ public class ControllerTest {
   @Test
   public void testLumaValid3() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
-                    + "load res/PNG/galaxy.png mask\n"
+            "load res/PNG/Sample.png testImage\n"
+                    + "load res/PNG/Sample.png mask\n"
                     + "luma-component testImage mask output\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -488,7 +488,7 @@ public class ControllerTest {
   @Test
   public void testLumaInvalid1() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
+            "load res/PNG/Sample.png testImage\n"
                     + "luma-component testImage output 1 2 3\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -498,7 +498,7 @@ public class ControllerTest {
   @Test
   public void testValueValid1() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
+            "load res/PNG/Sample.png testImage\n"
                     + "value-component testImage output\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -509,7 +509,7 @@ public class ControllerTest {
   @Test
   public void testValueValid2() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
+            "load res/PNG/Sample.png testImage\n"
                     + "value-component testImage output split 25\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -520,8 +520,8 @@ public class ControllerTest {
   @Test
   public void testValueValid3() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
-                    + "load res/PNG/galaxy.png mask\n"
+            "load res/PNG/Sample.png testImage\n"
+                    + "load res/PNG/Sample.png mask\n"
                     + "value-component testImage mask output\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -532,7 +532,7 @@ public class ControllerTest {
   @Test
   public void testValueInvalid1() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
+            "load res/PNG/Sample.png testImage\n"
                     + "value-component testImage output 1 2 3\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -542,7 +542,7 @@ public class ControllerTest {
   @Test
   public void testBlueInvalid1() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
+            "load res/PNG/Sample.png testImage\n"
                     + "blue-component testImage output 1 2 3\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -552,8 +552,8 @@ public class ControllerTest {
   @Test
   public void testBlueValid3() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
-                    + "load res/PNG/galaxy.png mask\n"
+            "load res/PNG/Sample.png testImage\n"
+                    + "load res/PNG/Sample.png mask\n"
                     + "blue-component testImage mask output\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -564,7 +564,7 @@ public class ControllerTest {
   @Test
   public void testBlueValid2() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
+            "load res/PNG/Sample.png testImage\n"
                     + "blue-component testImage output split 25\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -575,7 +575,7 @@ public class ControllerTest {
   @Test
   public void testBlueValid1() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
+            "load res/PNG/Sample.png testImage\n"
                     + "blue-component testImage output\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -586,7 +586,7 @@ public class ControllerTest {
   @Test
   public void testRedInvalid1() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
+            "load res/PNG/Sample.png testImage\n"
                     + "red-component testImage output 1 2 3\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -596,7 +596,7 @@ public class ControllerTest {
   @Test
   public void testRedValid1() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
+            "load res/PNG/Sample.png testImage\n"
                     + "red-component testImage output\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -607,7 +607,7 @@ public class ControllerTest {
   @Test
   public void testRedValid2() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
+            "load res/PNG/Sample.png testImage\n"
                     + "red-component testImage output split 25\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -618,8 +618,8 @@ public class ControllerTest {
   @Test
   public void testRedValid3() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
-                    + "load res/PNG/galaxy.png mask\n"
+            "load res/PNG/Sample.png testImage\n"
+                    + "load res/PNG/Sample.png mask\n"
                     + "red-component testImage mask output\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -630,7 +630,7 @@ public class ControllerTest {
   @Test
   public void testGreenInvalid1() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
+            "load res/PNG/Sample.png testImage\n"
                     + "green-component testImage output 1 2 3\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -640,7 +640,7 @@ public class ControllerTest {
   @Test
   public void testGreenValid1() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
+            "load res/PNG/Sample.png testImage\n"
                     + "green-component testImage output\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -651,7 +651,7 @@ public class ControllerTest {
   @Test
   public void testGreenValid2() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
+            "load res/PNG/Sample.png testImage\n"
                     + "green-component testImage output split 25\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -662,8 +662,8 @@ public class ControllerTest {
   @Test
   public void testGreenValid3() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
-                    + "load res/PNG/galaxy.png mask\n"
+            "load res/PNG/Sample.png testImage\n"
+                    + "load res/PNG/Sample.png mask\n"
                     + "green-component testImage mask output\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -801,7 +801,7 @@ public class ControllerTest {
   @Test
   public void testDownscalingInvalid() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
+            "load res/PNG/Sample.png testImage\n"
                     + "downsize testImage output 1 2 3 4\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");
@@ -811,7 +811,7 @@ public class ControllerTest {
   @Test
   public void testDownscalingValid() throws IOException {
     textImageController = new TextImageController(mock, new StringReader(
-            "load res/PNG/galaxy.png testImage\n"
+            "load res/PNG/Sample.png testImage\n"
                     + "downsize testImage output 100 100\nexit\n"), output);
     textImageController.start(new String[]{"-text"});
     String actual = output.toString().replace(System.lineSeparator(), "\n");

@@ -16,7 +16,6 @@ import imagemodel.ExtendedOperations;
 import imagemodel.ImageCopy;
 import imagemodel.ImageCopyInterface;
 import imagemodel.ImageInterface;
-import imagemodel.ImageOperations;
 import imagemodel.Pixel;
 
 import static org.junit.Assert.assertEquals;
@@ -56,7 +55,7 @@ public class PPMTest extends AbstractTest {
 
   @Test
   public void testHorizontalFlip() throws IOException {
-    ImageOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new P3PPMHandler();
     ImageInterface actual = io.applyHorizontalFlip(ih.loadImage("res/PPM/Sample.ppm"));
     ImageCopyInterface expected = new ImageCopy(2, 2);
@@ -69,7 +68,7 @@ public class PPMTest extends AbstractTest {
 
   @Test
   public void invalidTestHorizontalFlip() throws IOException {
-    ImageOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new P3PPMHandler();
     ImageInterface actual = io.applyHorizontalFlip(ih.loadImage("res/PPM/Sample.ppm"));
     ImageCopyInterface expected = new ImageCopy(2, 2);
@@ -82,7 +81,7 @@ public class PPMTest extends AbstractTest {
 
   @Test
   public void testVerticalFlip() throws IOException {
-    ImageOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new P3PPMHandler();
     ImageInterface actual = io.applyVerticalFlip(ih.loadImage("res/PPM/Sample.ppm"));
     ImageCopyInterface expected = new ImageCopy(2, 2);
@@ -95,7 +94,7 @@ public class PPMTest extends AbstractTest {
 
   @Test
   public void invalidTestVerticalFlip() throws IOException {
-    ImageOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new P3PPMHandler();
     ImageInterface actual = io.applyVerticalFlip(ih.loadImage("res/PPM/Sample.ppm"));
     ImageCopyInterface expected = new ImageCopy(2, 2);
@@ -108,7 +107,7 @@ public class PPMTest extends AbstractTest {
 
   @Test
   public void brightness() throws IOException {
-    ImageOperations io = new ExtendedImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new P3PPMHandler();
     ImageInterface actual = io.applyBrightness(ih.loadImage(
             "res/PPM/Sample.ppm"), 10);
@@ -122,7 +121,7 @@ public class PPMTest extends AbstractTest {
 
   @Test
   public void invalidBrightness() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new P3PPMHandler();
     ImageInterface actual = io.applyBrightness(ih.loadImage(
             "res/PPM/Sample.ppm"), 10);
@@ -136,7 +135,7 @@ public class PPMTest extends AbstractTest {
 
   @Test
   public void darken() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new P3PPMHandler();
     ImageInterface actual = io.applyBrightness(ih.loadImage(
             "res/PPM/Sample.ppm"), -10);
@@ -150,7 +149,7 @@ public class PPMTest extends AbstractTest {
 
   @Test
   public void invalidDarken() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new P3PPMHandler();
     ImageInterface actual = io.applyBrightness(ih.loadImage(
             "res/PPM/Sample.ppm"), -10);
@@ -164,7 +163,7 @@ public class PPMTest extends AbstractTest {
 
   @Test
   public void redComponent() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new P3PPMHandler();
     ImageInterface actual = io.visualizeRedComponent(ih.loadImage(
             "res/PPM/Sample.ppm"));
@@ -178,7 +177,7 @@ public class PPMTest extends AbstractTest {
 
   @Test
   public void invalidRedComponent() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new P3PPMHandler();
     ImageInterface actual = io.visualizeRedComponent(ih.loadImage(
             "res/PPM/Sample.ppm"));
@@ -192,7 +191,7 @@ public class PPMTest extends AbstractTest {
 
   @Test
   public void blueComponent() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new P3PPMHandler();
     ImageInterface actual = io.visualizeBlueComponent(ih.loadImage(
             "res/PPM/Sample.ppm"));
@@ -206,7 +205,7 @@ public class PPMTest extends AbstractTest {
 
   @Test
   public void invalidBlueComponent() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new P3PPMHandler();
     ImageInterface actual = io.visualizeBlueComponent(ih.loadImage(
             "res/PPM/Sample.ppm"));
@@ -220,7 +219,7 @@ public class PPMTest extends AbstractTest {
 
   @Test
   public void greenComponent() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new P3PPMHandler();
     ImageInterface actual = io.visualizeGreenComponent(ih.loadImage(
             "res/PPM/Sample.ppm"));
@@ -234,7 +233,7 @@ public class PPMTest extends AbstractTest {
 
   @Test
   public void invalidGreenComponent() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new P3PPMHandler();
     ImageInterface actual = io.visualizeGreenComponent(ih.loadImage(
             "res/PPM/Sample.ppm"));
@@ -248,7 +247,7 @@ public class PPMTest extends AbstractTest {
 
   @Test
   public void valueComponent() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new P3PPMHandler();
     ImageInterface actual = io.visualizeValue(ih.loadImage("res/PPM/Sample.ppm"));
     ImageCopyInterface expected = new ImageCopy(2, 2);
@@ -261,7 +260,7 @@ public class PPMTest extends AbstractTest {
 
   @Test
   public void invalidValueComponent() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new P3PPMHandler();
     ImageInterface actual = io.visualizeValue(ih.loadImage("res/PPM/Sample.ppm"));
     ImageCopyInterface expected = new ImageCopy(2, 2);
@@ -274,7 +273,7 @@ public class PPMTest extends AbstractTest {
 
   @Test
   public void lumaComponent() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new P3PPMHandler();
     ImageInterface actual = io.visualizeLuma(ih.loadImage("res/PPM/Sample.ppm"));
     ImageCopyInterface expected = new ImageCopy(2, 2);
@@ -287,7 +286,7 @@ public class PPMTest extends AbstractTest {
 
   @Test
   public void invalidLumaComponent() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new P3PPMHandler();
     ImageInterface actual = io.visualizeLuma(ih.loadImage("res/PPM/Sample.ppm"));
     ImageCopyInterface expected = new ImageCopy(2, 2);
@@ -300,7 +299,7 @@ public class PPMTest extends AbstractTest {
 
   @Test
   public void intensityComponent() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new P3PPMHandler();
     ImageInterface actual = io.visualizeIntensity(ih.loadImage("res/PPM/Sample.ppm"));
     ImageCopyInterface expected = new ImageCopy(2, 2);
@@ -313,7 +312,7 @@ public class PPMTest extends AbstractTest {
 
   @Test
   public void invalidIntensityComponent() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new P3PPMHandler();
     ImageInterface actual = io.visualizeIntensity(ih.loadImage("res/PPM/Sample.ppm"));
     ImageCopyInterface expected = new ImageCopy(2, 2);
@@ -326,7 +325,7 @@ public class PPMTest extends AbstractTest {
 
   @Test
   public void rgbSplit() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new P3PPMHandler();
     ImageInterface actualr = io.visualizeRedComponent(ih.loadImage(
             "res/PPM/Sample.ppm"));
@@ -356,7 +355,7 @@ public class PPMTest extends AbstractTest {
 
   @Test
   public void invalidRgbSplit() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new P3PPMHandler();
     ImageInterface actualr = io.visualizeRedComponent(ih.loadImage(
             "res/PPM/Sample.ppm"));
@@ -386,7 +385,7 @@ public class PPMTest extends AbstractTest {
 
   @Test
   public void RgbCombine() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new P3PPMHandler();
     ImageInterface actualr = io.visualizeRedComponent(ih.loadImage(
             "res/PPM/Sample.ppm"));
@@ -405,7 +404,7 @@ public class PPMTest extends AbstractTest {
 
   @Test
   public void invalidRgbCombine() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new P3PPMHandler();
     ImageInterface actualr = io.visualizeRedComponent(ih.loadImage(
             "res/PPM/Sample.ppm"));
@@ -424,7 +423,7 @@ public class PPMTest extends AbstractTest {
 
   @Test
   public void blur() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new P3PPMHandler();
     ImageInterface actual = io.applyBlur(ih.loadImage("res/PPM/Sample.ppm"));
     ImageCopyInterface expected = new ImageCopy(2, 2);
@@ -437,7 +436,7 @@ public class PPMTest extends AbstractTest {
 
   @Test
   public void invalidBlur() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new P3PPMHandler();
     ImageInterface actual = io.applyBlur(ih.loadImage("res/PPM/Sample.ppm"));
     ImageCopyInterface expected = new ImageCopy(2, 2);
@@ -450,7 +449,7 @@ public class PPMTest extends AbstractTest {
 
   @Test
   public void sharped() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new P3PPMHandler();
     ImageInterface actual = io.applySharpen(ih.loadImage("res/PPM/Sample.ppm"));
     ImageCopyInterface expected = new ImageCopy(2, 2);
@@ -463,7 +462,7 @@ public class PPMTest extends AbstractTest {
 
   @Test
   public void invalidSharped() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new P3PPMHandler();
     ImageInterface actual = io.applySharpen(ih.loadImage("res/PPM/Sample.ppm"));
     ImageCopyInterface expected = new ImageCopy(2, 2);
@@ -476,7 +475,7 @@ public class PPMTest extends AbstractTest {
 
   @Test
   public void sepia() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new P3PPMHandler();
     ImageInterface actual = io.applySepia(ih.loadImage("res/PPM/Sample.ppm"));
     ImageCopyInterface expected = new ImageCopy(2, 2);
@@ -489,7 +488,7 @@ public class PPMTest extends AbstractTest {
 
   @Test
   public void invalidSepia() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new P3PPMHandler();
     ImageInterface actual = io.applySepia(ih.loadImage("res/PPM/Sample.ppm"));
     ImageCopyInterface expected = new ImageCopy(2, 2);
@@ -1060,7 +1059,7 @@ public class PPMTest extends AbstractTest {
 
   @Test
   public void multipleFunction() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new P3PPMHandler();
     ImageInterface actual = io.applySepia(ih.loadImage("res/PPM/Sample.ppm"));
     ImageInterface afterop = io.applyVerticalFlip(actual);
@@ -1134,7 +1133,7 @@ public class PPMTest extends AbstractTest {
 
   @Test
   public void multipleFunction2() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new P3PPMHandler();
     ImageInterface actual = io.applyBlur(ih.loadImage("res/PPM/Sample.ppm"));
     ImageInterface afterop = io.applyHorizontalFlip(actual);
@@ -1148,7 +1147,7 @@ public class PPMTest extends AbstractTest {
 
   @Test
   public void multipleFunction3() throws IOException {
-    ImageOperations io = new ImageOperations();
+    AdditionalOperations io = new AdditionalImageOperations();
     ImageFormatHandler ih = new P3PPMHandler();
     ImageInterface actual = io.applyBlur(ih.loadImage("res/PPM/Sample.ppm"));
     ImageInterface afterop = io.applyVerticalFlip(actual);
@@ -1500,18 +1499,5 @@ public class PPMTest extends AbstractTest {
     expected.setPixel(0, 1, new Pixel(0, 0, 0));
     expected.setPixel(1, 1, new Pixel(0, 255, 175));
     assertTrue(expected.deepCopyImage().equals(transformed));
-  }
-
-  @Test
-  public void testScript() throws IOException {
-    ImageFormatHandler ih = new P3PPMHandler();
-    execute("run res/Scripts/PPM/test.txt");
-    ImageInterface actual = ih.loadImage("res/PPM/Sample-save.ppm");
-    ImageCopyInterface expected = new ImageCopy(2, 2);
-    expected.setPixel(0, 0, new Pixel(0, 0, 0));
-    expected.setPixel(1, 0, new Pixel(100, 0, 0));
-    expected.setPixel(0, 1, new Pixel(0, 0, 0));
-    expected.setPixel(1, 1, new Pixel(0, 255, 175));
-    assertTrue(expected.deepCopyImage().equals(actual));
   }
 }

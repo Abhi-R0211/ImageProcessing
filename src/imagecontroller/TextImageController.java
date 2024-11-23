@@ -510,12 +510,12 @@ public class TextImageController implements Controller {
     } else if (tokens.length == 8 && tokens[tokens.length - 2].equals("split")) {
       int percentage = Integer.parseInt(tokens[7]);
       adjustedImage = imageOperations.splitViewOperation(percentage, images.get(tokens[4]),
-        img -> {
-          int b = Integer.parseInt(tokens[1]);
-          int m = Integer.parseInt(tokens[2]);
-          int w = Integer.parseInt(tokens[3]);
-          return imageOperations.levelsAdjust(img, b, m, w);
-        });
+              img -> {
+                int b = Integer.parseInt(tokens[1]);
+                int m = Integer.parseInt(tokens[2]);
+                int w = Integer.parseInt(tokens[3]);
+                return imageOperations.levelsAdjust(img, b, m, w);
+              });
     } else {
       output.append("Invalid level command\n");
       return;
