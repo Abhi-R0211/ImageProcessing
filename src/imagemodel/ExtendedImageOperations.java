@@ -377,8 +377,7 @@ public class ExtendedImageOperations extends ImageOperations implements Extended
    * @param height the height of the image.
    */
   private void drawLine(ImageCopyInterface image, int x0, int y0, int x1, int y1,
-                        PixelInterface color,
-                        int width, int height) {
+                        PixelInterface color, int width, int height) {
     int dx = Math.abs(x1 - x0);
     int dy = Math.abs(y1 - y0);
     int sx = (x0 < x1) ? 1 : -1;
@@ -412,7 +411,7 @@ public class ExtendedImageOperations extends ImageOperations implements Extended
    * @throws IllegalArgumentException if the input image is null.
    */
   @Override
-  public ImageInterface colorCorrect(ImageInterface image) {
+  public ImageInterface colorCorrect(ImageInterface image) throws IllegalArgumentException {
     if (image == null) {
       throw new IllegalArgumentException("Image cannot be null.");
     }

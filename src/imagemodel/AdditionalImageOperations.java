@@ -21,7 +21,7 @@ public class AdditionalImageOperations extends ExtendedImageOperations
    */
   @Override
   public ImageInterface downscaleImage(ImageInterface original, int targetWidth,
-                                       int targetHeight) throws IllegalArgumentException{
+                                       int targetHeight) throws IllegalArgumentException {
     if (original == null) {
       throw new IllegalArgumentException("Image cannot be null.");
     }
@@ -93,8 +93,7 @@ public class AdditionalImageOperations extends ExtendedImageOperations
    * @return the value of the specified color component.
    * @throws IllegalArgumentException if an invalid color index is provided.
    */
-  private int getColorComponent(PixelInterface pixel, int colorIndex)
-          throws IllegalArgumentException {
+  private int getColorComponent(PixelInterface pixel, int colorIndex) {
     switch (colorIndex) {
       case 0:
         return pixel.getRed();
@@ -115,7 +114,8 @@ public class AdditionalImageOperations extends ExtendedImageOperations
    * @return an object of type Image after blurring as per mask condition.
    */
   @Override
-  public ImageInterface applyBlur(ImageInterface image, ImageInterface maskImage) {
+  public ImageInterface applyBlur(ImageInterface image, ImageInterface maskImage)
+          throws IllegalArgumentException {
     return applyWithMask(image, maskImage, this::applyBlur);
   }
 
@@ -127,7 +127,8 @@ public class AdditionalImageOperations extends ExtendedImageOperations
    * @return an object of type Image after sharpening as per mask condition.
    */
   @Override
-  public ImageInterface applySharpen(ImageInterface image, ImageInterface maskImage) {
+  public ImageInterface applySharpen(ImageInterface image, ImageInterface maskImage)
+          throws IllegalArgumentException {
     return applyWithMask(image, maskImage, this::applySharpen);
   }
 
@@ -139,7 +140,8 @@ public class AdditionalImageOperations extends ExtendedImageOperations
    * @return an object of type Image after applying sepia as per mask condition.
    */
   @Override
-  public ImageInterface applySepia(ImageInterface image, ImageInterface maskImage) {
+  public ImageInterface applySepia(ImageInterface image, ImageInterface maskImage)
+          throws IllegalArgumentException {
     return applyWithMask(image, maskImage, this::applySepia);
   }
 
@@ -151,7 +153,8 @@ public class AdditionalImageOperations extends ExtendedImageOperations
    * @return an object of type Image after applying luma as per mask condition.
    */
   @Override
-  public ImageInterface visualizeLuma(ImageInterface image, ImageInterface maskImage) {
+  public ImageInterface visualizeLuma(ImageInterface image, ImageInterface maskImage)
+          throws IllegalArgumentException {
     return applyWithMask(image, maskImage, this::visualizeLuma);
   }
 
@@ -163,7 +166,8 @@ public class AdditionalImageOperations extends ExtendedImageOperations
    * @return an object of type Image after extracting red-component as per mask condition.
    */
   @Override
-  public ImageInterface visualizeRedComponent(ImageInterface image, ImageInterface maskImage) {
+  public ImageInterface visualizeRedComponent(ImageInterface image, ImageInterface maskImage)
+          throws IllegalArgumentException {
     return applyWithMask(image, maskImage, this::visualizeRedComponent);
   }
 
@@ -175,7 +179,8 @@ public class AdditionalImageOperations extends ExtendedImageOperations
    * @return an object of type Image after extracting green-component as per mask condition.
    */
   @Override
-  public ImageInterface visualizeGreenComponent(ImageInterface image, ImageInterface maskImage) {
+  public ImageInterface visualizeGreenComponent(ImageInterface image, ImageInterface maskImage)
+          throws IllegalArgumentException {
     return applyWithMask(image, maskImage, this::visualizeGreenComponent);
   }
 
@@ -187,7 +192,8 @@ public class AdditionalImageOperations extends ExtendedImageOperations
    * @return an object of type Image after extracting blue-component as per mask condition.
    */
   @Override
-  public ImageInterface visualizeBlueComponent(ImageInterface image, ImageInterface maskImage) {
+  public ImageInterface visualizeBlueComponent(ImageInterface image, ImageInterface maskImage)
+          throws IllegalArgumentException {
     return applyWithMask(image, maskImage, this::visualizeBlueComponent);
   }
 
@@ -199,7 +205,8 @@ public class AdditionalImageOperations extends ExtendedImageOperations
    * @return an object of type Image after applying intensity transformation as per mask condition.
    */
   @Override
-  public ImageInterface visualizeIntensity(ImageInterface image, ImageInterface maskImage) {
+  public ImageInterface visualizeIntensity(ImageInterface image, ImageInterface maskImage)
+          throws IllegalArgumentException {
     return applyWithMask(image, maskImage, this::visualizeIntensity);
   }
 
@@ -211,7 +218,8 @@ public class AdditionalImageOperations extends ExtendedImageOperations
    * @return an object of type Image after applying value transformation as per mask condition.
    */
   @Override
-  public ImageInterface visualizeValue(ImageInterface image, ImageInterface maskImage) {
+  public ImageInterface visualizeValue(ImageInterface image, ImageInterface maskImage)
+          throws IllegalArgumentException {
     return applyWithMask(image, maskImage, this::visualizeValue);
   }
 
@@ -223,8 +231,8 @@ public class AdditionalImageOperations extends ExtendedImageOperations
    * @return an object of type Image after brightening/darkening as per mask condition.
    */
   @Override
-  public ImageInterface applyBrightness(ImageInterface image,
-                                        int increment, ImageInterface maskImage) {
+  public ImageInterface applyBrightness(ImageInterface image, int increment,
+                                        ImageInterface maskImage) throws IllegalArgumentException {
     return applyWithMask(image, maskImage, img -> super.applyBrightness(img, increment));
   }
 
@@ -239,7 +247,7 @@ public class AdditionalImageOperations extends ExtendedImageOperations
    */
   private ImageInterface applyWithMask(ImageInterface image, ImageInterface maskImage,
                                        Function<ImageInterface, ImageInterface> transformation)
-          throws IllegalArgumentException {
+          throws IllegalArgumentException{
     if (maskImage == null) {
       throw new IllegalArgumentException("Mask image cannot be null");
     }

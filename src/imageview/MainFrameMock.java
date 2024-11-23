@@ -154,7 +154,7 @@ public class MainFrameMock implements MainFrameInterface {
   @Override
   public List<Integer> showLevelsAdjustDialog() {
     level = true;
-    ArrayList<Integer> temp = new ArrayList<>();
+    List<Integer> temp = new ArrayList<>();
     temp.add(10);
     temp.add(20);
     temp.add(30);

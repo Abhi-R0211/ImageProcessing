@@ -25,7 +25,8 @@ public interface AdditionalOperations extends ExtendedOperations {
    * @param image on which the operation is to be applied.
    * @return an object of type Image after blurring.
    */
-  ImageInterface applyBlur(ImageInterface image, ImageInterface maskImage);
+  ImageInterface applyBlur(ImageInterface image, ImageInterface maskImage)
+          throws IllegalArgumentException;
 
   /**
    * The applySharpen method will sharpen the image.
@@ -33,7 +34,8 @@ public interface AdditionalOperations extends ExtendedOperations {
    * @param image on which the operation is to be applied.
    * @return an object of type Image after applying the operation.
    */
-  ImageInterface applySharpen(ImageInterface image, ImageInterface maskImage);
+  ImageInterface applySharpen(ImageInterface image, ImageInterface maskImage)
+          throws IllegalArgumentException;
 
   /**
    * The applySepia method will apply a Sepia tone to the image.
@@ -41,7 +43,8 @@ public interface AdditionalOperations extends ExtendedOperations {
    * @param image on which the operation is to be applied.
    * @return an object of type Image after applying a sepia tone.
    */
-  ImageInterface applySepia(ImageInterface image, ImageInterface maskImage);
+  ImageInterface applySepia(ImageInterface image, ImageInterface maskImage)
+          throws IllegalArgumentException;
 
   /**
    * This method will return an image with the luma component of the input image.
@@ -49,7 +52,8 @@ public interface AdditionalOperations extends ExtendedOperations {
    * @param image on which the operation is to be applied.
    * @return an object of type Image after applying the operation.
    */
-  ImageInterface visualizeLuma(ImageInterface image, ImageInterface maskImage);
+  ImageInterface visualizeLuma(ImageInterface image, ImageInterface maskImage)
+          throws IllegalArgumentException;
 
   /**
    * This method will extract the red component out of the image.
@@ -57,7 +61,8 @@ public interface AdditionalOperations extends ExtendedOperations {
    * @param image on which the operation is to be applied.
    * @return an object of type Image after extracting the red component.
    */
-  ImageInterface visualizeRedComponent(ImageInterface image, ImageInterface maskImage);
+  ImageInterface visualizeRedComponent(ImageInterface image, ImageInterface maskImage)
+          throws IllegalArgumentException;
 
   /**
    * This method will extract the green component out of the image.
@@ -65,7 +70,8 @@ public interface AdditionalOperations extends ExtendedOperations {
    * @param image on which the operation is to be applied.
    * @return an object of type Image after extracting the green component.
    */
-  ImageInterface visualizeGreenComponent(ImageInterface image, ImageInterface maskImage);
+  ImageInterface visualizeGreenComponent(ImageInterface image, ImageInterface maskImage)
+          throws IllegalArgumentException;
 
   /**
    * This method will extract the blue component out of the image.
@@ -73,7 +79,8 @@ public interface AdditionalOperations extends ExtendedOperations {
    * @param image on which the operation is to be applied.
    * @return an object of type Image after extracting the blue component.
    */
-  ImageInterface visualizeBlueComponent(ImageInterface image, ImageInterface maskImage);
+  ImageInterface visualizeBlueComponent(ImageInterface image, ImageInterface maskImage)
+          throws IllegalArgumentException;
 
   /**
    * This method will return an image with the intensity component of the input image.
@@ -81,7 +88,8 @@ public interface AdditionalOperations extends ExtendedOperations {
    * @param image on which the operation is to be applied.
    * @return an object of type Image after applying the operation
    */
-  ImageInterface visualizeIntensity(ImageInterface image, ImageInterface maskImage);
+  ImageInterface visualizeIntensity(ImageInterface image, ImageInterface maskImage)
+          throws IllegalArgumentException;
 
   /**
    * This method will return an image with the value component of the input image.
@@ -89,7 +97,8 @@ public interface AdditionalOperations extends ExtendedOperations {
    * @param image is the image on which the operation is to be applied.
    * @return this will return an object of type Image after applying the operation.
    */
-  ImageInterface visualizeValue(ImageInterface image, ImageInterface maskImage);
+  ImageInterface visualizeValue(ImageInterface image, ImageInterface maskImage)
+          throws IllegalArgumentException;
 
   /**
    * The applyBrightness method will brighten or darken the image depending on the increment
@@ -99,5 +108,6 @@ public interface AdditionalOperations extends ExtendedOperations {
    * @param increment factor to be applied on the image.
    * @return object of type Image after brightening/darkening.
    */
-  ImageInterface applyBrightness(ImageInterface image, int increment, ImageInterface maskImage);
+  ImageInterface applyBrightness(ImageInterface image, int increment, ImageInterface maskImage)
+          throws IllegalArgumentException;
 }
