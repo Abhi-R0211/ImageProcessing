@@ -341,16 +341,16 @@ public class MainFrame extends JFrame implements MainFrameInterface {
       try {
         controller.loadImage();
         controller.createHistogram();
-      } catch (IOException ex) {
-        throw new RuntimeException(ex);
+      } catch (IOException ignored) {
+
       }
     });
     addButton("Save Image", e -> {
       try {
         count = 0;
         controller.saveImage();
-      } catch (IOException ex) {
-        throw new RuntimeException(ex);
+      } catch (IOException ignored) {
+
       }
     });
     addButton("Sepia", e -> {

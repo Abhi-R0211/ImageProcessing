@@ -41,7 +41,7 @@ public class MainFrameMock implements MainFrameInterface {
   }
 
   /**
-   * Display mock.
+   * This is a mock for the displayImage.
    *
    * @param image the image that will be displayed on the UI.
    */
@@ -51,7 +51,7 @@ public class MainFrameMock implements MainFrameInterface {
   }
 
   /**
-   * Flag for display.
+   * Flag for displayImage.
    *
    * @return boolean flag.
    */
@@ -60,7 +60,7 @@ public class MainFrameMock implements MainFrameInterface {
   }
 
   /**
-   * Histogram mock.
+   * This is a mock for the displayHistogram.
    *
    * @param histogramImage the histogram that will be displayed on the UI.
    */
@@ -70,7 +70,7 @@ public class MainFrameMock implements MainFrameInterface {
   }
 
   /**
-   * Flag for histogram.
+   * Flag for displayHistogram.
    *
    * @return boolean flag.
    */
@@ -79,7 +79,7 @@ public class MainFrameMock implements MainFrameInterface {
   }
 
   /**
-   * Loading mock.
+   * This is a mock for loading the image.
    *
    * @return loaded image path.
    */
@@ -99,7 +99,7 @@ public class MainFrameMock implements MainFrameInterface {
   }
 
   /**
-   * Saving mock.
+   * This is a mock for saving the Image.
    *
    * @return saved image path.
    */
@@ -119,7 +119,7 @@ public class MainFrameMock implements MainFrameInterface {
   }
 
   /**
-   * setController mock.
+   * This is a mock for setController.
    *
    * @param controller object.
    */
@@ -147,7 +147,7 @@ public class MainFrameMock implements MainFrameInterface {
   }
 
   /**
-   * Mock for level adjust.
+   * This is a mock for level adjust.
    *
    * @return ArrayList containing b, m, w values.
    */
@@ -171,7 +171,7 @@ public class MainFrameMock implements MainFrameInterface {
   }
 
   /**
-   * Mock for compression.
+   * This is a mock for compression.
    *
    * @return dummy value.
    */
@@ -191,7 +191,7 @@ public class MainFrameMock implements MainFrameInterface {
   }
 
   /**
-   * Mock for downsize.
+   * This is a mock for downsize.
    *
    * @return ArrayList containing downsized image dimensions.
    */
@@ -215,7 +215,7 @@ public class MainFrameMock implements MainFrameInterface {
   }
 
   /**
-   * Mock for split dialog box.
+   * This is a mock for split dialog box.
    *
    * @return dummy value.
    */
@@ -244,7 +244,7 @@ public class MainFrameMock implements MainFrameInterface {
   }
 
   /**
-   * Mock for error dialog box.
+   * This is a mock for error dialog box.
    *
    * @param errorMessage is a String of what the error is.
    */

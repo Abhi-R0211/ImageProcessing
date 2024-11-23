@@ -14,8 +14,10 @@ public interface AdditionalOperations extends ExtendedOperations {
    * @param targetWidth  of the downsized image.
    * @param targetHeight of the downsized image.
    * @return downsized image.
+   * @throws IllegalArgumentException when invalid arguments are passed.
    */
-  ImageInterface downscaleImage(ImageInterface original, int targetWidth, int targetHeight);
+  ImageInterface downscaleImage(ImageInterface original, int targetWidth, int targetHeight)
+          throws IllegalArgumentException;
 
   /**
    * The applyBlur method will blur the image.

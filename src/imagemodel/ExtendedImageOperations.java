@@ -22,7 +22,8 @@ public class ExtendedImageOperations extends ImageOperations implements Extended
    * @return the compressed image.
    * @throws IllegalArgumentException if the percentage is out of range or image is null.
    */
-  public ImageInterface compressImage(ImageInterface image, int percentage) {
+  public ImageInterface compressImage(ImageInterface image, int percentage)
+          throws IllegalArgumentException {
     if (percentage < 0 || percentage > 100) {
       throw new IllegalArgumentException("Threshold must be between 0 and 100.");
     }
@@ -243,7 +244,7 @@ public class ExtendedImageOperations extends ImageOperations implements Extended
    * @throws IllegalArgumentException if the input image is null.
    */
   @Override
-  public ImageInterface createHistogram(ImageInterface image) {
+  public ImageInterface createHistogram(ImageInterface image) throws IllegalArgumentException {
     if (image == null) {
       throw new IllegalArgumentException("Image cannot be null.");
     }
@@ -553,7 +554,8 @@ public class ExtendedImageOperations extends ImageOperations implements Extended
    * @throws IllegalArgumentException if the input image is null.
    */
   @Override
-  public ImageInterface levelsAdjust(ImageInterface image, int black, int mid, int white) {
+  public ImageInterface levelsAdjust(ImageInterface image, int black, int mid, int white)
+          throws IllegalArgumentException {
     if (black < 0 || black >= mid || mid >= white || white > 255) {
       throw new IllegalArgumentException("Black, mid, and white values must be in ascending "
               + "order within [0, 255].");

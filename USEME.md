@@ -6,7 +6,7 @@ Below is a summary of each command and conditions for their use.
 
 How to use the GUI?
 Please find the jar file in the res folder. Run the jar with the below command in the terminal:
-`java -jar Program.jar`
+`java -jar ImageProcessing.jar`
 
 Following is how the Graphical User Interface looks:
 ![GUI_Main_Screen.jpg](GUI_Main_Screen.jpg)

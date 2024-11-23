@@ -20,8 +20,8 @@ public class AdditionalImageOperations extends ExtendedImageOperations
    * @throws IllegalArgumentException if image is null or target dimensions > original dimensions.
    */
   @Override
-  public ImageInterface downscaleImage(ImageInterface original,
-                                       int targetWidth, int targetHeight) {
+  public ImageInterface downscaleImage(ImageInterface original, int targetWidth,
+                                       int targetHeight) throws IllegalArgumentException{
     if (original == null) {
       throw new IllegalArgumentException("Image cannot be null.");
     }
@@ -93,7 +93,8 @@ public class AdditionalImageOperations extends ExtendedImageOperations
    * @return the value of the specified color component.
    * @throws IllegalArgumentException if an invalid color index is provided.
    */
-  private int getColorComponent(PixelInterface pixel, int colorIndex) {
+  private int getColorComponent(PixelInterface pixel, int colorIndex)
+          throws IllegalArgumentException {
     switch (colorIndex) {
       case 0:
         return pixel.getRed();
@@ -237,7 +238,8 @@ public class AdditionalImageOperations extends ExtendedImageOperations
    * @throws IllegalArgumentException if mask image is null.
    */
   private ImageInterface applyWithMask(ImageInterface image, ImageInterface maskImage,
-                                       Function<ImageInterface, ImageInterface> transformation) {
+                                       Function<ImageInterface, ImageInterface> transformation)
+          throws IllegalArgumentException {
     if (maskImage == null) {
       throw new IllegalArgumentException("Mask image cannot be null");
     }

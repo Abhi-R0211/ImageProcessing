@@ -20,7 +20,7 @@ public class ImageCopy implements ImageCopyInterface {
    * @param width  of the image.
    * @param height of the image.
    */
-  public ImageCopy(int width, int height) {
+  public ImageCopy(int width, int height) throws IllegalArgumentException {
     if (width <= 0 || height <= 0) {
       throw new IllegalArgumentException("Invalid image dimensions");
     }
