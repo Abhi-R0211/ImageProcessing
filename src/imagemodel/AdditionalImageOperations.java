@@ -247,7 +247,7 @@ public class AdditionalImageOperations extends ExtendedImageOperations
    */
   private ImageInterface applyWithMask(ImageInterface image, ImageInterface maskImage,
                                        Function<ImageInterface, ImageInterface> transformation)
-          throws IllegalArgumentException{
+          throws IllegalArgumentException {
     if (maskImage == null) {
       throw new IllegalArgumentException("Mask image cannot be null");
     }

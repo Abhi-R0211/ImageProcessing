@@ -264,8 +264,8 @@ public class GUIController implements ControllerGui {
                 value.get(1), value.get(2));
         mainFrame.displayImage(currentImage);
       } else {
-        displayImage = operations.splitViewOperation(percentage, currentImage,
-                img -> operations.levelsAdjust(img, value.get(0), value.get(1), value.get(2)));
+        displayImage = operations.splitViewOperation(percentage, currentImage, img ->
+                operations.levelsAdjust(img, value.get(0), value.get(1), value.get(2)));
         mainFrame.displayImage(displayImage);
         currentImage = operations.levelsAdjust(currentImage,
                 value.get(0), value.get(1), value.get(2));

@@ -19,10 +19,11 @@ Following is how the Graphical User Interface looks:
 - Description: This function will apply a blur effect to an image.
 - Usage: blur <image-name> <dest-image-name>
 - Usage with split: blur <image-name> <dest-image-name> split <split-percentage>
-- Usage with mask: blur <image-name> <dest-image-name> <masked-image-name>
+- Usage with mask: blur <image-name> <masked-image-name> <dest-image-name> 
 - Example:
     - blur test output
     - blur myImage blurredImage split 50
+    - blur test mask output
 - Conditions:
     - If the user is using the split option, the user should provide a valid percentage (1–100).
     - Dependencies: The <image-name> must have already been loaded in the application.
@@ -32,10 +33,11 @@ Following is how the Graphical User Interface looks:
 - Description: sharpens an image.
 - Usage: sharpen <image-name> <dest-image-name>
 - Usage with split: sharpen <image-name> <dest-image-name> split <split-percentage>
-- Usage with mask: sharpen <image-name> <dest-image-name> <masked-image-name>
+- Usage with mask: sharpen <image-name> <masked-image-name> <dest-image-name> 
 - Example:
     - sharpen test output
     - sharpen myImage blurredImage split 50
+    - sharpen test mask output
 - Conditions:
     - If the user is using the split option, the user should provide a valid percentage (1–100).
     - Dependencies: The <image-name> must have already been loaded in the application.
@@ -44,11 +46,12 @@ Following is how the Graphical User Interface looks:
 
 - Description: Extracts the red component of the image.
 - Usage: red-component <image-name> <dest-image-name>
-- Usage with split: red-component <image-name> <dest-image-name> <split-percentage>
-- Usage with mask: red-component <image-name> <dest-image-name> <masked-image-name>
+- Usage with split: red-component <image-name> <dest-image-name> split <split-percentage>
+- Usage with mask: red-component <image-name> <masked-image-name> <dest-image-name> 
 - Example:
     - red-component myImage redImage
     - red-component myImage redImage split 50
+    - red-component test mask output
 - Conditions:
     - Note: The image must be loaded prior to running this command.
     - If the user is using the split option, the user should provide a valid percentage (1–100).
@@ -59,10 +62,11 @@ Following is how the Graphical User Interface looks:
 - Description: Extracts the green component of the image.
 - Usage: green-component <image-name> <dest-image-name>
 - Usage with split: green-component <image-name> <dest-image-name> split <split-percentage>
-- Usage with mask: green-component <image-name> <dest-image-name> <masked-image-name>
+- Usage with mask: green-component <image-name> <masked-image-name> <dest-image-name> 
 - Example:
     - green-component test output
     - green-component test output split 50
+    - green-component test mask output
 - Conditions:
     - Note: Image must be loaded before running this command.
     - If the user is using the split option, the user should provide a valid percentage (1–100).
@@ -73,10 +77,11 @@ Following is how the Graphical User Interface looks:
 - Description: Extracts the blue component of the image.
 - Usage: blue-component <image-name> <dest-image-name>
 - Usage with split: blue-component <image-name> <dest-image-name> split <split-percentage>
-- Usage with mask: blue-component <image-name> <dest-image-name> <masked-image-name>
+- Usage with mask: blue-component <image-name> <masked-image-name> <dest-image-name> 
 - Example:
     - blue-component test output
     - blue-component test output split 50
+    - blue-component test mask output
 - Conditions:
     - Note: Image must be loaded before running this command.
     - If the user is using the split option, the user should provide a valid percentage (1–100).
@@ -87,10 +92,11 @@ Following is how the Graphical User Interface looks:
 - Description: Calculates the intensity of the image by averaging the RGB components.
 - Usage: intensity-component <image-name> <dest-image-name>
 - Usage with split: intensity-component <image-name> <dest-image-name> split <split-percentage>
-- Usage with mask: intensity-component <image-name> <dest-image-name> <masked-image-name>
+- Usage with mask: intensity-component <image-name> <masked-image-name> <dest-image-name> 
 - Example:
-- intensity-component test output
-- intensity-component test output split 50
+  - intensity-component test output
+  - intensity-component test output split 50
+  - intensity-component test mask output
 - Conditions:
     - Note: Image must be loaded before running this command.
     - If the user is using the split option, the user should provide a valid percentage (1–100).
@@ -102,10 +108,11 @@ Following is how the Graphical User Interface looks:
   using a weighted sum of RGB values.
 - Usage: luma-component <image-name> <dest-image-name>
 - Usage with split: luma-component <image-name> <dest-image-name> split <split-percentage>
-- Usage with mask: luma-component <image-name> <dest-image-name> <masked-image-name>
+- Usage with mask: luma-component <image-name> <masked-image-name> <dest-image-name> 
 - Example:
-- luma-component test output
-- luma-component test output split 50
+  - luma-component test output
+  - luma-component test output split 50
+  - luma-component test mask output
 - Conditions:
     - Note: Image must be loaded before running this command.
     - If the user is using the split option, the user should provide a valid percentage (1–100).
@@ -116,10 +123,11 @@ Following is how the Graphical User Interface looks:
 - Description: Extracts the value component (the maximum of RGB values for each pixel).
 - Usage: value-component <image-name> <dest-image-name>
 - Usage with split: value-component <image-name> <dest-image-name> split <split-percentage>
-- Usage with mask: value-component <image-name> <dest-image-name> <masked-image-name>
+- Usage with mask: value-component <image-name> <masked-image-name> <dest-image-name> 
 - Example:
-- value-component test output
-- value-component test output split 50
+  - value-component test output
+  - value-component test output split 50
+  - value-component test mask output
 - Conditions:
     - Note: Image must be loaded before running this command.
     - If the user is using the split option, the user should provide a valid percentage (1–100).
@@ -161,8 +169,11 @@ Following is how the Graphical User Interface looks:
 - Description: Applies a sepia tone effect to the specified image.
 - Usage: sepia <image-name> <dest-image-name>
 - Usage with split: sepia <image-name> <dest-image-name> split <split-percentage>
-- Usage with mask: sepia <image-name> <dest-image-name> <masked-image-name>
-- Example: sepia test output
+- Usage with mask: sepia <image-name> <masked-image-name> <dest-image-name> 
+- Example: 
+  - sepia test output
+  - sepia test output split 50
+  - sepia test mask output
 - Conditions:
     - Note: Image must be loaded before running this command.
     - Applies only to color images: This command won’t work on grayscale images.
@@ -207,9 +218,11 @@ Following is how the Graphical User Interface looks:
 - Description: Adjusts the color balance of the image to correct color imbalances.
 - Usage: color-correct <image-name> <dest-image-name>
 - Usage with split: color-correct <image-name> <dest-image-name> split <split-percentage>
+- Usage with mask: color-correct <image-name> <masked-image-name> <dest-image-name> 
 - Example:
     - color-correct test output
     - color-correct test output split 50
+    - color-correct test mask output
 - Conditions:
     - Note: Image must be loaded before running this command.
 
@@ -219,9 +232,12 @@ Following is how the Graphical User Interface looks:
 - Usage: levels-adjust <image-name> <dest-image-name> <black-level> <mid-level> <white-level>
 - Usage with split: levels-adjust <black-level> <mid-level> <white-level> <image-name> <
   dest-image-name> split <split-percentage>
+- Usage with Mask: levels-adjust <black-level> <mid-level> <white-level> <image-name> 
+  <masked-image-name> <dest-image-name>
 - Example:
-    - levels-adjust test output 20 50 90
-    - levels-adjust test output 20 50 90 split 30
+    - levels-adjust 20 50 90 test output 
+    - levels-adjust 20 50 90 test output split 30
+    - levels-adjust 20 50 90 test mask output
 - Conditions:
     - Note: Image must be loaded before running this command.
     - Levels range from 0 to 100, where 0 is the darkest and 100 the brightest.
@@ -234,14 +250,14 @@ Following is how the Graphical User Interface looks:
     - downsize test output 100 100
 - Conditions:
     - Note: Image must be loaded before running this command.
-    - The width and height of the new Image should be less than the widht and height of the current
+    - The width and height of the new Image should be less than the width and height of the current
       Image
 
 ### 19. run-script
 
 - Description: Runs a batch of commands from a file.
-- Usage: run-script <script-file-path>
-- Example: run-script commands.txt
+- Usage: run <script-file-path>
+- Example: run commands.txt
 - Conditions:
     - The script file should contain one command per line.
     - Commands in the script file should follow the same format as above.

@@ -302,7 +302,7 @@ public class ImageOperations implements Operations {
    * @throws IllegalArgumentException if the Image is null.
    */
   private ImageInterface applyKernel(ImageInterface image, double[][] kernel)
-          throws IllegalArgumentException{
+          throws IllegalArgumentException {
     if (image == null) {
       throw new IllegalArgumentException("image is null");
     }
