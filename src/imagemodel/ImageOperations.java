@@ -50,12 +50,17 @@ public class ImageOperations implements Operations {
     int width = image.getWidth();
     int height = image.getHeight();
     ImageCopyInterface copy = new ImageCopy(width, height);
-    for (int y = 0; y < height / 2; y++) {
+    for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
-        PixelInterface top = image.getPixel(x, y);
-        PixelInterface bottom = image.getPixel(x, height - 1 - y);
-        copy.setPixel(x, y, bottom);
-        copy.setPixel(x, height - 1 - y, top);
+        if (y < height / 2) {
+          PixelInterface top = image.getPixel(x, y);
+          PixelInterface bottom = image.getPixel(x, height - 1 - y);
+          copy.setPixel(x, y, bottom);
+          copy.setPixel(x, height - 1 - y, top);
+        } else if (y == height / 2 && height % 2 == 1) {
+          PixelInterface middle = image.getPixel(x, y);
+          copy.setPixel(x, y, middle);
+        }
       }
     }
     return copy.deepCopyImage();

@@ -35,9 +35,13 @@ public class TextImageController implements Controller {
   public TextImageController(AdditionalOperations imageOperations, Readable input,
                              Appendable output) {
     this.images = new HashMap<>();
-    this.imageOperations = imageOperations;
+    extracted(imageOperations);
     this.scanner = new Scanner(input);
     this.output = output;
+  }
+
+  private void extracted(AdditionalOperations imageOperations) {
+    this.imageOperations = imageOperations;
   }
 
   /**
