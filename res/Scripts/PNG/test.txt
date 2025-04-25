@@ -1,0 +1,5 @@
+#load
+load PNG/Sample.png input
+
+#save
+save PNG/Sample-save.png input

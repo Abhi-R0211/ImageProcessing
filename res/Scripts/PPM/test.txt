@@ -1,0 +1,5 @@
+#load
+load PPM/Sample.ppm input
+
+#save
+save PPM/Sample-save.ppm input

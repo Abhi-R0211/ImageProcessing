@@ -1,124 +1,124 @@
 #load
-load src/res/PPM/Sample.ppm input
+load PPM/Sample.ppm input
 
 #save
-save src/res/PPM/Sample-save.ppm input
+save PPM/Sample-save.ppm input
 
 #red
 red-component input red
 
 #save
-save src/res/PPM/Sample-red.ppm red
+save PPM/Sample-red.ppm red
 
 #green
 green-component input green
 
 #save
-save src/res/PPM/Sample-green.ppm green
+save PPM/Sample-green.ppm green
 
 #blue
 blue-component input blue
 
 #save
-save src/res/PPM/Sample-blue.ppm blue
+save PPM/Sample-blue.ppm blue
 
 #value
 value-component input value
 
 #save
-save src/res/PPM/Sample-value.ppm value
+save PPM/Sample-value.ppm value
 
 #luma
 luma-component input luma
 
 #save
-save src/res/PPM/Sample-luma.ppm value
+save PPM/Sample-luma.ppm value
 
 #intensity
 intensity-component input intensity
 
 #save
-save src/res/PPM/Sample-intensity.ppm intensity
+save PPM/Sample-intensity.ppm intensity
 
 #horizontal flip
 horizontal-flip input horizontal
 
 #save
-save src/res/PPM/Sample-horizontal.ppm horizontal
+save PPM/Sample-horizontal.ppm horizontal
 
 #vertical flip
 vertical-flip input vertical
 
 #save
-save src/res/PPM/Sample-vertical.ppm vertical
+save PPM/Sample-vertical.ppm vertical
 
 #brighten
 brighten 100 input brighten
 
 #save
-save src/res/PPM/Sample-brighten.ppm brighten
+save PPM/Sample-brighten.ppm brighten
 
 #darken
 brighten -100 input darken
 
 #save
-save src/res/PPM/Sample-darken.ppm darken
+save PPM/Sample-darken.ppm darken
 
 #blur
 blur input blur
 
 #save
-save src/res/PPM/Sample-blur.ppm blur
+save PPM/Sample-blur.ppm blur
 
 #sharpen
 sharpen input sharpen
 
 #save
-save src/res/PPM/Sample-sharpen.ppm sharpen
+save PPM/Sample-sharpen.ppm sharpen
 
 #sepia
 sepia input sepia
 
 #save
-save src/res/PPM/Sample-sepia.ppm sepia
+save PPM/Sample-sepia.ppm sepia
 
 #rgb split
 rgb-split input red1 green1 blue1
 
 #save
-save src/res/PPM/Sample-red1.ppm red1
-save src/res/PPM/Sample-green1.ppm green1
-save src/res/PPM/Sample-blue1.ppm blue1
+save PPM/Sample-red1.ppm red1
+save PPM/Sample-green1.ppm green1
+save PPM/Sample-blue1.ppm blue1
 
 #rgb combine
 rgb-combine combine red1 green1 blue1
 
 #save
-save src/res/PPM/Sample-combine.ppm combine
+save PPM/Sample-combine.ppm combine
 
 #compress
 compress 50 input compressed
 
 #save
-save src/res/PPM/compressed.ppm compressed
+save PPM/compressed.ppm compressed
 
 #histogram
 histogram input histogram
 
 #save
-save src/res/PPM/histogram.ppm histogram
+save PPM/histogram.ppm histogram
 
 #color-correct
 color-correct input colorcorrect
 
 #save
-save src/res/PPM/color-correct.ppm colorcorrect
+save PPM/color-correct.ppm colorcorrect
 
 #levels-adjust
 levels-adjust 20 100 255 input levelsadjust
 
 #save
-save src/res/PPM/levels-adjust.ppm levelsadjust
+save PPM/levels-adjust.ppm levelsadjust
 
 #split for all functions
 
@@ -126,64 +126,64 @@ save src/res/PPM/levels-adjust.ppm levelsadjust
 red-component input redsplit split 50
 
 #save
-save src/res/PPM/red-split.ppm redsplit
+save PPM/red-split.ppm redsplit
 
 #split green
 green-component input greensplit split 50
 
 #save
-save src/res/PPM/green-split.ppm greensplit 50
+save PPM/green-split.ppm greensplit 50
 
 #blur split
 blue-component input bluesplit split 50
 
 #save
-save src/res/PPM/blue-split.ppm bluesplit
+save PPM/blue-split.ppm bluesplit
 
 #value split
 value-component input valuesplit split 50
 
 #save
-save src/res/PPM/value-split.ppm valuesplit
+save PPM/value-split.ppm valuesplit
 
 #luma split
 luma-component input lumasplit split 50
 
 #save
-save src/res/PPM/luma-split.ppm lumasplit
+save PPM/luma-split.ppm lumasplit
 
 #intensity split
 intensity-component input intensitysplit split 50
 
 #save
-save src/res/PPM/intensity-split.ppm intensitysplit
+save PPM/intensity-split.ppm intensitysplit
 
 #split blur
 blur input blursplit split 50
 
 #save
-save src/res/PPM/blur-split.ppm blursplit
+save PPM/blur-split.ppm blursplit
 
 #sharpen split
 sharpen input sharpensplit split 50
 
 #save
-save src/res/PPM/sharpen-split.ppm sharpensplit
+save PPM/sharpen-split.ppm sharpensplit
 
 #sepia split
 sepia input sepiasplit split 50
 
 #save
-save src/res/PPM/sepia-split.ppm sepiasplit
+save PPM/sepia-split.ppm sepiasplit
 
 #levels adjust split
 levels-adjust 20 100 255 input levelsadjustsplit split 50
 
 #save
-save src/res/PPM/levels-adjust-split.ppm levelsadjustsplit
+save PPM/levels-adjust-split.ppm levelsadjustsplit
 
 #color correct split
 color-correct input colorcorrectsplit split 50
 
 #save 
-save src/res/PPM/color-correct-split.ppm colorcorrectsplit
+save PPM/color-correct-split.ppm colorcorrectsplit

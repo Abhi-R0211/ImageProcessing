@@ -2,10 +2,8 @@ package imagemodel;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 
@@ -16,35 +14,6 @@ import java.util.function.Function;
  */
 public class ExtendedImageOperations extends ImageOperations implements ExtendedOperations {
 
-  private final Map<String, Function<ImageInterface, ImageInterface>> operations;
-
-  /**
-   * Constructor initializes the operations map with supported operations.
-   */
-  public ExtendedImageOperations() {
-    operations = initializeOperations();
-  }
-
-  /**
-   * Initializes the operations map with predefined image transformation operations.
-   *
-   * @return a map of operation names to corresponding function implementations.
-   */
-  private Map<String, Function<ImageInterface, ImageInterface>> initializeOperations() {
-    Map<String, Function<ImageInterface, ImageInterface>> map = new HashMap<>();
-    map.put("blur", this::applyBlur);
-    map.put("sharpen", this::applySharpen);
-    map.put("sepia", this::applySepia);
-    map.put("red-component", this::visualizeRedComponent);
-    map.put("blue-component", this::visualizeBlueComponent);
-    map.put("green-component", this::visualizeGreenComponent);
-    map.put("value-component", this::visualizeValue);
-    map.put("luma-component", this::visualizeLuma);
-    map.put("intensity-component", this::visualizeIntensity);
-    map.put("color-correct", this::colorCorrect);
-    return map;
-  }
-
   /**
    * Compresses an image by applying Haar wavelet transformation and thresholding.
    *
@@ -53,7 +22,8 @@ public class ExtendedImageOperations extends ImageOperations implements Extended
    * @return the compressed image.
    * @throws IllegalArgumentException if the percentage is out of range or image is null.
    */
-  public ImageInterface compressImage(ImageInterface image, int percentage) {
+  public ImageInterface compressImage(ImageInterface image, int percentage)
+          throws IllegalArgumentException {
     if (percentage < 0 || percentage > 100) {
       throw new IllegalArgumentException("Threshold must be between 0 and 100.");
     }
@@ -271,10 +241,10 @@ public class ExtendedImageOperations extends ImageOperations implements Extended
    *
    * @param image the input image to generate the histogram from.
    * @return a new ImageInterface object representing the histogram.
-   * @throws NullPointerException if the input image is null.
+   * @throws IllegalArgumentException if the input image is null.
    */
   @Override
-  public ImageInterface createHistogram(ImageInterface image) {
+  public ImageInterface createHistogram(ImageInterface image) throws IllegalArgumentException {
     if (image == null) {
       throw new IllegalArgumentException("Image cannot be null.");
     }
@@ -407,8 +377,7 @@ public class ExtendedImageOperations extends ImageOperations implements Extended
    * @param height the height of the image.
    */
   private void drawLine(ImageCopyInterface image, int x0, int y0, int x1, int y1,
-                        PixelInterface color,
-                        int width, int height) {
+                        PixelInterface color, int width, int height) {
     int dx = Math.abs(x1 - x0);
     int dy = Math.abs(y1 - y0);
     int sx = (x0 < x1) ? 1 : -1;
@@ -439,10 +408,10 @@ public class ExtendedImageOperations extends ImageOperations implements Extended
    *
    * @param image the input image to adjust.
    * @return a new ImageInterface object with color correction applied.
-   * @throws NullPointerException if the input image is null.
+   * @throws IllegalArgumentException if the input image is null.
    */
   @Override
-  public ImageInterface colorCorrect(ImageInterface image) {
+  public ImageInterface colorCorrect(ImageInterface image) throws IllegalArgumentException {
     if (image == null) {
       throw new IllegalArgumentException("Image cannot be null.");
     }
@@ -502,126 +471,31 @@ public class ExtendedImageOperations extends ImageOperations implements Extended
   }
 
   /**
-   * Parses and validates input for a levels adjustment operation and applies the adjustment.
-   *
-   * @param tokens        the command tokens for the levels adjustment operation.
-   * @param partToProcess the image part to apply the adjustment on.
-   * @return the levels-adjusted image part.
-   * @throws IllegalArgumentException if the required values are missing or invalid.
-   */
-  private ImageInterface parseLevelsAdjust(String[] tokens, ImageInterface partToProcess) {
-    if (tokens.length < 4) {
-      throw new IllegalArgumentException("Levels adjust requires black, mid, and white values.");
-    }
-    int black = Integer.parseInt(tokens[1]);
-    int mid = Integer.parseInt(tokens[2]);
-    int white = Integer.parseInt(tokens[3]);
-    return levelsAdjust(partToProcess, black, mid, white);
-  }
-
-  /**
-   * Adjusts levels in an image using specified black, mid, and white values for color mapping.
-   *
-   * @param image the input image to adjust.
-   * @param black the black point for levels adjustment.
-   * @param mid   the mid-tone point for levels adjustment.
-   * @param white the white point for levels adjustment.
-   * @return a new ImageInterface object with adjusted levels.
-   * @throws IllegalArgumentException if black, mid, and white values are not in ascending order.
-   * @throws NullPointerException     if the input image is null.
-   */
-  @Override
-  public ImageInterface levelsAdjust(ImageInterface image, int black, int mid, int white) {
-    if (black < 0 || black >= mid || mid >= white || white > 255) {
-      throw new IllegalArgumentException("Black, mid, and white values must be in ascending "
-              + "order within [0, 255].");
-    }
-    if (image == null) {
-      throw new IllegalArgumentException("Image cannot be null.");
-    }
-    int width = image.getWidth();
-    int height = image.getHeight();
-    ImageCopyInterface copy = new ImageCopy(width, height);
-    for (int y = 0; y < height; y++) {
-      for (int x = 0; x < width; x++) {
-        PixelInterface pixel = image.getPixel(x, y);
-        int adjustedRed = adjustPixelValue(pixel.getRed(), black, mid, white);
-        int adjustedGreen = adjustPixelValue(pixel.getGreen(), black, mid, white);
-        int adjustedBlue = adjustPixelValue(pixel.getBlue(), black, mid, white);
-        copy.setPixel(x, y, new Pixel(clamp(adjustedRed), clamp(adjustedGreen),
-                clamp(adjustedBlue)));
-      }
-    }
-    return copy.deepCopyImage();
-  }
-
-  /**
-   * Adjusts a pixel intensity based on black, mid, and white level thresholds.
-   *
-   * @param value the pixel intensity to adjust.
-   * @param black the black point.
-   * @param mid   the mid-tone point.
-   * @param white the white point.
-   * @return the adjusted pixel intensity.
-   */
-  private int adjustPixelValue(int value, int black, int mid, int white) {
-    if (value < black) {
-      return 0;
-    } else if (value > white) {
-      return 255;
-    } else if (value <= mid) {
-      return (int) Math.round((value - black) * (128.0 / (mid - black)));
-    } else {
-      return (int) Math.round(128 + (value - mid) * (127.0 / (white - mid)));
-    }
-  }
-
-  /**
    * Applies a split-view operation, applying an image transformation to a specified percentage
    * of the image width.
    *
-   * @param tokens the command tokens for the split-view operation.
-   * @param image  the input image to split and transform.
-   * @return the processed image with the transformation applied to the specified section.
-   * @throws NullPointerException     if the input image is null.
+   * @param percentage of image to be split.
+   * @param image      the input image to split and transform.
+   * @param operation  lambda function that performs the necessary operation.
+   * @throws IllegalArgumentException if the input image is null.
    * @throws IllegalArgumentException if the operation type is unsupported.
    */
   @Override
-  public ImageInterface splitViewOperation(String[] tokens, ImageInterface image)
+  public ImageInterface splitViewOperation(int percentage, ImageInterface image,
+                                           Function<ImageInterface, ImageInterface> operation)
           throws IllegalArgumentException {
     if (image == null) {
       throw new IllegalArgumentException("Image cannot be null.");
     }
-    int width = image.getWidth();
-    int height = image.getHeight();
-    int splitPosition = getSplitPosition(tokens, width);
-    ImageInterface partToProcess = cropImage(image, splitPosition, height);
-    String operationType = tokens[0];
-    ImageInterface processedPart;
-    if (operationType.equals("levels-adjust")) {
-      processedPart = parseLevelsAdjust(tokens, partToProcess);
-    } else if (operations.containsKey(operationType)) {
-      processedPart = operations.get(operationType).apply(partToProcess);
-    } else {
-      throw new IllegalArgumentException("Unsupported operation: " + operationType);
-    }
-    return mergeImages(processedPart, image, splitPosition, width, height);
-  }
-
-  /**
-   * Calculates the split position in pixels based on a percentage of the image width.
-   *
-   * @param tokens the command tokens containing the split percentage.
-   * @param width  the width of the image.
-   * @return the calculated split position in pixels.
-   * @throws IllegalArgumentException if the percentage is not within [0, 100].
-   */
-  private int getSplitPosition(String[] tokens, int width) {
-    int percentage = Integer.parseInt(tokens[tokens.length - 1]);
-    if (percentage > 100 || percentage < 0) {
+    if (percentage < 0 || percentage > 100) {
       throw new IllegalArgumentException("Percentage must be between 0 and 100.");
     }
-    return width * percentage / 100;
+    int width = image.getWidth();
+    int height = image.getHeight();
+    int splitPosition = width * percentage / 100;
+    ImageInterface partToProcess = cropImage(image, splitPosition, height);
+    ImageInterface processedPart = operation.apply(partToProcess);
+    return mergeImages(processedPart, image, splitPosition, width, height);
   }
 
   /**
@@ -665,5 +539,84 @@ public class ExtendedImageOperations extends ImageOperations implements Extended
       }
     }
     return croppedImage.deepCopyImage();
+  }
+
+  /**
+   * Adjusts levels in an image using specified black, mid, and white values for color mapping.
+   *
+   * @param image the input image to adjust.
+   * @param black the black point for levels adjustment.
+   * @param mid   the mid-tone point for levels adjustment.
+   * @param white the white point for levels adjustment.
+   * @return a new ImageInterface object with adjusted levels.
+   * @throws IllegalArgumentException if black, mid, and white values are not in ascending order.
+   * @throws IllegalArgumentException if the input image is null.
+   */
+  @Override
+  public ImageInterface levelsAdjust(ImageInterface image, int black, int mid, int white)
+          throws IllegalArgumentException {
+    if (black < 0 || black >= mid || mid >= white || white > 255) {
+      throw new IllegalArgumentException("Black, mid, and white values must be in ascending "
+              + "order within [0, 255].");
+    }
+    if (image == null) {
+      throw new IllegalArgumentException("Image cannot be null.");
+    }
+    int width = image.getWidth();
+    int height = image.getHeight();
+    ImageCopyInterface copy = new ImageCopy(width, height);
+    double[] coefficients = fitQuadraticCurve(black, mid, white);
+    double a = coefficients[0];
+    double bCoeff = coefficients[1];
+    double c = coefficients[2];
+    for (int y = 0; y < height; y++) {
+      for (int x = 0; x < width; x++) {
+        PixelInterface pixel = image.getPixel(x, y);
+        int adjustedRed = applyQuadraticAdjustment(pixel.getRed(), a, bCoeff, c);
+        int adjustedGreen = applyQuadraticAdjustment(pixel.getGreen(), a, bCoeff, c);
+        int adjustedBlue = applyQuadraticAdjustment(pixel.getBlue(), a, bCoeff, c);
+        PixelInterface adjustedPixel = new Pixel(
+                clamp(adjustedRed), clamp(adjustedGreen), clamp(adjustedBlue)
+        );
+        copy.setPixel(x, y, adjustedPixel);
+      }
+    }
+    return copy.deepCopyImage();
+  }
+
+  /**
+   * Adjusts the intensity of a pixel's color channel using a quadratic equation.
+   *
+   * @param intensity the original intensity of the pixel.
+   * @param a         the quadratic coefficient for the squared term.
+   * @param bCoeff    the linear coefficient for the intensity term.
+   * @param c         the constant coefficient.
+   * @return the adjusted intensity.
+   */
+  private int applyQuadraticAdjustment(int intensity, double a, double bCoeff, double c) {
+    int adjustedIntensity = (int) Math.round(a * Math.pow(intensity, 2) + bCoeff * intensity + c);
+    return clamp(adjustedIntensity);
+  }
+
+  /**
+   * Fits a quadratic curve to three specified points.
+   *
+   * @param black Black point.
+   * @param mid   Midpoint.
+   * @param white White point.
+   * @return Coefficients for the quadratic curve [a, b, c].
+   */
+  private double[] fitQuadraticCurve(int black, int mid, int white) {
+    double denominator = Math.pow(black, 2) * (mid - white) - black * (Math.pow(mid, 2)
+            - Math.pow(white, 2)) + white * Math.pow(mid, 2) - mid * Math.pow(white, 2);
+    double aNumerator = -black * (128 - 255) + 128 * white - 255 * mid;
+    double bNumerator = Math.pow(black, 2) * (128 - 255) + 255
+            * Math.pow(mid, 2) - 128 * Math.pow(white, 2);
+    double cNumerator = Math.pow(black, 2) * (255 * mid - 128 * white)
+            - black * (255 * Math.pow(mid, 2) - 128 * Math.pow(white, 2));
+    double a = aNumerator / denominator;
+    double bCoeff = bNumerator / denominator;
+    double c = cNumerator / denominator;
+    return new double[]{a, bCoeff, c};
   }
 }

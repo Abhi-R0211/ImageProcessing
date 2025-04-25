@@ -4,6 +4,12 @@ The Image Processing application supports different image processing functions t
 performed. The commands allow to manipulate images and save them under specified names.
 Below is a summary of each command and conditions for their use.
 
+How to use the GUI?
+Please find the jar file in the res folder. Run the jar with the below command in the terminal:
+`java -jar ImageProcessing.jar`
+
+Following is how the Graphical User Interface looks:
+![GUI_Main_Screen.jpg](GUI_Main_Screen.jpg)
 ---
 
 ## Supported Commands
@@ -11,10 +17,13 @@ Below is a summary of each command and conditions for their use.
 ### 1. blur
 
 - Description: This function will apply a blur effect to an image.
-- Usage: blur <image-name> <dest-image-name> [split] [split percentage]
+- Usage: blur <image-name> <dest-image-name>
+- Usage with split: blur <image-name> <dest-image-name> split <split-percentage>
+- Usage with mask: blur <image-name> <masked-image-name> <dest-image-name> 
 - Example:
     - blur test output
     - blur myImage blurredImage split 50
+    - blur test mask output
 - Conditions:
     - If the user is using the split option, the user should provide a valid percentage (1–100).
     - Dependencies: The <image-name> must have already been loaded in the application.
@@ -22,10 +31,13 @@ Below is a summary of each command and conditions for their use.
 ### 2. sharpen
 
 - Description: sharpens an image.
-- Usage: sharpen <image-name> <dest-image-name> [split] [split percentage]
+- Usage: sharpen <image-name> <dest-image-name>
+- Usage with split: sharpen <image-name> <dest-image-name> split <split-percentage>
+- Usage with mask: sharpen <image-name> <masked-image-name> <dest-image-name> 
 - Example:
     - sharpen test output
     - sharpen myImage blurredImage split 50
+    - sharpen test mask output
 - Conditions:
     - If the user is using the split option, the user should provide a valid percentage (1–100).
     - Dependencies: The <image-name> must have already been loaded in the application.
@@ -33,10 +45,13 @@ Below is a summary of each command and conditions for their use.
 ### 3. red-component
 
 - Description: Extracts the red component of the image.
-- Usage: red-component <image-name> <dest-image-name> [split] [split percentage]
+- Usage: red-component <image-name> <dest-image-name>
+- Usage with split: red-component <image-name> <dest-image-name> split <split-percentage>
+- Usage with mask: red-component <image-name> <masked-image-name> <dest-image-name> 
 - Example:
     - red-component myImage redImage
     - red-component myImage redImage split 50
+    - red-component test mask output
 - Conditions:
     - Note: The image must be loaded prior to running this command.
     - If the user is using the split option, the user should provide a valid percentage (1–100).
@@ -45,10 +60,13 @@ Below is a summary of each command and conditions for their use.
 ### 4. green-component
 
 - Description: Extracts the green component of the image.
-- Usage: green-component <image-name> <dest-image-name> [split] [split percentage]
+- Usage: green-component <image-name> <dest-image-name>
+- Usage with split: green-component <image-name> <dest-image-name> split <split-percentage>
+- Usage with mask: green-component <image-name> <masked-image-name> <dest-image-name> 
 - Example:
     - green-component test output
     - green-component test output split 50
+    - green-component test mask output
 - Conditions:
     - Note: Image must be loaded before running this command.
     - If the user is using the split option, the user should provide a valid percentage (1–100).
@@ -57,10 +75,13 @@ Below is a summary of each command and conditions for their use.
 ### 5. blue-component
 
 - Description: Extracts the blue component of the image.
-- Usage: blue-component <image-name> <dest-image-name> [split] [split percentage]
+- Usage: blue-component <image-name> <dest-image-name>
+- Usage with split: blue-component <image-name> <dest-image-name> split <split-percentage>
+- Usage with mask: blue-component <image-name> <masked-image-name> <dest-image-name> 
 - Example:
     - blue-component test output
     - blue-component test output split 50
+    - blue-component test mask output
 - Conditions:
     - Note: Image must be loaded before running this command.
     - If the user is using the split option, the user should provide a valid percentage (1–100).
@@ -69,10 +90,13 @@ Below is a summary of each command and conditions for their use.
 ### 6. intensity-component
 
 - Description: Calculates the intensity of the image by averaging the RGB components.
-- Usage: intensity-component <image-name> <dest-image-name> [split] [split percentage]
+- Usage: intensity-component <image-name> <dest-image-name>
+- Usage with split: intensity-component <image-name> <dest-image-name> split <split-percentage>
+- Usage with mask: intensity-component <image-name> <masked-image-name> <dest-image-name> 
 - Example:
-- intensity-component test output
-- intensity-component test output split 50
+  - intensity-component test output
+  - intensity-component test output split 50
+  - intensity-component test mask output
 - Conditions:
     - Note: Image must be loaded before running this command.
     - If the user is using the split option, the user should provide a valid percentage (1–100).
@@ -82,10 +106,13 @@ Below is a summary of each command and conditions for their use.
 
 - Description: This function extracts the luma (brightness) component of the image
   using a weighted sum of RGB values.
-- Usage: luma-component <image-name> <dest-image-name> [split] [split percentage]
+- Usage: luma-component <image-name> <dest-image-name>
+- Usage with split: luma-component <image-name> <dest-image-name> split <split-percentage>
+- Usage with mask: luma-component <image-name> <masked-image-name> <dest-image-name> 
 - Example:
-- luma-component test output
-- luma-component test output split 50
+  - luma-component test output
+  - luma-component test output split 50
+  - luma-component test mask output
 - Conditions:
     - Note: Image must be loaded before running this command.
     - If the user is using the split option, the user should provide a valid percentage (1–100).
@@ -94,10 +121,13 @@ Below is a summary of each command and conditions for their use.
 ### 8. value-component
 
 - Description: Extracts the value component (the maximum of RGB values for each pixel).
-- Usage: value-component <image-name> <dest-image-name> [split] [split percentage]
+- Usage: value-component <image-name> <dest-image-name>
+- Usage with split: value-component <image-name> <dest-image-name> split <split-percentage>
+- Usage with mask: value-component <image-name> <masked-image-name> <dest-image-name> 
 - Example:
-- value-component test output
-- value-component test output split 50
+  - value-component test output
+  - value-component test output split 50
+  - value-component test mask output
 - Conditions:
     - Note: Image must be loaded before running this command.
     - If the user is using the split option, the user should provide a valid percentage (1–100).
@@ -125,7 +155,7 @@ Below is a summary of each command and conditions for their use.
 ### 11.brighten
 
 - Description: Increases or decreases the brightness of the image.
-- Usage: brighten <value> <image-name> <dest-image-name> [split] [split percentage]
+- Usage: brighten <value> <image-name> <dest-image-name>
 - Example:
 - brighten 20 test output
 - brighten -10 test output split 50
@@ -137,8 +167,13 @@ Below is a summary of each command and conditions for their use.
 ### 12. sepia
 
 - Description: Applies a sepia tone effect to the specified image.
-- Usage: sepia <image-name> <dest-image-name> [split] [split percentage]
-- Example: sepia test output
+- Usage: sepia <image-name> <dest-image-name>
+- Usage with split: sepia <image-name> <dest-image-name> split <split-percentage>
+- Usage with mask: sepia <image-name> <masked-image-name> <dest-image-name> 
+- Example: 
+  - sepia test output
+  - sepia test output split 50
+  - sepia test mask output
 - Conditions:
     - Note: Image must be loaded before running this command.
     - Applies only to color images: This command won’t work on grayscale images.
@@ -181,30 +216,48 @@ Below is a summary of each command and conditions for their use.
 ### 17. color-correct
 
 - Description: Adjusts the color balance of the image to correct color imbalances.
-- Usage: color-correct <image-name> <dest-image-name> [split] [split percentage]
+- Usage: color-correct <image-name> <dest-image-name>
+- Usage with split: color-correct <image-name> <dest-image-name> split <split-percentage>
+- Usage with mask: color-correct <image-name> <masked-image-name> <dest-image-name> 
 - Example:
-- color-correct test output
-- color-correct test output split 50
+    - color-correct test output
+    - color-correct test output split 50
+    - color-correct test mask output
 - Conditions:
     - Note: Image must be loaded before running this command.
 
 ### 18. levels-adjust
 
 - Description: Adjusts the brightness levels across shadows, midtones, and highlights in the image.
-- Usage: levels-adjust <black-level> <mid-level> <white-level> <image-name> <
-  dest-image-name> [split] [split percentage]
+- Usage: levels-adjust <image-name> <dest-image-name> <black-level> <mid-level> <white-level>
+- Usage with split: levels-adjust <black-level> <mid-level> <white-level> <image-name> <
+  dest-image-name> split <split-percentage>
+- Usage with Mask: levels-adjust <black-level> <mid-level> <white-level> <image-name> 
+  <masked-image-name> <dest-image-name>
 - Example:
-- levels-adjust test output 20 50 90
-- levels-adjust test output 20 50 90 split 30
+    - levels-adjust 20 50 90 test output 
+    - levels-adjust 20 50 90 test output split 30
+    - levels-adjust 20 50 90 test mask output
 - Conditions:
     - Note: Image must be loaded before running this command.
     - Levels range from 0 to 100, where 0 is the darkest and 100 the brightest.
 
+### 19. downsize
+
+- Description: This will downsize the Image to the given width and height.
+- Usage: downsize <image-name> <dest-image-name> <width> <height>
+- Example:
+    - downsize test output 100 100
+- Conditions:
+    - Note: Image must be loaded before running this command.
+    - The width and height of the new Image should be less than the width and height of the current
+      Image
+
 ### 19. run-script
 
 - Description: Runs a batch of commands from a file.
-- Usage: run-script <script-file-path>
-- Example: run-script commands.txt
+- Usage: run <script-file-path>
+- Example: run commands.txt
 - Conditions:
     - The script file should contain one command per line.
     - Commands in the script file should follow the same format as above.
@@ -223,3 +276,4 @@ Below is a summary of each command and conditions for their use.
     - run-script path/to/script.txt
 
 ---
+

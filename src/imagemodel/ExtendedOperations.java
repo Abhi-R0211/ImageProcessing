@@ -1,5 +1,7 @@
 package imagemodel;
 
+import java.util.function.Function;
+
 /**
  * This interface extends the Operations interface, providing additional image processing
  * functionalities such as compression, color correction, level adjustment, split view operation
@@ -50,11 +52,12 @@ public interface ExtendedOperations extends Operations {
    * Applies a split-view operation, applying an image transformation to a specified percentage
    * of the image width.
    *
-   * @param tokens the command tokens for the split-view operation.
-   * @param image  the input image to split and transform.
+   * @param percentage of image to be split.
+   * @param image      the input image to split and transform.
+   * @param operation  lambda function that performs the necessary operation.
    * @throws IllegalArgumentException if the input image is null.
    * @throws IllegalArgumentException if the operation type is unsupported.
    */
-  ImageInterface splitViewOperation(String[] tokens, ImageInterface image)
-          throws IllegalArgumentException;
+  ImageInterface splitViewOperation(int percentage, ImageInterface image, Function<ImageInterface,
+          ImageInterface> operation) throws IllegalArgumentException;
 }

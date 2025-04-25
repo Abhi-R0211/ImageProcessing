@@ -14,9 +14,10 @@ public class ImageOperations implements Operations {
    *
    * @param image that needs to be flipped.
    * @return object of type Image, after flipping it horizontally.
+   * @throws IllegalArgumentException if the Image is null.
    */
   @Override
-  public ImageInterface applyHorizontalFlip(ImageInterface image) {
+  public ImageInterface applyHorizontalFlip(ImageInterface image) throws IllegalArgumentException {
     if (image == null) {
       throw new IllegalArgumentException("image is null");
     }
@@ -39,21 +40,27 @@ public class ImageOperations implements Operations {
    *
    * @param image that needs to be flipped.
    * @return object of type Image, after flipping it vertically.
+   * @throws IllegalArgumentException if the Image is null.
    */
   @Override
-  public ImageInterface applyVerticalFlip(ImageInterface image) {
+  public ImageInterface applyVerticalFlip(ImageInterface image) throws IllegalArgumentException {
     if (image == null) {
       throw new IllegalArgumentException("image is null");
     }
     int width = image.getWidth();
     int height = image.getHeight();
     ImageCopyInterface copy = new ImageCopy(width, height);
-    for (int y = 0; y < height / 2; y++) {
+    for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
-        PixelInterface top = image.getPixel(x, y);
-        PixelInterface bottom = image.getPixel(x, height - 1 - y);
-        copy.setPixel(x, y, bottom);
-        copy.setPixel(x, height - 1 - y, top);
+        if (y < height / 2) {
+          PixelInterface top = image.getPixel(x, y);
+          PixelInterface bottom = image.getPixel(x, height - 1 - y);
+          copy.setPixel(x, y, bottom);
+          copy.setPixel(x, height - 1 - y, top);
+        } else if (y == height / 2 && height % 2 == 1) {
+          PixelInterface middle = image.getPixel(x, y);
+          copy.setPixel(x, y, middle);
+        }
       }
     }
     return copy.deepCopyImage();
@@ -66,6 +73,7 @@ public class ImageOperations implements Operations {
    * @param image     whose brightness needs to be changed.
    * @param increment factor to be applied on the image.
    * @return object of type Image after brightening/darkening.
+   * @throws IllegalArgumentException if the Image is null.
    */
   @Override
   public ImageInterface applyBrightness(ImageInterface image, int increment) {
@@ -103,9 +111,10 @@ public class ImageOperations implements Operations {
    *
    * @param image on which the operation is to be applied.
    * @return an object of type Image after applying a sepia tone.
+   * @throws IllegalArgumentException if the Image is null.
    */
   @Override
-  public ImageInterface applySepia(ImageInterface image) {
+  public ImageInterface applySepia(ImageInterface image) throws IllegalArgumentException {
     if (image == null) {
       throw new IllegalArgumentException("image is null");
     }
@@ -132,9 +141,10 @@ public class ImageOperations implements Operations {
    *
    * @param image on which the operation is to be applied.
    * @return an object of type Image after blurring.
+   * @throws IllegalArgumentException if the Image is null.
    */
   @Override
-  public ImageInterface applyBlur(ImageInterface image) {
+  public ImageInterface applyBlur(ImageInterface image) throws IllegalArgumentException {
     if (image == null) {
       throw new IllegalArgumentException("image is null");
     }
@@ -151,9 +161,10 @@ public class ImageOperations implements Operations {
    *
    * @param image on which the operation is to be applied.
    * @return an object of type Image after applying the operation.
+   * @throws IllegalArgumentException if the Image is null.
    */
   @Override
-  public ImageInterface applySharpen(ImageInterface image) {
+  public ImageInterface applySharpen(ImageInterface image) throws IllegalArgumentException {
     if (image == null) {
       throw new IllegalArgumentException("image is null");
     }
@@ -172,9 +183,11 @@ public class ImageOperations implements Operations {
    *
    * @param image on which the operation is to be applied.
    * @return an object of type Image after extracting the red component.
+   * @throws IllegalArgumentException if the Image is null.
    */
   @Override
-  public ImageInterface visualizeRedComponent(ImageInterface image) {
+  public ImageInterface visualizeRedComponent(ImageInterface image)
+          throws IllegalArgumentException {
     if (image == null) {
       throw new IllegalArgumentException("image is null");
     }
@@ -186,9 +199,11 @@ public class ImageOperations implements Operations {
    *
    * @param image on which the operation is to be applied.
    * @return an object of type Image after extracting the green component.
+   * @throws IllegalArgumentException if the Image is null.
    */
   @Override
-  public ImageInterface visualizeGreenComponent(ImageInterface image) {
+  public ImageInterface visualizeGreenComponent(ImageInterface image)
+          throws IllegalArgumentException {
     if (image == null) {
       throw new IllegalArgumentException("image is null");
     }
@@ -200,6 +215,7 @@ public class ImageOperations implements Operations {
    *
    * @param image on which the operation is to be applied.
    * @return an object of type Image after extracting the blue component.
+   * @throws IllegalArgumentException if the Image is null.
    */
   @Override
   public ImageInterface visualizeBlueComponent(ImageInterface image) {
@@ -214,9 +230,10 @@ public class ImageOperations implements Operations {
    *
    * @param image is the image on which the operation is to be applied.
    * @return this will return an object of type Image after applying the operation.
+   * @throws IllegalArgumentException if the Image is null.
    */
   @Override
-  public ImageInterface visualizeValue(ImageInterface image) {
+  public ImageInterface visualizeValue(ImageInterface image) throws IllegalArgumentException {
     if (image == null) {
       throw new IllegalArgumentException("image is null");
     }
@@ -229,9 +246,10 @@ public class ImageOperations implements Operations {
    *
    * @param image on which the operation is to be applied.
    * @return an object of type Image after applying the operation.
+   * @throws IllegalArgumentException if the Image is null.
    */
   @Override
-  public ImageInterface visualizeIntensity(ImageInterface image) {
+  public ImageInterface visualizeIntensity(ImageInterface image) throws IllegalArgumentException {
     if (image == null) {
       throw new IllegalArgumentException("image is null");
     }
@@ -244,9 +262,10 @@ public class ImageOperations implements Operations {
    *
    * @param image on which the operation is to be applied.
    * @return an object of type Image after applying the operation.
+   * @throws IllegalArgumentException if the Image is null.
    */
   @Override
-  public ImageInterface visualizeLuma(ImageInterface image) {
+  public ImageInterface visualizeLuma(ImageInterface image) throws IllegalArgumentException {
     if (image == null) {
       throw new IllegalArgumentException("image is null");
     }
@@ -260,6 +279,7 @@ public class ImageOperations implements Operations {
    * @param image              to be processed.
    * @param componentExtractor operation to be performed.
    * @return image after processing.
+   * @throws IllegalArgumentException if the Image is null.
    */
   private ImageInterface componentHelper(ImageInterface image, Function<PixelInterface,
           Integer> componentExtractor) {
@@ -284,8 +304,10 @@ public class ImageOperations implements Operations {
    *
    * @param image  on which the kernel needs to be applied.
    * @param kernel The kernel on that particular function.
+   * @throws IllegalArgumentException if the Image is null.
    */
-  private ImageInterface applyKernel(ImageInterface image, double[][] kernel) {
+  private ImageInterface applyKernel(ImageInterface image, double[][] kernel)
+          throws IllegalArgumentException {
     if (image == null) {
       throw new IllegalArgumentException("image is null");
     }
@@ -329,10 +351,11 @@ public class ImageOperations implements Operations {
    * @param greenImage that is used for the green-pixels of the image.
    * @param blueImage  that is used for the blue-pixels of the image.
    * @return an image after combining all the three RGB Channels.
+   * @throws IllegalArgumentException if the Image is null.
    */
   @Override
   public ImageInterface combineRGB(ImageInterface redImage, ImageInterface greenImage,
-                                   ImageInterface blueImage) {
+                                   ImageInterface blueImage) throws IllegalArgumentException {
     if (redImage == null || greenImage == null || blueImage == null) {
       throw new IllegalArgumentException("image is null");
     }

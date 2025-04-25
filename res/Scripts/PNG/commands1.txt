@@ -1,0 +1,258 @@
+#load
+load PNG/Sample.png input
+
+#save
+save PNG/Sample-save.png input
+
+#red
+red-component input red
+
+#save
+save PNG/Sample-red.png red
+
+#green
+green-component input green
+
+#save
+save PNG/Sample-green.png green
+
+#blue
+blue-component input blue
+
+#save
+save PNG/Sample-blue.png blue
+
+#value
+value-component input value
+
+#save
+save PNG/Sample-value.png value
+
+#luma
+luma-component input luma 50 100 200
+
+#save
+save PNG/Sample-luma.png value
+
+#intensity
+intensity-component input intensity
+
+#save
+save PNG/Sample-intensity.png intensity
+
+#horizontal flip
+horizontal-flip input horizontal
+
+#save
+save PNG/Sample-horizontal.png horizontal
+
+#vertical flip
+vertical-flip input vertical
+
+#save
+save PNG/Sample-vertical.png vertical
+
+#brighten
+brighten 100 input brighten
+
+#save
+save PNG/Sample-brighten.png brighten
+
+#darken
+brighten -100 input darken
+
+#save
+save PNG/Sample-darken.png darken
+
+#blur
+blur input blur
+
+#save
+save PNG/Sample-blur.png blur
+
+#sharpen
+sharpen input sharpen
+
+#save
+save PNG/Sample-sharpen.png sharpen
+
+#sepia
+sepia input sepia
+
+#save
+save PNG/Sample-sepia.png sepia
+
+#rgb split
+rgb-split input red1 green1 blue1
+
+#save
+save PNG/Sample-red1.png red1
+save PNG/Sample-green1.png green1
+save PNG/Sample-blue1.png blue1
+
+#rgb combine
+rgb-combine combine red1 green1 blue1
+
+#save
+save PNG/Sample-combine.png combine
+
+#compress
+compress 50 input compressed
+
+#save
+save PNG/compressed.png compressed
+
+#histogram
+histogram input histogram
+
+#save
+save PNG/histogram.png histogram
+
+#color-correct
+color-correct input colorcorrect
+
+#save
+save PNG/color-correct.png colorcorrect
+
+#levels-adjust
+levels-adjust 20 100 255 input levelsadjust
+
+#save
+save PNG/levels-adjust.png levelsadjust
+
+#split for all functions
+
+#split red
+red-component input redsplit split 50
+
+#save
+save PNG/red-split.png redsplit
+
+#split green
+green-component input greensplit split 50
+
+#save
+save PNG/green-split.png greensplit 50
+
+#blur split
+blue-component input bluesplit split 50
+
+#save
+save PNG/blue-split.png bluesplit
+
+#value split
+value-component input valuesplit split 50
+
+#save
+save PNG/value-split.png valuesplit
+
+#luma split
+luma-component input lumasplit split 50
+
+#save
+save PNG/luma-split.png lumasplit
+
+#intensity split
+intensity-component input intensitysplit split 50
+
+#save
+save PNG/intensity-split.png intensitysplit
+
+#split blur
+blur input blursplit split 50
+
+#save
+save PNG/blur-split.png blursplit
+
+#sharpen split
+sharpen input sharpensplit split 50
+
+#save
+save PNG/sharpen-split.png sharpensplit
+
+#sepia split
+sepia input sepiasplit split 50
+
+#save
+save PNG/sepia-split.png sepiasplit
+
+#levels adjust split
+levels-adjust 20 100 255 input levelsadjustsplit split 50
+
+#save
+save PNG/levels-adjust-split.png levelsadjustsplit
+
+#color correct split
+color-correct input colorcorrectsplit split 50
+
+#save
+save PNG/color-correct-split.png colorcorrectsplit
+
+#load mask
+load PNG/mask.png mask
+
+#blur mask
+blur input mask blurmask
+
+#save
+save PNG/blur-mask.png blurmask
+
+#sharpen mask
+sharpen input mask sharpenmask
+
+#save
+save PNG/sharpen-mask.png sharpenmask
+
+#red component mask
+red-component input mask redmask
+
+#save
+save PNG/red-mask.png redmask
+
+#green component mask
+green-component input mask greenmask
+
+#save
+save PNG/green-mask.png greenmask
+
+#blue component mask
+blue-component input mask bluemask
+
+#save
+save PNG/blue-mask.png bluemask
+
+#sepia
+sepia input mask sepiamask
+
+#save
+save PNG/sepia-mask.png sepiamask
+
+#value mask
+value-component input mask valuemask
+
+#save
+save PNG/value-mask.png valuemask
+
+#luma mask
+luma-component input mask lumamask
+
+#save
+save PNG/luma-mask.png lumamask
+
+#intensity mask
+intensity-component input mask intensitymask
+
+#save
+save PNG/intensity-mask.png intensitymask
+
+#downscale
+downsize input downsizesquare 1 1
+
+#save
+save PNG/downsize-square.png downsizesquare
+
+#downscale
+downsize input downsizerect 1 2
+
+#save
+save PNG/downsize-rect.png downsizerect
